@@ -1,31 +1,32 @@
 # springboot-react-basic-auth
 
-The goal of this project is to implement an application called `book-app` to manage books. For it, we will implement a back-end application called `book-api` using [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) framework and a font-end application called `book-ui` using [ReactJS](https://reactjs.org/). Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) (`username` and `password`) to secure both applications.
+The goal of this project is to implement an application called `book-app` to manage books. For it, we will implement a back-end application called `book-api` using [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) and a font-end application called `book-ui` using [ReactJS](https://reactjs.org/). Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) (`username` and `password`) to secure both applications.
 
 ## Applications
 
 - **book-api**
 
-  `Spring Boot` Web Java backend application that exposes a Rest API to manage books. Its sensitive endpoints can just be just accessed if a user is authenticated and has autorization roles for it. `book-api` stores its data in [`MySQL`](https://www.mysql.com/) database.
+  `Spring Boot` Web Java backend application that exposes a Rest API to manage books. Its secured endpoints can just be just accessed if a user is authenticated and has autorization roles for it. `book-api` stores its data in [`MySQL`](https://www.mysql.com/) database.
 
   `book-api` has the following endpoints
 
-  | Endpoint                                                 | Authenticated | Roles           |
-  | -------------------------------------------------------- | ------------- | --------------- |
-  | `GET /public/numberOfUsers`                              | No            |                 |
-  | `GET /public/numberOfBooks`                              | No            |                 |
-  | `GET /api/users`                                         | Yes           | `ADMIN`         |
-  | `GET /api/users/{username}`                              | Yes           | `ADMIN`         |
-  | `POST /api/users {"username": "...", "password": "..."}` | Yes           | `ADMIN`         |
-  | `DELETE /api/users/{username}`                           | Yes           | `ADMIN`         |
-  | `GET /api/books`                                         | Yes           | `ADMIN`, `USER` |
-  | `GET /api/books/{isbn}`                                  | Yes           | `ADMIN`, `USER` |
-  | `POST /api/books {"isbn": "...", "title": "..."}`        | Yes           | `ADMIN`         |
-  | `DELETE /api/books/{isbn}`                               | Yes           | `ADMIN`         |
+  | Endpoint                                                      | Authenticated | Roles           |
+  | ------------------------------------------------------------- | ------------- | --------------- |
+  | `POST /auth/signup -d {"username","password","name","email"}` | No            |                 |
+  | `GET /public/numberOfUsers`                                   | No            |                 |
+  | `GET /public/numberOfBooks`                                   | No            |                 |
+  | `GET /api/users/me`                                           | Yes           | `ADMIN`, `USER` |
+  | `GET /api/users`                                              | Yes           | `ADMIN`         |
+  | `GET /api/users/{username}`                                   | Yes           | `ADMIN`         |
+  | `DELETE /api/users/{username}`                                | Yes           | `ADMIN`         |
+  | `GET /api/books`                                              | Yes           | `ADMIN`, `USER` |
+  | `GET /api/books/{isbn}`                                       | Yes           | `ADMIN`, `USER` |
+  | `POST /api/books -d {"isbn","title"}`                         | Yes           | `ADMIN`         |
+  | `DELETE /api/books/{isbn}`                                    | Yes           | `ADMIN`         |
 
 - **book-ui**
 
-  `ReactJS` frontend application where `users` can see the list of books and `admins` can manage books and users. To login, the `user` must provide valid credentials (`username` and `password`). `book-ui` communicates with `book-api` to get `books` and `users` data. It uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
+  `ReactJS` frontend application where `users` can see the list of books and `admins` can manage books and users. To login, a `user` or `admin` must provide valid `username` and `password` credentials. `book-ui` communicates with `book-api` to get `books` and `users` data. It uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
 ## Start Environment
 
@@ -79,17 +80,21 @@ The gif below shows ...
 
 - **Manual Endpoints Test using Swagger**
 
-  - Open a browser and access http://localhost:8080/swagger-ui.html
+  - Open a browser and access http://localhost:8080/swagger-ui.html. All endpoints with the lock sign are secured. In order to access them, you need a valid `username` and `password` credentials.
 
-  - In the form login that will show, login with `admin` credentials (`admin/admin`) or `user` credentials (`user/user`)
+  - Click on `Authorize` button
+
+  - In the `Basic authentication` form that will open, provide the `admin` credentials (`admin/admin`) or `user` ones (`user/user`)
+  
+  - Click on `Authorize` and then on `Close`
 
   - Make some call to the endpoints
 
 - **Manual Endpoints Test using curl**
 
-  In a terminal, run the following `curl` commands
+  - Open a terminal
 
-  - `GET /public/numberOfBooks`
+  - Call `GET /public/numberOfBooks`
     ```
     curl -i localhost:8080/public/numberOfBooks
     ```
@@ -99,38 +104,27 @@ The gif below shows ...
     1
     ```
     
-  - `GET /api/books` without credentials
+  - Call `GET /api/books` without credentials
     ```
     curl -i localhost:8080/api/books
     ```
-    As for this endpoint you must the authenticated, it should return
+    As this endpoint requires authentication, it should return
     ```
     HTTP/1.1 401
-    {
-      "timestamp": "...",
-      "status": 401,
-      "error": "Unauthorized",
-      "message": "Unauthorized",
-      "path": "/api/books"
-    }
+    { "timestamp": "...", "status": 401, "error": "Unauthorized", "message": "Unauthorized", "path": "/api/books" }
     ```
     
-  - `GET /api/books` with `user` credentials
+  - Call again `GET /api/books` but now with `user` credentials
     ```
     curl -i -u user:user localhost:8080/api/books
     ```
-    As for this endpoint you must the authenticated, it should return
+    It should return
     ```
     HTTP/1.1 200
-    [
-      {
-        "isbn": "abc",
-        "title": "Spring Security"
-      }
-    ]
+    [ { "isbn": "abc", "title": "Spring Security" } ]
     ```
     
-  - `POST /api/books` with `user` credentials
+  - Call `POST /api/books` with `user` credentials
     ```
     curl -i -u user:user -X POST localhost:8080/api/books \
     -H "Content-Type: application/json" -d '{"isbn": "xyz", "title": "Spring Boot"}'
@@ -138,16 +132,10 @@ The gif below shows ...
     As `user` doesn't have the role `ADMIN`, it should return
     ```
     HTTP/1.1 403
-    {
-      "timestamp": "...",
-      "status": 403,
-      "error": "Forbidden",
-      "message": "Forbidden",
-      "path": "/api/books"
-    }
+    { "timestamp": "...", "status": 403, "error": "Forbidden", "message": "Forbidden", "path": "/api/books" }
     ```
     
-  - `POST /api/books` with `admin` credentials
+  - Call `POST /api/books` with `admin` credentials
     ```
     curl -i -u admin:admin -X POST localhost:8080/api/books \
     -H "Content-Type: application/json" -d '{"isbn": "xyz", "title": "Spring Boot"}'
@@ -155,10 +143,7 @@ The gif below shows ...
     It should return
     ```
     HTTP/1.1 201
-    {
-      "isbn": "xyz",
-      "title": "Spring Boot"
-    }
+    { "isbn": "xyz", "title": "Spring Boot" }
     ```
 
 - **Automatic Endpoints Test**
@@ -171,15 +156,21 @@ The gif below shows ...
     ```
     It should return something like the output below, where it shows the http code for different requests 
     ```
-                     Endoints | without creds |  user creds |  admin creds |
+    POST auth/signup
+    ================
+    user2 Auth Resp: {"id":3}
+    
+    Authorization
+    =============
+                    Endpoints | without creds |  user creds |  admin creds |
     ------------------------- + ------------- + ----------- + ------------ |
      GET public/numberOfUsers |           200 |         200 |          200 |
      GET public/numberOfBooks |           200 |         200 |          200 |
     ......................... + ............. + ........... + ............ |
+            GET /api/users/me |           401 |         200 |          200 |
                GET /api/users |           401 |         403 |          200 |
           GET /api/users/user |           401 |         403 |          200 |
-              POST /api/users |           401 |         403 |          201 |
-            DELETE /api/users |           401 |         403 |          200 |
+       DELETE /api/users/user |           401 |         403 |          200 |
     ......................... + ............. + ........... + ............ |
                GET /api/books |           401 |         200 |          200 |
            GET /api/books/abc |           401 |         200 |          200 |
