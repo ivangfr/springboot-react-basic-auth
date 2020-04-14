@@ -1,6 +1,5 @@
 package com.mycompany.bookapi.rest;
 
-import com.mycompany.bookapi.exception.BookNotFoundException;
 import com.mycompany.bookapi.model.Book;
 import com.mycompany.bookapi.rest.dto.CreateBookDto;
 import com.mycompany.bookapi.service.BookService;
@@ -33,7 +32,7 @@ public class BookController {
     }
 
     @GetMapping("/{isbn}")
-    public Book getBook(@PathVariable String isbn) throws BookNotFoundException {
+    public Book getBook(@PathVariable String isbn) {
         return bookService.validateAndGetBook(isbn);
     }
 
@@ -44,7 +43,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{isbn}")
-    public Book deleteBook(@PathVariable String isbn) throws BookNotFoundException {
+    public Book deleteBook(@PathVariable String isbn) {
         Book book = bookService.validateAndGetBook(isbn);
         bookService.deleteBook(book);
         return book;

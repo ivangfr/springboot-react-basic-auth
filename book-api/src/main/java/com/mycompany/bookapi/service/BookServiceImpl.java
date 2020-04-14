@@ -22,7 +22,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book validateAndGetBook(String isbn) throws BookNotFoundException {
+    public Book validateAndGetBook(String isbn) {
         return bookRepository.findById(isbn)
                 .orElseThrow(() -> new BookNotFoundException(String.format("Book with isbn %s not found", isbn)));
     }

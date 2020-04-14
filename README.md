@@ -1,12 +1,12 @@
 # springboot-react-basic-auth
 
-The goal of this project is to implement an application called `book-app` to manage books. For it, we will implement a back-end application called `book-api` using [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) and a font-end application called `book-ui` using [ReactJS](https://reactjs.org/). Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) (`username` and `password`) to secure both applications.
+The goal of this project is to implement an application called `book-app` to create and manage books. For it, we will implement a back-end application called `book-api` using [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) and a font-end application called `book-ui` using [ReactJS](https://reactjs.org/). Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) to secure both applications.
 
 ## Applications
 
 - **book-api**
 
-  `Spring Boot` Web Java backend application that exposes a Rest API to manage books. Its secured endpoints can just be just accessed if a user is authenticated and has autorization roles for it. `book-api` stores its data in [`MySQL`](https://www.mysql.com/) database.
+  `Spring Boot` Web Java backend application that exposes a Rest API to create, retrieve and delete books. If a user has `ADMIN` role he/she can also retrieve information of other users or delete them. The application secured endpoints can just be just accessed if a user has valid credentials (`username` and `password`) and has autorization roles for it. `book-api` stores its data in [`MySQL`](https://www.mysql.com/) database.
 
   `book-api` has the following endpoints
 
@@ -26,7 +26,7 @@ The goal of this project is to implement an application called `book-app` to man
 
 - **book-ui**
 
-  `ReactJS` frontend application where `users` can see the list of books and `admins` can manage books and users. To login, a `user` or `admin` must provide valid `username` and `password` credentials. `book-ui` communicates with `book-api` to get `books` and `users` data. It uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
+  `ReactJS` frontend application where a user with role `USER` can retrieve the information of a specific book or a list of books. On the other hand, a user with role `ADMIN` as access to all secured endpoints. To login, a `user` or `admin` must provide valid `username` and `password` credentials. `book-ui` communicates with `book-api` to get `books` and `users` data. It uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
 ## Start Environment
 
@@ -72,6 +72,8 @@ The goal of this project is to implement an application called `book-app` to man
 | book-api    | http://localhost:8080/swagger-ui.html | `admin/admin` or `user/user` |
 | book-ui     | http://localhost:3000                 | `admin/admin` or `user/user` |
 
+> **Note:** the credentials shown in the table are the ones already pre-defined. You can signup new users
+
 ## Demo
 
 The gif below shows ...
@@ -82,11 +84,9 @@ The gif below shows ...
 
   - Open a browser and access http://localhost:8080/swagger-ui.html. All endpoints with the lock sign are secured. In order to access them, you need a valid `username` and `password` credentials.
 
-  - Click on `Authorize` button
+  - Click on `Authorize` button (green one, almost on the top of the page, on the right)
 
-  - In the `Basic authentication` form that will open, provide the `admin` credentials (`admin/admin`) or `user` ones (`user/user`)
-  
-  - Click on `Authorize` and then on `Close`
+  - In the `Basic authentication` form that will open, provide the `admin` credentials (`admin/admin`) or `user` ones (`user/user`). Then, click on `Authorize` and finally on `Close`
 
   - Make some call to the endpoints
 

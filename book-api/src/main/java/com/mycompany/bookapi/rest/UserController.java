@@ -1,6 +1,5 @@
 package com.mycompany.bookapi.rest;
 
-import com.mycompany.bookapi.exception.UserNotFoundException;
 import com.mycompany.bookapi.model.User;
 import com.mycompany.bookapi.security.CustomUserDetails;
 import com.mycompany.bookapi.service.UserService;
@@ -24,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public User getCurrentUser(@AuthenticationPrincipal CustomUserDetails currentUser) throws UserNotFoundException {
+    public User getCurrentUser(@AuthenticationPrincipal CustomUserDetails currentUser) {
         return userService.validateAndGetUserByUsername(currentUser.getUsername());
     }
 
@@ -34,12 +33,12 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public User getUser(@PathVariable String username) throws UserNotFoundException {
+    public User getUser(@PathVariable String username) {
         return userService.validateAndGetUserByUsername(username);
     }
 
     @DeleteMapping("/{username}")
-    public User deleteUser(@PathVariable String username) throws UserNotFoundException {
+    public User deleteUser(@PathVariable String username) {
         User user = userService.validateAndGetUserByUsername(username);
         userService.deleteUser(user);
         return user;

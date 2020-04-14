@@ -1,6 +1,5 @@
 package com.mycompany.bookapi.service;
 
-import com.mycompany.bookapi.exception.UserNotFoundException;
 import com.mycompany.bookapi.model.User;
 
 import java.util.List;
@@ -16,7 +15,7 @@ public interface UserService {
 
     boolean hasUserWithEmail(String email);
 
-    User validateAndGetUserByUsername(String username) throws UserNotFoundException;
+    User validateAndGetUserByUsername(String username);
 
     User saveUser(User user);
 
