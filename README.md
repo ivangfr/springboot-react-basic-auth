@@ -30,7 +30,9 @@ The goal of this project is to implement an application called `book-app` to man
 
 - **book-ui**
 
-  `ReactJS` frontend application where a user with role `USER` can retrieve the information of a specific book or a list of books. On the other hand, a user with role `ADMIN` has access to all secured endpoints. To login, a `user` or `admin` must provide valid `username` and `password` credentials. `book-ui` communicates with `book-api` to get `books` and `users` data.
+  `ReactJS` frontend application where a user with role `USER` can retrieve the information of a specific book or a list of books. On the other hand, a user with role `ADMIN` has access to all secured endpoints.
+  
+  To login, a `user` or `admin` must provide valid `username` and `password` credentials. `book-ui` communicates with `book-api` to get `books` and `users` data.
   
   `book-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
