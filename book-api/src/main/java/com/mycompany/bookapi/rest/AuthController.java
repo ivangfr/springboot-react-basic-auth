@@ -7,6 +7,7 @@ import com.mycompany.bookapi.rest.dto.SignUpRequest;
 import com.mycompany.bookapi.security.WebSecurityConfig;
 import com.mycompany.bookapi.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,11 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,7 +45,7 @@ public class AuthController {
     private User createUser(SignUpRequest signUpRequest) {
         User user = new User();
         user.setUsername(signUpRequest.getUsername());
-        user.setPassword(signUpRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
         user.setRole(WebSecurityConfig.USER);
