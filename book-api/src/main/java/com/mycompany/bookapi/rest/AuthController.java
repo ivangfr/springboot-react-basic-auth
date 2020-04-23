@@ -3,16 +3,19 @@ package com.mycompany.bookapi.rest;
 import com.mycompany.bookapi.exception.DuplicatedUserInfoException;
 import com.mycompany.bookapi.model.User;
 import com.mycompany.bookapi.rest.dto.AuthResponse;
+import com.mycompany.bookapi.rest.dto.LoginRequest;
 import com.mycompany.bookapi.rest.dto.SignUpRequest;
 import com.mycompany.bookapi.security.WebSecurityConfig;
 import com.mycompany.bookapi.service.UserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -21,11 +24,19 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
+    public AuthController(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        Optional<User> userOptional = userService.validUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return ResponseEntity.ok(new AuthResponse(user.getId(), user.getName()));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -39,13 +50,13 @@ public class AuthController {
         }
 
         User user = userService.saveUser(createUser(signUpRequest));
-        return new AuthResponse(user.getId());
+        return new AuthResponse(user.getId(), user.getName());
     }
 
     private User createUser(SignUpRequest signUpRequest) {
         User user = new User();
         user.setUsername(signUpRequest.getUsername());
-        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+        user.setPassword(signUpRequest.getPassword());
         user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
         user.setRole(WebSecurityConfig.USER);

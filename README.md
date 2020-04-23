@@ -215,3 +215,8 @@ The gif below shows ...
   ncu -u
   npm install
   ```
+
+## References
+
+- https://medium.com/better-programming/building-basic-react-authentication-e20a574d5e71
+- https://medium.com/better-programming/building-basic-react-authentication-e20a574d5e71

@@ -3,6 +3,7 @@ package com.mycompany.bookapi.service;
 import com.mycompany.bookapi.exception.UserNotFoundException;
 import com.mycompany.bookapi.model.User;
 import com.mycompany.bookapi.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +13,11 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -45,12 +48,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
     public void deleteUser(User user) {
         userRepository.delete(user);
+    }
+
+    @Override
+    public Optional<User> validUsernameAndPassword(String username, String password) {
+        return getUserByUsername(username)
+                .filter(user -> passwordEncoder.matches(password, user.getPassword()));
     }
 
 }

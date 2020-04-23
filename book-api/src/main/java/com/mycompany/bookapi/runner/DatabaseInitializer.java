@@ -7,7 +7,6 @@ import com.mycompany.bookapi.service.BookService;
 import com.mycompany.bookapi.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -20,12 +19,10 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     private final UserService userService;
     private final BookService bookService;
-    private final PasswordEncoder passwordEncoder;
 
-    public DatabaseInitializer(UserService userService, BookService bookService, PasswordEncoder passwordEncoder) {
+    public DatabaseInitializer(UserService userService, BookService bookService) {
         this.userService = userService;
         this.bookService = bookService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -33,10 +30,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         if (!userService.getUsers().isEmpty()) {
             return;
         }
-        users.forEach(user -> {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userService.saveUser(user);
-        });
+        users.forEach(userService::saveUser);
         books.forEach(bookService::saveBook);
         log.info("Database initialized");
     }
