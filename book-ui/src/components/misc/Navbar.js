@@ -4,7 +4,7 @@ import { Container, Menu, Dropdown } from 'semantic-ui-react'
 import { useAuth } from '../context/AuthContext'
 
 function Navbar() {
-  const { user, userIsAuthenticated, userLogout } = useAuth()
+  const { getUser, userIsAuthenticated, userLogout } = useAuth()
 
   const logout = () => {
     userLogout()
@@ -18,16 +18,23 @@ function Navbar() {
     return userIsAuthenticated() ? { "display": "block" } : { "display": "none" }
   }
 
-  const getUserName = () => {
-    return userIsAuthenticated() ? JSON.parse(user).name : ''
+  const adminPageStyle = () => {
+    const user = getUser()
+    console.log(user)
+    return user && JSON.parse(user).role === 'ADMIN'?  { "display": "block" } : { "display": "none" }
   }
 
-  return (
+  const getUserName = () => {
+    const user = getUser()
+    return user ? JSON.parse(user).name : ''
+  }
+
+  return  (
     <Menu>
       <Container>
         <Menu.Item header>book-ui</Menu.Item>
         <Menu.Item as={NavLink} exact to="/">Home</Menu.Item>
-        <Menu.Item as={NavLink} to="/adminpage" style={logoutMenuStyle()}>AdminPage</Menu.Item>
+        <Menu.Item as={NavLink} to="/adminpage" style={adminPageStyle()}>AdminPage</Menu.Item>
         <Menu.Item as={NavLink} to="/userpage" style={logoutMenuStyle()}>UserPage</Menu.Item>
         <Dropdown item text='Enter' style={enterMenuStyle()}>
           <Dropdown.Menu>

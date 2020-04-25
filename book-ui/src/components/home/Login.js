@@ -14,6 +14,12 @@ class Login extends Component {
     isError: false
   }
 
+  componentDidMount() {
+    const { userIsAuthenticated } = this.context
+    const isLoggedIn = userIsAuthenticated()
+    this.setState({ isLoggedIn })
+  }
+
   handleChange = (e) => {
     const { id, value } = e.target
     this.setState({ [id]: value })
@@ -35,11 +41,10 @@ class Login extends Component {
       }
     })
       .then((response) => {
-        console.log(response)
         if (response.status === 200) {
-          const { id, name } = response.data
+          const { id, name, role } = response.data
           const authdata = window.btoa(username + ':' + password)
-          const user = { id, name, authdata }
+          const user = { id, name, role, authdata }
 
           const { userLogin } = this.context
           userLogin(JSON.stringify(user))
@@ -67,8 +72,9 @@ class Login extends Component {
 
   render() {
     const { isLoggedIn, isError } = this.state
+    const referer = this.getReferer()
     if (isLoggedIn) {
-      return <Redirect to={this.getReferer()} />
+      return <Redirect to={referer} />
     } else {
       return (
         <div>
@@ -98,7 +104,7 @@ class Login extends Component {
                 </Segment>
               </Form>
               <Message>Don't have already an account?
-              <Button size='small' color='teal' as={NavLink} exact to="/signup">Sign Up</Button>
+              <a href='/signup' color='teal' as={NavLink} exact to="/signup">Sign Up</a>
               </Message>
               {isError && <Message negative>The username or password provided were incorrect!</Message>}
             </Grid.Column>

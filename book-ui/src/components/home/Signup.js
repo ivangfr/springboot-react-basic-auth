@@ -16,6 +16,12 @@ class Signup extends Component {
     isError: false
   }
 
+  componentDidMount() {
+    const { userIsAuthenticated } = this.context
+    const isLoggedIn = userIsAuthenticated()
+    this.setState({ isLoggedIn })
+  }
+
   handleChange = (e) => {
     const { id, value } = e.target
     this.setState({ [id]: value })
@@ -37,7 +43,6 @@ class Signup extends Component {
       }
     })
       .then((response) => {
-        console.log(response)
         if (response.status === 201) {
           const { id, name } = response.data
           const authdata = window.btoa(username + ':' + password)
@@ -111,7 +116,7 @@ class Signup extends Component {
                 </Segment>
               </Form>
               <Message>Already have an account?
-              <Button size='small' color='teal' as={NavLink} exact to="/login">Login</Button>
+              <a href='/login' color='teal' as={NavLink} exact to="/login">Login</a>
               </Message>
               {isError && <Message negative>Fields informed are invalid or missing!</Message>}
             </Grid.Column>

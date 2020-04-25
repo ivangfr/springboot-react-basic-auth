@@ -218,5 +218,6 @@ The gif below shows ...
 
 ## References
 
+- https://www.taniarascia.com/using-context-api-in-react/
 - https://medium.com/better-programming/building-basic-react-authentication-e20a574d5e71
-- https://medium.com/better-programming/building-basic-react-authentication-e20a574d5e71
+- https://jasonwatmore.com/post/2018/09/11/react-basic-http-authentication-tutorial-example

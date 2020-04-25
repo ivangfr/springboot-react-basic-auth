@@ -9,11 +9,15 @@ class AuthProvider extends Component {
 
   componentDidMount() {
     const user = localStorage.getItem('user')
-    user && this.setState({ user })
+    this.setState({ user })
+  }
+
+  getUser = () => {
+    return localStorage.getItem('user')
   }
 
   userIsAuthenticated = () => {
-    return this.state.user !== null
+    return localStorage.getItem('user') !== null
   }
 
   userLogin = user => {
@@ -29,10 +33,10 @@ class AuthProvider extends Component {
   render() {
     const { children } = this.props
     const { user } = this.state
-    const { userIsAuthenticated, userLogin, userLogout } = this
+    const { getUser, userIsAuthenticated, userLogin, userLogout } = this
 
     return (
-      <AuthContext.Provider value={{ user, userIsAuthenticated, userLogin, userLogout, }}>
+      <AuthContext.Provider value={{ user, getUser, userIsAuthenticated, userLogin, userLogout, }}>
         {children}
       </AuthContext.Provider>
     )

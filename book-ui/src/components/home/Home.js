@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import { Statistic, Icon, Grid } from 'semantic-ui-react'
+import { Statistic, Icon, Grid, Divider, Container, Segment } from 'semantic-ui-react'
 import BookApi from '../misc/BookApi'
 
 class Home extends Component {
   state = {
     numberOfUsers: 0,
-    numberOfBooks: 0
+    numberOfBooks: 0,
+    isLoadingNumberOfUsers: false,
+    isLoadingNumberOfBooks: false,
   }
 
   componentDidMount() {
@@ -14,6 +16,7 @@ class Home extends Component {
   }
 
   getNumberOfUsers = () => {
+    this.setState({isLoadingNumberOfUsers: true})
     BookApi.get('/public/numberOfUsers')
       .then(response => {
         this.setState({ numberOfUsers: response.data })
@@ -21,9 +24,13 @@ class Home extends Component {
       .catch(error => {
         console.log(error)
       })
+      .finally(() => {
+        this.setState({isLoadingNumberOfUsers: false})
+      })
   }
 
   getNumberOfBooks = () => {
+    this.setState({getNumberOfBooks: true})
     BookApi.get('/public/numberOfBooks')
       .then(response => {
         this.setState({ numberOfBooks: response.data })
@@ -31,25 +38,35 @@ class Home extends Component {
       .catch(error => {
         console.log(error)
       })
+      .finally(() => {
+        this.setState({getNumberOfBooks: false})
+      })
   }
 
   render() {
-    const { numberOfUsers, numberOfBooks } = this.state
+    const { isLoadingNumberOfUsers, numberOfUsers, isLoadingNumberOfBooks, numberOfBooks } = this.state
     return (
-      <div>
-        <Grid textAlign='center'>
-          <Statistic.Group>
-            <Statistic>
-              <Statistic.Value><Icon name='user' color='blue' />{numberOfUsers}</Statistic.Value>
-              <Statistic.Label>Users</Statistic.Label>
-            </Statistic>
-            <Statistic>
-              <Statistic.Value><Icon name='book' color='blue' />{numberOfBooks}</Statistic.Value>
-              <Statistic.Label>Books</Statistic.Label>
-            </Statistic>
-          </Statistic.Group>
+      <Container>
+        <Divider hidden />
+        <Grid centered columns={2}>
+          <Grid.Column textAlign='center' width='4'>
+            <Segment color='blue' loading={isLoadingNumberOfUsers}>
+              <Statistic>
+                <Statistic.Value><Icon name='user' color='blue' />{numberOfUsers}</Statistic.Value>
+                <Statistic.Label>Users</Statistic.Label>
+              </Statistic>
+            </Segment>
+          </Grid.Column>
+          <Grid.Column textAlign='center' width='4'>
+            <Segment color='blue' loading={isLoadingNumberOfBooks}>
+              <Statistic>
+                <Statistic.Value><Icon name='book' color='blue' />{numberOfBooks}</Statistic.Value>
+                <Statistic.Label>Books</Statistic.Label>
+              </Statistic>
+            </Segment>
+          </Grid.Column>
         </Grid>
-      </div>
+      </Container>
     )
   }
 }
