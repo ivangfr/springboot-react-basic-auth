@@ -16,6 +16,7 @@ The goal of this project is to implement an application called `book-app` to man
 
   | Endpoint                                                      | Secured | Roles           |
   | ------------------------------------------------------------- | ------- | --------------- |
+  | `POST /auth/authenticate -d {"username","password"}`          | No      |                 |
   | `POST /auth/signup -d {"username","password","name","email"}` | No      |                 |
   | `GET /public/numberOfUsers`                                   | No      |                 |
   | `GET /public/numberOfBooks`                                   | No      |                 |
@@ -23,8 +24,7 @@ The goal of this project is to implement an application called `book-app` to man
   | `GET /api/users`                                              | Yes     | `ADMIN`         |
   | `GET /api/users/{username}`                                   | Yes     | `ADMIN`         |
   | `DELETE /api/users/{username}`                                | Yes     | `ADMIN`         |
-  | `GET /api/books`                                              | Yes     | `ADMIN`, `USER` |
-  | `GET /api/books/{isbn}`                                       | Yes     | `ADMIN`, `USER` |
+  | `GET /api/books [?text]`                                      | Yes     | `ADMIN`, `USER` |
   | `POST /api/books -d {"isbn","title"}`                         | Yes     | `ADMIN`         |
   | `DELETE /api/books/{isbn}`                                    | Yes     | `ADMIN`         |
 
@@ -109,7 +109,7 @@ The gif below shows ...
     It should return
     ```
     HTTP/1.1 200
-    1
+    70
     ```
     
   - Call `GET /api/books` without credentials
@@ -129,13 +129,17 @@ The gif below shows ...
     It should return
     ```
     HTTP/1.1 200
-    [ { "isbn": "abc", "title": "Spring Security" } ]
+    [
+      {"isbn":"978-1-60309-445-0","title":"A Shining Beacon"},
+      {"isbn":"978-1-891830-85-3","title":"American Elf (Book 2)"},
+      ...
+    ]
     ```
     
   - Call `POST /api/books` with `user` credentials
     ```
     curl -i -u user:user -X POST localhost:8080/api/books \
-    -H "Content-Type: application/json" -d '{"isbn": "xyz", "title": "Spring Boot"}'
+    -H "Content-Type: application/json" -d '{"isbn": "9781617292545", "title": "Spring Boot in Action"}'
     ```
     As `user` doesn't have the role `ADMIN`, it should return
     ```
@@ -146,12 +150,12 @@ The gif below shows ...
   - Call `POST /api/books` with `admin` credentials
     ```
     curl -i -u admin:admin -X POST localhost:8080/api/books \
-    -H "Content-Type: application/json" -d '{"isbn": "xyz", "title": "Spring Boot"}'
+    -H "Content-Type: application/json" -d '{"isbn": "9781617292545", "title": "Spring Boot in Action"}'
     ```
     It should return
     ```
     HTTP/1.1 201
-    { "isbn": "xyz", "title": "Spring Boot" }
+    { "isbn":"9781617292545","title":"Spring Boot in Action" }
     ```
 
 - **Automatic Endpoints Test**
@@ -164,9 +168,17 @@ The gif below shows ...
     ```
     It should return something like the output below, where it shows the http code for different requests 
     ```
+    POST auth/authenticate
+    ======================
+    admin Auth Resp: {"id":1,"name":"Admin","role":"ADMIN"}
+    
+    POST auth/authenticate
+    ======================
+    user Auth Resp: {"id":2,"name":"User","role":"USER"}
+    
     POST auth/signup
     ================
-    user2 Auth Resp: {"id":3}
+    user2 Auth Resp: {"id":3,"name":"User2","role":"USER"}
     
     Authorization
     =============
@@ -181,11 +193,10 @@ The gif below shows ...
        DELETE /api/users/user |           401 |         403 |          200 |
     ......................... + ............. + ........... + ............ |
                GET /api/books |           401 |         200 |          200 |
-           GET /api/books/abc |           401 |         200 |          200 |
               POST /api/books |           401 |         403 |          201 |
         DELETE /api/books/def |           401 |         403 |          200 |
     ------------------------------------------------------------------------
-     [200] Success -  [201] Created -  [401] Unauthorized -  [403] Forbidden
+     [200] Success -  [201] Created -  [401] Unauthorized -  [403] Forbidden    
     ```
 
 ## Util Commands

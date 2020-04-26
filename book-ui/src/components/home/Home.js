@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Statistic, Icon, Grid, Divider, Container, Segment } from 'semantic-ui-react'
-import BookApi from '../misc/BookApi'
+import { Statistic, Icon, Grid, Container, Image, Segment } from 'semantic-ui-react'
+import { bookApi } from '../misc/BookApi'
 
 class Home extends Component {
   state = {
@@ -16,56 +16,60 @@ class Home extends Component {
   }
 
   getNumberOfUsers = () => {
-    this.setState({isLoadingNumberOfUsers: true})
-    BookApi.get('/public/numberOfUsers')
+    this.setState({ isLoadingNumberOfUsers: true })
+    bookApi.numberOfUsers()
       .then(response => {
         this.setState({ numberOfUsers: response.data })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.response.data)
       })
       .finally(() => {
-        this.setState({isLoadingNumberOfUsers: false})
+        this.setState({ isLoadingNumberOfUsers: false })
       })
   }
 
   getNumberOfBooks = () => {
-    this.setState({getNumberOfBooks: true})
-    BookApi.get('/public/numberOfBooks')
+    this.setState({ getNumberOfBooks: true })
+    bookApi.numberOfBooks()
       .then(response => {
         this.setState({ numberOfBooks: response.data })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.response.data)
       })
       .finally(() => {
-        this.setState({getNumberOfBooks: false})
+        this.setState({ getNumberOfBooks: false })
       })
   }
 
   render() {
     const { isLoadingNumberOfUsers, numberOfUsers, isLoadingNumberOfBooks, numberOfBooks } = this.state
     return (
-      <Container>
-        <Divider hidden />
-        <Grid centered columns={2}>
-          <Grid.Column textAlign='center' width='4'>
-            <Segment color='blue' loading={isLoadingNumberOfUsers}>
-              <Statistic>
-                <Statistic.Value><Icon name='user' color='blue' />{numberOfUsers}</Statistic.Value>
-                <Statistic.Label>Users</Statistic.Label>
-              </Statistic>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column textAlign='center' width='4'>
-            <Segment color='blue' loading={isLoadingNumberOfBooks}>
-              <Statistic>
-                <Statistic.Value><Icon name='book' color='blue' />{numberOfBooks}</Statistic.Value>
-                <Statistic.Label>Books</Statistic.Label>
-              </Statistic>
-            </Segment>
-          </Grid.Column>
+      <Container text>
+        <Grid stackable columns={2}>
+          <Grid.Row style={{ marginTop: '4em' }}>
+            <Grid.Column textAlign='center'>
+              <Segment color='blue' loading={isLoadingNumberOfUsers}>
+                <Statistic>
+                  <Statistic.Value><Icon name='user' color='blue' />{numberOfUsers}</Statistic.Value>
+                  <Statistic.Label>Users</Statistic.Label>
+                </Statistic>
+              </Segment>
+            </Grid.Column>
+            <Grid.Column textAlign='center'>
+              <Segment color='blue' loading={isLoadingNumberOfBooks}>
+                <Statistic>
+                  <Statistic.Value><Icon name='book' color='blue' />{numberOfBooks}</Statistic.Value>
+                  <Statistic.Label>Books</Statistic.Label>
+                </Statistic>
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
+
+        <Image src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' style={{ marginTop: '2em' }} />
+        <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' style={{ marginTop: '2em' }} />
       </Container>
     )
   }

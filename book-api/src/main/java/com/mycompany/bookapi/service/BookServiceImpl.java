@@ -18,7 +18,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getBooks() {
-        return bookRepository.findAll();
+        return bookRepository.findAllByOrderByTitle();
+    }
+
+    @Override
+    public List<Book> getBooksContainingText(String text) {
+        return bookRepository.findByIsbnContainingOrTitleContainingOrderByTitle(text, text);
     }
 
     @Override

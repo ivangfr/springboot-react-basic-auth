@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+
 import java.util.List;
 
 @RestController
@@ -27,13 +29,11 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> getBooks() {
-        return bookService.getBooks();
-    }
-
-    @GetMapping("/{isbn}")
-    public Book getBook(@PathVariable String isbn) {
-        return bookService.validateAndGetBook(isbn);
+    public List<Book> getBooks(@RequestParam(value = "text", required = false) String text) {
+        if (text == null) {
+            return bookService.getBooks();
+        }
+        return bookService.getBooksContainingText(text);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

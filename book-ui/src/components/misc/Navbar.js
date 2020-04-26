@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Container, Menu, Dropdown } from 'semantic-ui-react'
+import { Container, Menu } from 'semantic-ui-react'
 import { useAuth } from '../context/AuthContext'
 
 function Navbar() {
@@ -19,34 +19,33 @@ function Navbar() {
   }
 
   const adminPageStyle = () => {
-    const user = getUser()
-    console.log(user)
-    return user && JSON.parse(user).role === 'ADMIN'?  { "display": "block" } : { "display": "none" }
+    const authUser = getUser()
+    return authUser && JSON.parse(authUser).role === 'ADMIN' ? { "display": "block" } : { "display": "none" }
+  }
+
+  const userPageStyle = () => {
+    const authUser = getUser()
+    return authUser && JSON.parse(authUser).role === 'USER' ? { "display": "block" } : { "display": "none" }
   }
 
   const getUserName = () => {
-    const user = getUser()
-    return user ? JSON.parse(user).name : ''
+    const authUser = getUser()
+    return authUser ? JSON.parse(authUser).name : ''
   }
 
-  return  (
-    <Menu>
+  return (
+    <Menu inverted size='large' fixed='top' borderless>
       <Container>
-        <Menu.Item header>book-ui</Menu.Item>
+        <Menu.Item header>Book-UI</Menu.Item>
         <Menu.Item as={NavLink} exact to="/">Home</Menu.Item>
         <Menu.Item as={NavLink} to="/adminpage" style={adminPageStyle()}>AdminPage</Menu.Item>
-        <Menu.Item as={NavLink} to="/userpage" style={logoutMenuStyle()}>UserPage</Menu.Item>
-        <Dropdown item text='Enter' style={enterMenuStyle()}>
-          <Dropdown.Menu>
-            <Dropdown.Item as={NavLink} to="/login">Login</Dropdown.Item>
-            <Dropdown.Item as={NavLink} to="/signup">Sign Up</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-        <Dropdown item text={`Hi ${getUserName()}`} style={logoutMenuStyle()}>
-          <Dropdown.Menu>
-          <Dropdown.Item as={NavLink} to="/logout" onClick={logout}>Logout</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        <Menu.Item as={NavLink} to="/userpage" style={userPageStyle()}>UserPage</Menu.Item>
+        <Menu.Menu position='right'>
+          <Menu.Item as={NavLink} to="/login" style={enterMenuStyle()}>Login</Menu.Item>
+          <Menu.Item as={NavLink} to="/signup" style={enterMenuStyle()}>Sign Up</Menu.Item>
+          <Menu.Item header style={logoutMenuStyle()}>{`Hi ${getUserName()}`}</Menu.Item>
+          <Menu.Item as={NavLink} to="/logout" style={logoutMenuStyle()} onClick={logout}>Logout</Menu.Item>
+        </Menu.Menu>
       </Container>
     </Menu>
   )

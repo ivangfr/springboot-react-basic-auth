@@ -3,8 +3,8 @@ import { Redirect } from 'react-router-dom'
 import { Container, Divider } from 'semantic-ui-react'
 import UserTable from './UserTable'
 import AuthContext from '../context/AuthContext'
-import BookApi from '../misc/BookApi'
 import BookTable from './BookTable'
+import { bookApi } from '../misc/BookApi'
 
 class AdminPage extends Component {
   static contextType = AuthContext
@@ -14,7 +14,7 @@ class AdminPage extends Component {
     books: [],
     bookIsbn: '',
     bookTitle: '',
-    bookIsbnSearch: '',
+    bookTextSearch: '',
     userUsernameSearch: '',
     isAdmin: true,
     isUsersLoading: false,
@@ -22,9 +22,9 @@ class AdminPage extends Component {
   }
 
   componentDidMount() {
-    const { getUser } = this.context
-    const user = getUser()
-    const isAdmin = user && JSON.parse(user).role === 'ADMIN'
+    const Auth = this.context
+    const authUser = Auth.getUser()
+    const isAdmin = authUser && JSON.parse(authUser).role === 'ADMIN'
     this.setState({ isAdmin })
 
     this.getUsers()
@@ -37,20 +37,16 @@ class AdminPage extends Component {
   }
 
   getUsers = () => {
-    const { getUser } = this.context
-    const user = getUser()
+    const Auth = this.context
+    const authUser = Auth.getUser()
 
     this.setState({ isUsersLoading: true })
-    BookApi.get('/api/users', {
-      headers: {
-        'Authorization': 'Basic ' + JSON.parse(user).authdata
-      }
-    })
+    bookApi.getUsers(authUser)
       .then(response => {
         this.setState({ users: response.data })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.response.data)
       })
       .finally(() => {
         this.setState({ isUsersLoading: false })
@@ -58,32 +54,24 @@ class AdminPage extends Component {
   }
 
   deleteUser = (username) => {
-    const { getUser } = this.context
-    const user = getUser()
-    BookApi.delete('/api/users/' + username, {
-      headers: {
-        'Authorization': 'Basic ' + JSON.parse(user).authdata
-      }
-    })
+    const Auth = this.context
+    const authUser = Auth.getUser()
+
+    bookApi.deleteUser(username, authUser)
       .then(() => {
         this.getUsers()
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.response.data)
       })
   }
 
   searchUser = () => {
-    const { getUser } = this.context
-    const user = getUser()
+    const Auth = this.context
+    const authUser = Auth.getUser()
 
     const username = this.state.userUsernameSearch
-    const url = username ? '/api/users/' + username : '/api/users'
-    BookApi.get(url, {
-      headers: {
-        'Authorization': 'Basic ' + JSON.parse(user).authdata
-      }
-    })
+    bookApi.searchUser(username, authUser)
       .then((response) => {
         if (response.status === 200) {
           const data = response.data;
@@ -94,26 +82,22 @@ class AdminPage extends Component {
         }
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.response.data)
         this.setState({ users: [] })
       })
   }
 
   getBooks = () => {
-    const { getUser } = this.context
-    const user = getUser()
+    const Auth = this.context
+    const authUser = Auth.getUser()
 
     this.setState({ isBooksLoading: true })
-    BookApi.get('/api/books', {
-      headers: {
-        'Authorization': 'Basic ' + JSON.parse(user).authdata
-      }
-    })
+    bookApi.getBooks(authUser)
       .then(response => {
         this.setState({ books: response.data })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.response.data)
       })
       .finally(() => {
         this.setState({ isBooksLoading: false })
@@ -121,58 +105,44 @@ class AdminPage extends Component {
   }
 
   deleteBook = (isbn) => {
-    const { getUser } = this.context
-    const user = getUser()
-    BookApi.delete('/api/books/' + isbn, {
-      headers: {
-        'Authorization': 'Basic ' + JSON.parse(user).authdata
-      }
-    })
+    const Auth = this.context
+    const authUser = Auth.getUser()
+
+    bookApi.deleteBook(isbn, authUser)
       .then(() => {
         this.getBooks()
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.response.data)
       })
   }
 
   addBook = () => {
-    const { getUser } = this.context
-    const user = getUser()
+    const Auth = this.context
+    const authUser = Auth.getUser()
 
     const { bookIsbn, bookTitle } = this.state
     if (!(bookIsbn && bookTitle)) {
-      console.log('empty fields')
       return
     }
 
     const book = { isbn: bookIsbn, title: bookTitle }
-    BookApi.post('/api/books', book, {
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': 'Basic ' + JSON.parse(user).authdata
-      }
-    })
+    bookApi.addBook(book, authUser)
       .then(() => {
         this.clearBookForm()
         this.getBooks()
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.response.data)
       })
   }
 
   searchBook = () => {
-    const { getUser } = this.context
-    const user = getUser()
+    const Auth = this.context
+    const authUser = Auth.getUser()
 
-    const isbn = this.state.bookIsbnSearch
-    const url = isbn ? '/api/books/' + isbn : '/api/books'
-    BookApi.get(url, {
-      headers: {
-        'Authorization': 'Basic ' + JSON.parse(user).authdata
-      }
-    })
+    const text = this.state.bookTextSearch
+    bookApi.searchBook(text, authUser)
       .then((response) => {
         if (response.status === 200) {
           const data = response.data;
@@ -183,13 +153,12 @@ class AdminPage extends Component {
         }
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.response.data)
         this.setState({ books: [] })
       })
   }
 
   clearBookForm = () => {
-    console.log('clear form')
     this.setState({
       bookIsbn: '',
       bookTitle: ''
@@ -197,15 +166,12 @@ class AdminPage extends Component {
   }
 
   render() {
-    const {
-      isAdmin, isUsersLoading, users, userUsernameSearch,
-      isBooksLoading, books, bookIsbn, bookTitle, bookIsbnSearch
-    } = this.state
-    if (!isAdmin) {
+    if (!this.state.isAdmin) {
       return <Redirect to='/' />
     } else {
+      const { isUsersLoading, users, userUsernameSearch, isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch } = this.state
       return (
-        <Container>
+        <Container style={{ marginTop: '4em' }}>
           <UserTable
             isUsersLoading={isUsersLoading}
             users={users}
@@ -220,7 +186,7 @@ class AdminPage extends Component {
             books={books}
             bookIsbn={bookIsbn}
             bookTitle={bookTitle}
-            bookIsbnSearch={bookIsbnSearch}
+            bookTextSearch={bookTextSearch}
             handleChange={this.handleChange}
             addBook={this.addBook}
             deleteBook={this.deleteBook}

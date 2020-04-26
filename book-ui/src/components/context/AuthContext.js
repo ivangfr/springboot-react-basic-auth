@@ -21,7 +21,7 @@ class AuthProvider extends Component {
   }
 
   userLogin = user => {
-    localStorage.setItem('user', user)
+    localStorage.setItem('user', JSON.stringify(user))
     this.setState({ user })
   }
 

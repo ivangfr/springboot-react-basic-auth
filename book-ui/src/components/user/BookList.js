@@ -1,20 +1,23 @@
 import React from 'react'
-import { Grid, Header, Form, Icon, Input, Button, List, Segment } from 'semantic-ui-react'
+import { Grid, Header, Form, Icon, Image, Input, Item, Segment } from 'semantic-ui-react'
 
-function BookList({ isBooksLoading, bookIsbnSearch, books, handleChange, searchBook }) {
+function BookList({ isBooksLoading, bookTextSearch, books, handleChange, searchBook }) {
   let bookList
   if (books.length === 0) {
-    bookList = <List.Item key='no-book'>No book</List.Item>
+    bookList = <Item key='no-book'>No book</Item>
   } else {
     bookList = books.map(book => {
       return (
-        <List.Item key={book.isbn}>
-          <Icon name='book' size='big' color='teal' />
-          <List.Content>
-            <List.Header>{book.title}</List.Header>
-            <List.Description>ISBN: {book.isbn}</List.Description>
-          </List.Content>
-        </List.Item>
+        <Item key={book.isbn}>
+          <Image src={`http://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} size='tiny' bordered rounded />
+          <Item.Content>
+            <Item.Header>{book.title}</Item.Header>
+            <Item.Meta>{book.isbn}</Item.Meta>
+            <Item.Description>
+              <Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+            </Item.Description>
+          </Item.Content>
+        </Item>
       )
     })
   }
@@ -31,26 +34,20 @@ function BookList({ isBooksLoading, bookIsbnSearch, books, handleChange, searchB
           </Grid.Column>
           <Grid.Column>
             <Form onSubmit={searchBook}>
-              <Form.Group>
-                <Form.Field>
-                  <Input
-                    id='bookIsbnSearch'
-                    placeholder='Search by ISBN'
-                    value={bookIsbnSearch}
-                    onChange={handleChange}
-                  />
-                </Form.Field>
-                <Button icon>
-                  <Icon name='search' />
-                </Button>
-              </Form.Group>
+              <Input
+                action={{ icon: 'search' }}
+                id='bookTextSearch'
+                placeholder='Search by ISBN or Title'
+                value={bookTextSearch}
+                onChange={handleChange}
+              />
             </Form>
           </Grid.Column>
         </Grid.Row>
       </Grid>
-      <List relaxed='very' verticalAlign='middle' size='large'>
+      <Item.Group divided relaxed>
         {bookList}
-      </List>
+      </Item.Group>
     </Segment>
   )
 }

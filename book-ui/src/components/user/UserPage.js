@@ -1,19 +1,26 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 import BookList from './BookList'
 import AuthContext from '../context/AuthContext'
-import BookApi from '../misc/BookApi'
+import { bookApi } from '../misc/BookApi'
 
 class UserPage extends Component {
   static contextType = AuthContext
 
   state = {
     books: [],
-    bookIsbnSearch: '',
+    bookTextSearch: '',
+    isUser: true,
     isBooksLoading: false
   }
 
   componentDidMount() {
+    const Auth = this.context
+    const authUser = Auth.getUser()
+    const isUser = authUser && JSON.parse(authUser).role === 'USER'
+    this.setState({ isUser })
+
     this.getBooks()
   }
 
@@ -23,20 +30,16 @@ class UserPage extends Component {
   }
 
   getBooks = () => {
-    const { getUser } = this.context
-    const user = getUser()
+    const Auth = this.context
+    const authUser = Auth.getUser()
 
     this.setState({ isBooksLoading: true })
-    BookApi.get('/api/books', {
-      headers: {
-        'Authorization': 'Basic ' + JSON.parse(user).authdata
-      }
-    })
+    bookApi.getBooks(authUser)
       .then(response => {
         this.setState({ books: response.data })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.response.data)
       })
       .finally(() => {
         this.setState({ isBooksLoading: false })
@@ -44,42 +47,43 @@ class UserPage extends Component {
   }
 
   searchBook = () => {
-    const { getUser } = this.context
-    const user = getUser()
+    const Auth = this.context
+    const authUser = Auth.getUser()
 
-    const isbn = this.state.bookIsbnSearch
-    const url = isbn ? '/api/books/' + isbn : '/api/books'
-    BookApi.get(url, {
-      headers: {
-        'Authorization': 'Basic ' + JSON.parse(user).authdata
-      }
-    })
+    const text = this.state.bookTextSearch
+    bookApi.searchBook(text, authUser)
       .then((response) => {
         if (response.status === 200) {
           const data = response.data;
           const books = data instanceof Array ? data : [data]
           this.setState({ books })
+        } else {
+          this.setState({ books: [] })
         }
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.response.data)
         this.setState({ books: [] })
       })
   }
 
   render() {
-    const { isBooksLoading, books, bookIsbnSearch } = this.state
-    return (
-      <Container>
-        <BookList
-          isBooksLoading={isBooksLoading}
-          bookIsbnSearch={bookIsbnSearch}
-          books={books}
-          handleChange={this.handleChange}
-          searchBook={this.searchBook}
-        />
-      </Container>
-    )
+    if (!this.state.isUser) {
+      return <Redirect to='/' />
+    } else {
+      const { isBooksLoading, books, bookTextSearch } = this.state
+      return (
+        <Container style={{ marginTop: '4em' }}>
+          <BookList
+            isBooksLoading={isBooksLoading}
+            bookTextSearch={bookTextSearch}
+            books={books}
+            handleChange={this.handleChange}
+            searchBook={this.searchBook}
+          />
+        </Container>
+      )
+    }
   }
 }
 

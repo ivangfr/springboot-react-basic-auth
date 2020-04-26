@@ -10,8 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -31,8 +31,15 @@ public class DatabaseInitializer implements CommandLineRunner {
             return;
         }
         users.forEach(userService::saveUser);
-        books.forEach(bookService::saveBook);
+        getBooks().forEach(bookService::saveBook);
         log.info("Database initialized");
+    }
+
+    private List<Book> getBooks() {
+        return Arrays.asList(booksStr.split("\n")).stream()
+        .map(bookInfoStr -> bookInfoStr.split(";"))
+        .map(bookInfoArr -> new Book(bookInfoArr[0], bookInfoArr[1]))
+        .collect(Collectors.toList());
     }
 
     private final List<User> users = Arrays.asList(
@@ -40,8 +47,77 @@ public class DatabaseInitializer implements CommandLineRunner {
             new User("user", "user", "User", "user@mycompany.com", WebSecurityConfig.USER)
     );
 
-    private final List<Book> books = Collections.singletonList(
-            new Book("abc", "Spring Security")
-    );
+    private static final String booksStr =
+            "9781603090773;Any Empire\n" +
+            "9781603090698;August Moon\n" +
+            "9781891830372;The Barefoot Serpent (softcover) by Scott Morse\n" +
+            "9781603090292;BB Wolf and the 3 LP's\n" +
+            "9781891830402;Beach Safari by Mawil\n" +
+            "9781603094429;Belzebubs\n" +
+            "9781891830563;Bighead by Jeffrey Brown\n" +
+            "9781603094320;Bodycount\n" +
+            "9781891830198;Box Office Poison\n" +
+            "9780958578349;From Hell\n" +
+            "9781603094221;Cat'n'Bat\n" +
+            "9781603091008;Crater XV\n" +
+            "9781891830815;Cry Yourself to Sleep by Jeremy Tinder\n" +
+            "9781603092715;Dear Beloved Stranger\n" +
+            "9781891830129;Dear Julia\n" +
+            "9781891830921;Death by Chocolate - Redux\n" +
+            "9781603090575;Dragon Puncher (Book 1)\n" +
+            "9781603090858;Dragon Puncher (Book 2): Island\n" +
+            "9781603093873;Eddie Campbell's Omnibox: The Complete ALEC and BACCHUS (3 Volume Slipcase)\n" +
+            "9781603090360;Far Arden\n" +
+            "9781603090537;Fingerprints\n" +
+            "9781891830976;Fox Bunny Funny\n" +
+            "9780958578349;From Hell\n" +
+            "9781603093866;God Is Disappointed / Apocrypha Now — SLIPCASE SET\n" +
+            "9781603090988;God Is Disappointed in You\n" +
+            "9781603090087;Hieronymus B.\n" +
+            "9781603094412;Highwayman\n" +
+            "9781891830174;Hutch Owen (Vol 1): The Collected by Tom Hart\n" +
+            "9781891830556;Hutch Owen (Vol 2): Unmarketable by Tom Hart\n" +
+            "9781603090865;Hutch Owen (Vol 3): Let's Get Furious!\n" +
+            "9781891830839;Infinite Kung Fu\n" +
+            "9781891830655;The King by Rich Koslowski\n" +
+            "9781603090001;The League of Extraordinary Gentlemen (Vol III): Century #1 - 1910\n" +
+            "9781603090063;The League of Extraordinary Gentlemen (Vol III): Century #2 - 1969\n" +
+            "9781603090070;The League of Extraordinary Gentlemen (Vol III): Century #3 - 2009\n" +
+            "9781603094375;The League of Extraordinary Gentlemen (Vol III): Century\n" +
+            "9781891830518;Less Than Heroes by David Yurkovich\n" +
+            "9781603090704;Liar's Kiss\n" +
+            "9781891830693;Lone Racer by Nicolas Mahler\n" +
+            "9781603091527;The Lovely Horrible Stuff\n" +
+            "9781603090094;Lower Regions\n" +
+            "9781891830334;Magic Boy and the Robot Elf by James Kochalka\n" +
+            "9781891830365;Monkey Vs. Robot (Vol 2): Crystal of Power by Koch.\n" +
+            "9781603090759;Monster on the Hill (Book 1)\n" +
+            "9781891830686;Mosquito by Dan James\n" +
+            "9781603090490;Moving Pictures\n" +
+            "9781603094092;Nate Powell's OMNIBOX\n" +
+            "9781603090681;Okie Dokie Donuts (Story 1): Open for Business!\n" +
+            "9781891830297;Pinky & Stinky by James Kochalka\n" +
+            "9781603090711;Pirate Penguin vs Ninja Chicken (Book 1): Troublems with Frenemies\n" +
+            "9781603093675;Pirate Penguin vs Ninja Chicken (Book 2): Escape from Skull-Fragment Island!\n" +
+            "9781603094139;Return of the Dapper Men (Deluxe Edition)\n" +
+            "9781603090896;Scene But Not Heard\n" +
+            "9781603094450;A Shining Beacon\n" +
+            "9781891830143;Speechless\n" +
+            "9781891830501;Spiral-Bound by Aaron Renier\n" +
+            "9781603090209;Sulk (Vol 1): Bighead and Friends\n" +
+            "9781603090315;Sulk (Vol 2): Deadly Awesome\n" +
+            "9781603090551;Sulk (Vol 3): The Kind of Strength...\n" +
+            "9781891830969;Super Spy\n" +
+            "9781603090438;Super Spy (Vol 2): The Lost Dossiers\n" +
+            "9781603090339;Swallow Me Whole\n" +
+            "9781603090056;That Salty Air\n" +
+            "9781603094504;They Called Us Enemy\n" +
+            "9781891830310;Three Fingers by Rich Koslowski\n" +
+            "9781891830983;Too Cool to Be Forgotten\n" +
+            "9781603090742;The Underwater Welder\n" +
+            "9781603090889;Upside Down (Book 1): A Vampire Tale\n" +
+            "9781603093712;Upside Down (Book 2): A Hat Full of Spells\n" +
+            "9781891830723;Will You Still Love Me If I Wet the Bed by Liz Prince\n" +
+            "9781603094405;Ye\n";
 
 }

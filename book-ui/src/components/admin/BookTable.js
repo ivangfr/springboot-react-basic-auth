@@ -1,12 +1,12 @@
 import React from 'react'
-import { Grid, Header, Form, Icon, Button, Input, Segment, Table } from 'semantic-ui-react'
+import { Grid, Header, Form, Icon, Button, Image, Input, Segment, Table } from 'semantic-ui-react'
 
-function BookTable({ isBooksLoading, books, bookIsbn, bookTitle, bookIsbnSearch, handleChange, addBook, deleteBook, searchBook }) {
+function BookTable({ isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch, handleChange, addBook, deleteBook, searchBook }) {
   let bookList
   if (books.length === 0) {
     bookList = (
       <Table.Row key='no-book'>
-        <Table.Cell collapsing textAlign='center' colSpan='3'>No book</Table.Cell>
+        <Table.Cell collapsing textAlign='center' colSpan='4'>No book</Table.Cell>
       </Table.Row>
     )
   } else {
@@ -21,6 +21,9 @@ function BookTable({ isBooksLoading, books, bookIsbn, bookTitle, bookIsbnSearch,
               icon='trash'
               onClick={() => deleteBook(book.isbn)}
             />
+          </Table.Cell>
+          <Table.Cell>
+            <Image src={`http://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} size='tiny' bordered rounded />
           </Table.Cell>
           <Table.Cell>{book.isbn}</Table.Cell>
           <Table.Cell>{book.title}</Table.Cell>
@@ -41,19 +44,13 @@ function BookTable({ isBooksLoading, books, bookIsbn, bookTitle, bookIsbnSearch,
           </Grid.Column>
           <Grid.Column width='5'>
             <Form onSubmit={searchBook}>
-              <Form.Group>
-                <Form.Field>
-                  <Input
-                    id='bookIsbnSearch'
-                    placeholder='Search by ISBN'
-                    value={bookIsbnSearch}
-                    onChange={handleChange}
-                  />
-                </Form.Field>
-                <Button icon>
-                  <Icon name='search' />
-                </Button>
-              </Form.Group>
+              <Input
+                action={{ icon: 'search' }}
+                id='bookTextSearch'
+                placeholder='Search by ISBN or Title'
+                value={bookTextSearch}
+                onChange={handleChange}
+              />
             </Form>
           </Grid.Column>
           <Grid.Column>
@@ -87,6 +84,7 @@ function BookTable({ isBooksLoading, books, bookIsbn, bookTitle, bookIsbnSearch,
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell />
+            <Table.HeaderCell>Cover</Table.HeaderCell>
             <Table.HeaderCell>ISBN</Table.HeaderCell>
             <Table.HeaderCell>Title</Table.HeaderCell>
           </Table.Row>

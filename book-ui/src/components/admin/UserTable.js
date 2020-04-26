@@ -44,19 +44,13 @@ function UserTable({ isUsersLoading, users, userUsernameSearch, handleChange, de
           </Grid.Column>
           <Grid.Column>
             <Form onSubmit={searchUser}>
-              <Form.Group>
-                <Form.Field>
-                  <Input
-                    id='userUsernameSearch'
-                    placeholder='Search by username'
-                    value={userUsernameSearch}
-                    onChange={handleChange}
-                  />
-                </Form.Field>
-                <Button icon>
-                  <Icon name='search' />
-                </Button>
-              </Form.Group>
+              <Input
+                action={{ icon: 'search' }}
+                id='userUsernameSearch'
+                placeholder='Search by username'
+                value={userUsernameSearch}
+                onChange={handleChange}
+              />
             </Form>
           </Grid.Column>
         </Grid.Row>
