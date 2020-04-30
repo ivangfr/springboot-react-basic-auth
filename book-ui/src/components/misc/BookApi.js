@@ -34,50 +34,50 @@ function numberOfBooks() {
   return instance.get('/public/numberOfBooks');
 }
 
-function getUsers(authUser) {
+function getUsers(user) {
   return instance.get('/api/users', {
-    headers: { 'Authorization': basicAuth(authUser) }
+    headers: { 'Authorization': basicAuth(user) }
   })
 }
 
-function deleteUser(username, authUser) {
+function deleteUser(username, user) {
   return instance.delete('/api/users/' + username, {
-    headers: { 'Authorization': basicAuth(authUser) }
+    headers: { 'Authorization': basicAuth(user) }
   })
 }
 
-function searchUser(username, authUser) {
+function searchUser(username, user) {
   const url = username ? '/api/users/' + username : '/api/users'
   return instance.get(url, {
-    headers: { 'Authorization': basicAuth(authUser) }
+    headers: { 'Authorization': basicAuth(user) }
   })
 }
 
-function getBooks(authUser) {
+function getBooks(user) {
   return instance.get('/api/books', {
-    headers: { 'Authorization': basicAuth(authUser) }
+    headers: { 'Authorization': basicAuth(user) }
   })
 }
 
-function deleteBook(isbn, authUser) {
+function deleteBook(isbn, user) {
   return instance.delete('/api/books/' + isbn, {
-    headers: { 'Authorization': basicAuth(authUser) }
+    headers: { 'Authorization': basicAuth(user) }
   })
 }
 
-function addBook(book, authUser) {
+function addBook(book, user) {
   return instance.post('/api/books', book, {
     headers: {
       'Content-type': 'application/json',
-      'Authorization': basicAuth(authUser)
+      'Authorization': basicAuth(user)
     }
   })
 }
 
-function searchBook(text, authUser) {
+function searchBook(text, user) {
   const url = '/api/books?text=' + text
   return instance.get(url, {
-    headers: { 'Authorization': basicAuth(authUser) }
+    headers: { 'Authorization': basicAuth(user) }
   })
 }
 
@@ -89,6 +89,6 @@ const instance = axios.create({
 
 // -- Helper functions
 
-function basicAuth(authUser) {
-  return 'Basic ' + JSON.parse(authUser).authdata
+function basicAuth(user) {
+  return 'Basic ' + user.authdata
 }

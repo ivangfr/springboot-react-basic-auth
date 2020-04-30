@@ -55,7 +55,7 @@ class Login extends Component {
         }
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error)
         this.setState({ isError: true })
       })
   }
@@ -72,7 +72,7 @@ class Login extends Component {
       return <Redirect to={referer} />
     } else {
       return (
-        <Grid textAlign='center' style={{ marginTop: '3em' }}>
+        <Grid textAlign='center'>
           <Grid.Column style={{ maxWidth: 450 }}>
             <Form size='large' onSubmit={this.handleSubmit}>
               <Segment>
@@ -97,7 +97,7 @@ class Login extends Component {
                 <Button color='blue' fluid size='large'>Login</Button>
               </Segment>
             </Form>
-            <Message>Don't have already an account?
+            <Message>{`Don't have already an account? `}
               <a href='/signup' color='teal' as={NavLink} to="/signup">Sign Up</a>
             </Message>
             {isError && <Message negative>The username or password provided are incorrect!</Message>}

@@ -17,8 +17,8 @@ class UserPage extends Component {
 
   componentDidMount() {
     const Auth = this.context
-    const authUser = Auth.getUser()
-    const isUser = authUser && JSON.parse(authUser).role === 'USER'
+    const user = Auth.getUser()
+    const isUser = user.role === 'USER'
     this.setState({ isUser })
 
     this.getBooks()
@@ -31,15 +31,15 @@ class UserPage extends Component {
 
   getBooks = () => {
     const Auth = this.context
-    const authUser = Auth.getUser()
+    const user = Auth.getUser()
 
     this.setState({ isBooksLoading: true })
-    bookApi.getBooks(authUser)
+    bookApi.getBooks(user)
       .then(response => {
         this.setState({ books: response.data })
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error)
       })
       .finally(() => {
         this.setState({ isBooksLoading: false })
@@ -48,10 +48,10 @@ class UserPage extends Component {
 
   searchBook = () => {
     const Auth = this.context
-    const authUser = Auth.getUser()
+    const user = Auth.getUser()
 
     const text = this.state.bookTextSearch
-    bookApi.searchBook(text, authUser)
+    bookApi.searchBook(text, user)
       .then((response) => {
         if (response.status === 200) {
           const data = response.data;
@@ -62,7 +62,7 @@ class UserPage extends Component {
         }
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error)
         this.setState({ books: [] })
       })
   }
@@ -73,7 +73,7 @@ class UserPage extends Component {
     } else {
       const { isBooksLoading, books, bookTextSearch } = this.state
       return (
-        <Container style={{ marginTop: '4em' }}>
+        <Container>
           <BookList
             isBooksLoading={isBooksLoading}
             bookTextSearch={bookTextSearch}

@@ -1,7 +1,7 @@
 package com.mycompany.bookapi.rest;
 
 import com.mycompany.bookapi.model.Book;
-import com.mycompany.bookapi.rest.dto.CreateBookDto;
+import com.mycompany.bookapi.rest.dto.CreateBookRequest;
 import com.mycompany.bookapi.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,8 +38,8 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Book createBook(@Valid @RequestBody CreateBookDto createBookDto) {
-        return bookService.saveBook(new Book(createBookDto.getIsbn(), createBookDto.getTitle()));
+    public Book createBook(@Valid @RequestBody CreateBookRequest createBookRequest) {
+        return bookService.saveBook(new Book(createBookRequest.getIsbn(), createBookRequest.getTitle()));
     }
 
     @DeleteMapping("/{isbn}")

@@ -22,7 +22,7 @@ class Home extends Component {
         this.setState({ numberOfUsers: response.data })
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error)
       })
       .finally(() => {
         this.setState({ isLoadingNumberOfUsers: false })
@@ -36,7 +36,7 @@ class Home extends Component {
         this.setState({ numberOfBooks: response.data })
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error)
       })
       .finally(() => {
         this.setState({ getNumberOfBooks: false })
@@ -48,11 +48,11 @@ class Home extends Component {
     return (
       <Container text>
         <Grid stackable columns={2}>
-          <Grid.Row style={{ marginTop: '4em' }}>
+          <Grid.Row>
             <Grid.Column textAlign='center'>
               <Segment color='blue' loading={isLoadingNumberOfUsers}>
                 <Statistic>
-                  <Statistic.Value><Icon name='user' color='blue' />{numberOfUsers}</Statistic.Value>
+                  <Statistic.Value><Icon name='user' color='grey' />{numberOfUsers}</Statistic.Value>
                   <Statistic.Label>Users</Statistic.Label>
                 </Statistic>
               </Segment>
@@ -60,7 +60,7 @@ class Home extends Component {
             <Grid.Column textAlign='center'>
               <Segment color='blue' loading={isLoadingNumberOfBooks}>
                 <Statistic>
-                  <Statistic.Value><Icon name='book' color='blue' />{numberOfBooks}</Statistic.Value>
+                  <Statistic.Value><Icon name='book' color='grey' />{numberOfBooks}</Statistic.Value>
                   <Statistic.Label>Books</Statistic.Label>
                 </Statistic>
               </Segment>

@@ -33,7 +33,7 @@ function UserTable({ isUsersLoading, users, userUsernameSearch, handleChange, de
   }
 
   return (
-    <Segment loading={isUsersLoading} color='orange'>
+    <Segment loading={isUsersLoading} color='blue'>
       <Grid stackable divided>
         <Grid.Row columns='2'>
           <Grid.Column width='3'>

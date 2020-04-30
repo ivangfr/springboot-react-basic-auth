@@ -61,18 +61,20 @@ class Signup extends Component {
         }
       })
       .catch(error => {
-        const errorData = error.response.data
-        console.log(errorData)
-        let errorMessage = 'Invalid fields'
-        if (errorData.status === 409) {
-          errorMessage = errorData.message
-        } else if (errorData.status === 400) {
-          errorMessage = errorData.errors[0].defaultMessage
+        if (error.response && error.response.data) {
+          const errorData = error.response.data
+          console.log(errorData)
+          let errorMessage = 'Invalid fields'
+          if (errorData.status === 409) {
+            errorMessage = errorData.message
+          } else if (errorData.status === 400) {
+            errorMessage = errorData.errors[0].defaultMessage
+          }
+          this.setState({
+            isError: true,
+            errorMessage
+          })
         }
-        this.setState({
-          isError: true,
-          errorMessage
-        })
       })
   }
 
@@ -82,7 +84,7 @@ class Signup extends Component {
       return <Redirect to='/' />
     } else {
       return (
-        <Grid textAlign='center' style={{ marginTop: '3em' }}>
+        <Grid textAlign='center'>
           <Grid.Column style={{ maxWidth: 450 }}>
             <Form size='large' onSubmit={this.handleSubmit}>
               <Segment>
@@ -123,7 +125,7 @@ class Signup extends Component {
                 <Button color='blue' fluid size='large'>Signup</Button>
               </Segment>
             </Form>
-            <Message>Already have an account?
+            <Message>{`Already have an account? `}
               <a href='/login' color='teal' as={NavLink} to="/login">Login</a>
             </Message>
             {isError && <Message negative>{errorMessage}</Message>}

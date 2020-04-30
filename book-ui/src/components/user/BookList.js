@@ -45,7 +45,7 @@ function BookList({ isBooksLoading, bookTextSearch, books, handleChange, searchB
           </Grid.Column>
         </Grid.Row>
       </Grid>
-      <Item.Group divided relaxed>
+      <Item.Group divided unstackable relaxed link>
         {bookList}
       </Item.Group>
     </Segment>

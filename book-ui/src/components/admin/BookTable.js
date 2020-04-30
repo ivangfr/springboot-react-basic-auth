@@ -33,7 +33,7 @@ function BookTable({ isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch,
   }
 
   return (
-    <Segment loading={isBooksLoading} color='orange'>
+    <Segment loading={isBooksLoading} color='blue'>
       <Grid stackable divided>
         <Grid.Row columns='3'>
           <Grid.Column width='3'>

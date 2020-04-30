@@ -23,8 +23,8 @@ class AdminPage extends Component {
 
   componentDidMount() {
     const Auth = this.context
-    const authUser = Auth.getUser()
-    const isAdmin = authUser && JSON.parse(authUser).role === 'ADMIN'
+    const user = Auth.getUser()
+    const isAdmin = user.role === 'ADMIN'
     this.setState({ isAdmin })
 
     this.getUsers()
@@ -38,15 +38,15 @@ class AdminPage extends Component {
 
   getUsers = () => {
     const Auth = this.context
-    const authUser = Auth.getUser()
+    const user = Auth.getUser()
 
     this.setState({ isUsersLoading: true })
-    bookApi.getUsers(authUser)
+    bookApi.getUsers(user)
       .then(response => {
         this.setState({ users: response.data })
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error)
       })
       .finally(() => {
         this.setState({ isUsersLoading: false })
@@ -55,23 +55,23 @@ class AdminPage extends Component {
 
   deleteUser = (username) => {
     const Auth = this.context
-    const authUser = Auth.getUser()
+    const user = Auth.getUser()
 
-    bookApi.deleteUser(username, authUser)
+    bookApi.deleteUser(username, user)
       .then(() => {
         this.getUsers()
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error)
       })
   }
 
   searchUser = () => {
     const Auth = this.context
-    const authUser = Auth.getUser()
+    const user = Auth.getUser()
 
     const username = this.state.userUsernameSearch
-    bookApi.searchUser(username, authUser)
+    bookApi.searchUser(username, user)
       .then((response) => {
         if (response.status === 200) {
           const data = response.data;
@@ -82,22 +82,22 @@ class AdminPage extends Component {
         }
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error)
         this.setState({ users: [] })
       })
   }
 
   getBooks = () => {
     const Auth = this.context
-    const authUser = Auth.getUser()
+    const user = Auth.getUser()
 
     this.setState({ isBooksLoading: true })
-    bookApi.getBooks(authUser)
+    bookApi.getBooks(user)
       .then(response => {
         this.setState({ books: response.data })
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error)
       })
       .finally(() => {
         this.setState({ isBooksLoading: false })
@@ -106,20 +106,20 @@ class AdminPage extends Component {
 
   deleteBook = (isbn) => {
     const Auth = this.context
-    const authUser = Auth.getUser()
+    const user = Auth.getUser()
 
-    bookApi.deleteBook(isbn, authUser)
+    bookApi.deleteBook(isbn, user)
       .then(() => {
         this.getBooks()
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error)
       })
   }
 
   addBook = () => {
     const Auth = this.context
-    const authUser = Auth.getUser()
+    const user = Auth.getUser()
 
     const { bookIsbn, bookTitle } = this.state
     if (!(bookIsbn && bookTitle)) {
@@ -127,22 +127,22 @@ class AdminPage extends Component {
     }
 
     const book = { isbn: bookIsbn, title: bookTitle }
-    bookApi.addBook(book, authUser)
+    bookApi.addBook(book, user)
       .then(() => {
         this.clearBookForm()
         this.getBooks()
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error)
       })
   }
 
   searchBook = () => {
     const Auth = this.context
-    const authUser = Auth.getUser()
+    const user = Auth.getUser()
 
     const text = this.state.bookTextSearch
-    bookApi.searchBook(text, authUser)
+    bookApi.searchBook(text, user)
       .then((response) => {
         if (response.status === 200) {
           const data = response.data;
@@ -153,7 +153,7 @@ class AdminPage extends Component {
         }
       })
       .catch(error => {
-        console.log(error.response.data)
+        console.log(error)
         this.setState({ books: [] })
       })
   }
@@ -171,7 +171,7 @@ class AdminPage extends Component {
     } else {
       const { isUsersLoading, users, userUsernameSearch, isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch } = this.state
       return (
-        <Container style={{ marginTop: '4em' }}>
+        <Container>
           <UserTable
             isUsersLoading={isUsersLoading}
             users={users}
