@@ -7,11 +7,9 @@ export const bookApi = {
   numberOfBooks,
   getUsers,
   deleteUser,
-  searchUser,
   getBooks,
   deleteBook,
-  addBook,
-  searchBook
+  addBook
 }
 
 function authenticate(username, password) {
@@ -34,50 +32,38 @@ function numberOfBooks() {
   return instance.get('/public/numberOfBooks');
 }
 
-function getUsers(user) {
-  return instance.get('/api/users', {
-    headers: { 'Authorization': basicAuth(user) }
-  })
-}
-
-function deleteUser(username, user) {
-  return instance.delete('/api/users/' + username, {
-    headers: { 'Authorization': basicAuth(user) }
-  })
-}
-
-function searchUser(username, user) {
-  const url = username ? '/api/users/' + username : '/api/users'
+function getUsers(user, username) {
+  const url = username ? `/api/users/${username}` : '/api/users'
   return instance.get(url, {
     headers: { 'Authorization': basicAuth(user) }
   })
 }
 
-function getBooks(user) {
-  return instance.get('/api/books', {
+function deleteUser(user, username) {
+  return instance.delete(`/api/users/${username}`, {
     headers: { 'Authorization': basicAuth(user) }
   })
 }
 
-function deleteBook(isbn, user) {
-  return instance.delete('/api/books/' + isbn, {
+function getBooks(user, text) {
+  const url = text ? `/api/books?text=${text}` : '/api/books'
+  return instance.get(url, {
     headers: { 'Authorization': basicAuth(user) }
   })
 }
 
-function addBook(book, user) {
+function deleteBook(user, isbn) {
+  return instance.delete(`/api/books/${isbn}`, {
+    headers: { 'Authorization': basicAuth(user) }
+  })
+}
+
+function addBook(user, book) {
   return instance.post('/api/books', book, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': basicAuth(user)
     }
-  })
-}
-
-function searchBook(text, user) {
-  const url = '/api/books?text=' + text
-  return instance.get(url, {
-    headers: { 'Authorization': basicAuth(user) }
   })
 }
 
@@ -90,5 +76,5 @@ const instance = axios.create({
 // -- Helper functions
 
 function basicAuth(user) {
-  return 'Basic ' + user.authdata
+  return `Basic ${user.authdata}`
 }

@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Container, Divider } from 'semantic-ui-react'
-import UserTable from './UserTable'
+import { Container } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
-import BookTable from './BookTable'
 import { bookApi } from '../misc/BookApi'
+import AdminTab from './AdminTab'
 
 class AdminPage extends Component {
   static contextType = AuthContext
@@ -57,7 +56,7 @@ class AdminPage extends Component {
     const Auth = this.context
     const user = Auth.getUser()
 
-    bookApi.deleteUser(username, user)
+    bookApi.deleteUser(user, username)
       .then(() => {
         this.getUsers()
       })
@@ -71,8 +70,8 @@ class AdminPage extends Component {
     const user = Auth.getUser()
 
     const username = this.state.userUsernameSearch
-    bookApi.searchUser(username, user)
-      .then((response) => {
+    bookApi.getUsers(user, username)
+      .then(response => {
         if (response.status === 200) {
           const data = response.data;
           const users = data instanceof Array ? data : [data]
@@ -108,7 +107,7 @@ class AdminPage extends Component {
     const Auth = this.context
     const user = Auth.getUser()
 
-    bookApi.deleteBook(isbn, user)
+    bookApi.deleteBook(user, isbn)
       .then(() => {
         this.getBooks()
       })
@@ -127,7 +126,7 @@ class AdminPage extends Component {
     }
 
     const book = { isbn: bookIsbn, title: bookTitle }
-    bookApi.addBook(book, user)
+    bookApi.addBook(user, book)
       .then(() => {
         this.clearBookForm()
         this.getBooks()
@@ -142,8 +141,8 @@ class AdminPage extends Component {
     const user = Auth.getUser()
 
     const text = this.state.bookTextSearch
-    bookApi.searchBook(text, user)
-      .then((response) => {
+    bookApi.getBooks(user, text)
+      .then(response => {
         if (response.status === 200) {
           const data = response.data;
           const books = data instanceof Array ? data : [data]
@@ -172,25 +171,21 @@ class AdminPage extends Component {
       const { isUsersLoading, users, userUsernameSearch, isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch } = this.state
       return (
         <Container>
-          <UserTable
+          <AdminTab
             isUsersLoading={isUsersLoading}
             users={users}
             userUsernameSearch={userUsernameSearch}
-            handleChange={this.handleChange}
             deleteUser={this.deleteUser}
             searchUser={this.searchUser}
-          />
-          <Divider section />
-          <BookTable
             isBooksLoading={isBooksLoading}
             books={books}
             bookIsbn={bookIsbn}
             bookTitle={bookTitle}
             bookTextSearch={bookTextSearch}
-            handleChange={this.handleChange}
             addBook={this.addBook}
             deleteBook={this.deleteBook}
             searchBook={this.searchBook}
+            handleChange={this.handleChange}
           />
         </Container>
       )

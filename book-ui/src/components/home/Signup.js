@@ -42,7 +42,7 @@ class Signup extends Component {
 
     const user = { username, password, name, email }
     bookApi.signup(user)
-      .then((response) => {
+      .then(response => {
         if (response.status === 201) {
           const { id, name, role } = response.data
           const authdata = window.btoa(username + ':' + password)

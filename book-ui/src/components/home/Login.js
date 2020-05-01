@@ -35,7 +35,7 @@ class Login extends Component {
     }
 
     bookApi.authenticate(username, password)
-      .then((response) => {
+      .then(response => {
         if (response.status === 200) {
           const { id, name, role } = response.data
           const authdata = window.btoa(username + ':' + password)

@@ -1,7 +1,7 @@
-import React from 'react'
-import { Grid, Header, Form, Icon, Button, Image, Input, Segment, Table } from 'semantic-ui-react'
+import React, { Fragment } from 'react'
+import { Grid, Form, Icon, Button, Image, Input, Table } from 'semantic-ui-react'
 
-function BookTable({ isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch, handleChange, addBook, deleteBook, searchBook }) {
+function BookTable({ books, bookIsbn, bookTitle, bookTextSearch, handleChange, addBook, deleteBook, searchBook }) {
   let bookList
   if (books.length === 0) {
     bookList = (
@@ -33,15 +33,9 @@ function BookTable({ isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch,
   }
 
   return (
-    <Segment loading={isBooksLoading} color='blue'>
+    <Fragment>
       <Grid stackable divided>
-        <Grid.Row columns='3'>
-          <Grid.Column width='3'>
-            <Header as='h2'>
-              <Icon name='book' />
-              <Header.Content>Books</Header.Content>
-            </Header>
-          </Grid.Column>
+        <Grid.Row columns='2'>
           <Grid.Column width='5'>
             <Form onSubmit={searchBook}>
               <Input
@@ -56,22 +50,18 @@ function BookTable({ isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch,
           <Grid.Column>
             <Form onSubmit={addBook}>
               <Form.Group>
-                <Form.Field>
-                  <Input
-                    id='bookIsbn'
-                    placeholder='ISBN'
-                    value={bookIsbn}
-                    onChange={handleChange}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Input
-                    id='bookTitle'
-                    placeholder='Title'
-                    value={bookTitle}
-                    onChange={handleChange}
-                  />
-                </Form.Field>
+                <Form.Input
+                  id='bookIsbn'
+                  placeholder='ISBN'
+                  value={bookIsbn}
+                  onChange={handleChange}
+                />
+                <Form.Input
+                  id='bookTitle'
+                  placeholder='Title'
+                  value={bookTitle}
+                  onChange={handleChange}
+                />
                 <Button icon>
                   <Icon name='add' />
                 </Button>
@@ -80,7 +70,7 @@ function BookTable({ isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch,
           </Grid.Column>
         </Grid.Row>
       </Grid>
-      <Table compact striped>
+      <Table compact striped selectable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell />
@@ -93,7 +83,7 @@ function BookTable({ isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch,
           {bookList}
         </Table.Body>
       </Table>
-    </Segment>
+    </Fragment>
   )
 }
 

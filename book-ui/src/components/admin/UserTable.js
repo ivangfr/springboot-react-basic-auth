@@ -1,7 +1,7 @@
-import React from 'react'
-import { Grid, Header, Form, Button, Icon, Input, Segment, Table } from 'semantic-ui-react'
+import React, { Fragment } from 'react'
+import { Form, Button, Input, Table } from 'semantic-ui-react'
 
-function UserTable({ isUsersLoading, users, userUsernameSearch, handleChange, deleteUser, searchUser }) {
+function UserTable({ users, userUsernameSearch, handleChange, deleteUser, searchUser }) {
   let userList
   if (users.length === 0) {
     userList = (
@@ -33,29 +33,17 @@ function UserTable({ isUsersLoading, users, userUsernameSearch, handleChange, de
   }
 
   return (
-    <Segment loading={isUsersLoading} color='blue'>
-      <Grid stackable divided>
-        <Grid.Row columns='2'>
-          <Grid.Column width='3'>
-            <Header as='h2'>
-              <Icon name='user' />
-              <Header.Content>Users</Header.Content>
-            </Header>
-          </Grid.Column>
-          <Grid.Column>
-            <Form onSubmit={searchUser}>
-              <Input
-                action={{ icon: 'search' }}
-                id='userUsernameSearch'
-                placeholder='Search by username'
-                value={userUsernameSearch}
-                onChange={handleChange}
-              />
-            </Form>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-      <Table compact striped>
+    <Fragment>
+      <Form onSubmit={searchUser}>
+        <Input
+          action={{ icon: 'search' }}
+          id='userUsernameSearch'
+          placeholder='Search by username'
+          value={userUsernameSearch}
+          onChange={handleChange}
+        />
+      </Form>
+      <Table compact striped selectable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell />
@@ -70,7 +58,7 @@ function UserTable({ isUsersLoading, users, userUsernameSearch, handleChange, de
           {userList}
         </Table.Body>
       </Table>
-    </Segment>
+    </Fragment>
   )
 }
 

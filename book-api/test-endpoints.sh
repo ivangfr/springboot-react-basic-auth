@@ -48,13 +48,13 @@ book_get_books[without_creds]=$(curl -w %{http_code} -s -o /dev/null localhost:8
 book_get_books[user_creds]=$(curl -w %{http_code} -s -o /dev/null -u user:user localhost:8080/api/books)
 book_get_books[admin_creds]=$(curl -w %{http_code} -s -o /dev/null -u admin:admin localhost:8080/api/books)
 
-book_create_book[without_creds]=$(curl -w %{http_code} -s -o /dev/null -X POST localhost:8080/api/books -H "Content-Type: application/json" -d '{"isbn": "def", "title": "java 8"}')
-book_create_book[user_creds]=$(curl -w %{http_code} -s -o /dev/null -u user:user -X POST localhost:8080/api/books -H "Content-Type: application/json" -d '{"isbn": "def", "title": "java 8"}')
-book_create_book[admin_creds]=$(curl -w %{http_code} -s -o /dev/null -u admin:admin -X POST localhost:8080/api/books -H "Content-Type: application/json" -d '{"isbn": "def", "title": "java 8"}')
+book_create_book[without_creds]=$(curl -w %{http_code} -s -o /dev/null -X POST localhost:8080/api/books -H "Content-Type: application/json" -d '{"isbn": "abc", "title": "java 8"}')
+book_create_book[user_creds]=$(curl -w %{http_code} -s -o /dev/null -u user:user -X POST localhost:8080/api/books -H "Content-Type: application/json" -d '{"isbn": "abc", "title": "java 8"}')
+book_create_book[admin_creds]=$(curl -w %{http_code} -s -o /dev/null -u admin:admin -X POST localhost:8080/api/books -H "Content-Type: application/json" -d '{"isbn": "abc", "title": "java 8"}')
 
-book_delete_book[without_creds]=$(curl -w %{http_code} -s -o /dev/null -X DELETE localhost:8080/api/books/def)
-book_delete_book[user_creds]=$(curl -w %{http_code} -s -o /dev/null -u user:user -X DELETE localhost:8080/api/books/def)
-book_delete_book[admin_creds]=$(curl -w %{http_code} -s -o /dev/null -u admin:admin -X DELETE localhost:8080/api/books/def)
+book_delete_book[without_creds]=$(curl -w %{http_code} -s -o /dev/null -X DELETE localhost:8080/api/books/abc)
+book_delete_book[user_creds]=$(curl -w %{http_code} -s -o /dev/null -u user:user -X DELETE localhost:8080/api/books/abc)
+book_delete_book[admin_creds]=$(curl -w %{http_code} -s -o /dev/null -u admin:admin -X DELETE localhost:8080/api/books/abc)
 
 printf "\n"
 printf "%s\n" "POST auth/authenticate"
@@ -78,12 +78,12 @@ printf "%25s | %13s | %11s | %12s |\n" "GET public/numberOfBooks" ${public_numbe
 printf "%25s + %13s + %11s + %12s |\n" "........................." "............." "..........." "............"
 printf "%25s | %13s | %11s | %12s |\n" "GET /api/users/me" ${user_get_me[without_creds]} ${user_get_me[user_creds]} ${user_get_me[admin_creds]}
 printf "%25s | %13s | %11s | %12s |\n" "GET /api/users" ${user_get_users[without_creds]} ${user_get_users[user_creds]} ${user_get_users[admin_creds]}
-printf "%25s | %13s | %11s | %12s |\n" "GET /api/users/user" ${user_get_user[without_creds]} ${user_get_user[user_creds]} ${user_get_user[admin_creds]}
-printf "%25s | %13s | %11s | %12s |\n" "DELETE /api/users/user" ${user_delete_user[without_creds]} ${user_delete_user[user_creds]} ${user_delete_user[admin_creds]}
+printf "%25s | %13s | %11s | %12s |\n" "GET /api/users/user2" ${user_get_user[without_creds]} ${user_get_user[user_creds]} ${user_get_user[admin_creds]}
+printf "%25s | %13s | %11s | %12s |\n" "DELETE /api/users/user2" ${user_delete_user[without_creds]} ${user_delete_user[user_creds]} ${user_delete_user[admin_creds]}
 printf "%25s + %13s + %11s + %12s |\n" "........................." "............." "..........." "............"
 printf "%25s | %13s | %11s | %12s |\n" "GET /api/books" ${book_get_books[without_creds]} ${book_get_books[user_creds]} ${book_get_books[admin_creds]}
 printf "%25s | %13s | %11s | %12s |\n" "POST /api/books" ${book_create_book[without_creds]} ${book_create_book[user_creds]} ${book_create_book[admin_creds]}
-printf "%25s | %13s | %11s | %12s |\n" "DELETE /api/books/def" ${book_delete_book[without_creds]} ${book_delete_book[user_creds]} ${book_delete_book[admin_creds]}
+printf "%25s | %13s | %11s | %12s |\n" "DELETE /api/books/abc" ${book_delete_book[without_creds]} ${book_delete_book[user_creds]} ${book_delete_book[admin_creds]}
 printf "%72s\n" "------------------------------------------------------------------------"
 printf " [200] Success -  [201] Created -  [401] Unauthorized -  [403] Forbidden"
 printf "\n"

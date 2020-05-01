@@ -51,8 +51,8 @@ class UserPage extends Component {
     const user = Auth.getUser()
 
     const text = this.state.bookTextSearch
-    bookApi.searchBook(text, user)
-      .then((response) => {
+    bookApi.getBooks(user, text)
+      .then(response => {
         if (response.status === 200) {
           const data = response.data;
           const books = data instanceof Array ? data : [data]
