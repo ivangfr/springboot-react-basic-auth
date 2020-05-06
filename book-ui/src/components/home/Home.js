@@ -11,32 +11,32 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.getNumberOfUsers()
-    this.getNumberOfBooks()
+    this.handleGetNumberOfUsers()
+    this.handleGetNumberOfBooks()
   }
 
-  getNumberOfUsers = () => {
+  handleGetNumberOfUsers = () => {
     this.setState({ isLoadingNumberOfUsers: true })
     bookApi.numberOfUsers()
       .then(response => {
         this.setState({ numberOfUsers: response.data })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
       .finally(() => {
         this.setState({ isLoadingNumberOfUsers: false })
       })
   }
 
-  getNumberOfBooks = () => {
+  handleGetNumberOfBooks = () => {
     this.setState({ getNumberOfBooks: true })
     bookApi.numberOfBooks()
       .then(response => {
         this.setState({ numberOfBooks: response.data })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
       .finally(() => {
         this.setState({ getNumberOfBooks: false })

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, Header, Form, Icon, Image, Input, Item, Segment } from 'semantic-ui-react'
 
-function BookList({ isBooksLoading, bookTextSearch, books, handleChange, searchBook }) {
+function BookList({ isBooksLoading, bookTextSearch, books, handleInputChange, handleSearchBook }) {
   let bookList
   if (books.length === 0) {
     bookList = <Item key='no-book'>No book</Item>
@@ -33,13 +33,13 @@ function BookList({ isBooksLoading, bookTextSearch, books, handleChange, searchB
             </Header>
           </Grid.Column>
           <Grid.Column>
-            <Form onSubmit={searchBook}>
+            <Form onSubmit={handleSearchBook}>
               <Input
                 action={{ icon: 'search' }}
                 id='bookTextSearch'
                 placeholder='Search by ISBN or Title'
                 value={bookTextSearch}
-                onChange={handleChange}
+                onChange={handleInputChange}
               />
             </Form>
           </Grid.Column>

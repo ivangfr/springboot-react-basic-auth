@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { config } from '../../Constants'
 
 export const bookApi = {
   authenticate,
@@ -70,7 +71,7 @@ function addBook(user, book) {
 // -- Axios
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080'
+  baseURL: config.url.API_URL
 })
 
 // -- Helper functions

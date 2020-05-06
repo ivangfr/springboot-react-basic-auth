@@ -21,15 +21,15 @@ class UserPage extends Component {
     const isUser = user.role === 'USER'
     this.setState({ isUser })
 
-    this.getBooks()
+    this.handleGetBooks()
   }
 
-  handleChange = (e) => {
+  handleInputChange = (e) => {
     const { id, value } = e.target
     this.setState({ [id]: value })
   }
 
-  getBooks = () => {
+  handleGetBooks = () => {
     const Auth = this.context
     const user = Auth.getUser()
 
@@ -46,7 +46,7 @@ class UserPage extends Component {
       })
   }
 
-  searchBook = () => {
+  handleSearchBook = () => {
     const Auth = this.context
     const user = Auth.getUser()
 
@@ -78,8 +78,8 @@ class UserPage extends Component {
             isBooksLoading={isBooksLoading}
             bookTextSearch={bookTextSearch}
             books={books}
-            handleChange={this.handleChange}
-            searchBook={this.searchBook}
+            handleInputChange={this.handleInputChange}
+            handleSearchBook={this.handleSearchBook}
           />
         </Container>
       )

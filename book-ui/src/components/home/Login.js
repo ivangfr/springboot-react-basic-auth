@@ -20,7 +20,7 @@ class Login extends Component {
     this.setState({ isLoggedIn })
   }
 
-  handleChange = (e) => {
+  handleInputChange = (e) => {
     const { id, value } = e.target
     this.setState({ [id]: value })
   }
@@ -83,7 +83,7 @@ class Login extends Component {
                   icon='user'
                   iconPosition='left'
                   placeholder='Username'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                 />
                 <Form.Input
                   fluid
@@ -92,7 +92,7 @@ class Login extends Component {
                   iconPosition='left'
                   placeholder='Password'
                   type='password'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                 />
                 <Button color='blue' fluid size='large'>Login</Button>
               </Segment>

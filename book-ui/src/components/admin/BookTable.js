@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Grid, Form, Icon, Button, Image, Input, Table } from 'semantic-ui-react'
 
-function BookTable({ books, bookIsbn, bookTitle, bookTextSearch, handleChange, addBook, deleteBook, searchBook }) {
+function BookTable({ books, bookIsbn, bookTitle, bookTextSearch, handleInputChange, handleAddBook, handleDeleteBook, handleSearchBook }) {
   let bookList
   if (books.length === 0) {
     bookList = (
@@ -19,7 +19,7 @@ function BookTable({ books, bookIsbn, bookTitle, bookTextSearch, handleChange, a
               color='red'
               size='small'
               icon='trash'
-              onClick={() => deleteBook(book.isbn)}
+              onClick={() => handleDeleteBook(book.isbn)}
             />
           </Table.Cell>
           <Table.Cell>
@@ -37,33 +37,33 @@ function BookTable({ books, bookIsbn, bookTitle, bookTextSearch, handleChange, a
       <Grid stackable divided>
         <Grid.Row columns='2'>
           <Grid.Column width='5'>
-            <Form onSubmit={searchBook}>
+            <Form onSubmit={handleSearchBook}>
               <Input
                 action={{ icon: 'search' }}
                 id='bookTextSearch'
                 placeholder='Search by ISBN or Title'
                 value={bookTextSearch}
-                onChange={handleChange}
+                onChange={handleInputChange}
               />
             </Form>
           </Grid.Column>
           <Grid.Column>
-            <Form onSubmit={addBook}>
+            <Form onSubmit={handleAddBook}>
               <Form.Group>
                 <Form.Input
                   id='bookIsbn'
                   placeholder='ISBN'
                   value={bookIsbn}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
                 <Form.Input
                   id='bookTitle'
                   placeholder='Title'
                   value={bookTitle}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
-                <Button icon>
-                  <Icon name='add' />
+                <Button icon labelPosition='right'>
+                  Create<Icon name='add' />
                 </Button>
               </Form.Group>
             </Form>

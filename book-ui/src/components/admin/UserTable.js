@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Form, Button, Input, Table } from 'semantic-ui-react'
 
-function UserTable({ users, userUsernameSearch, handleChange, deleteUser, searchUser }) {
+function UserTable({ users, userUsernameSearch, handleInputChange, handleDeleteUser, handleSearchUser }) {
   let userList
   if (users.length === 0) {
     userList = (
@@ -19,7 +19,7 @@ function UserTable({ users, userUsernameSearch, handleChange, deleteUser, search
               color='red'
               size='small'
               icon='trash'
-              onClick={() => deleteUser(user.username)}
+              onClick={() => handleDeleteUser(user.username)}
             />
           </Table.Cell>
           <Table.Cell>{user.id}</Table.Cell>
@@ -34,24 +34,24 @@ function UserTable({ users, userUsernameSearch, handleChange, deleteUser, search
 
   return (
     <Fragment>
-      <Form onSubmit={searchUser}>
+      <Form onSubmit={handleSearchUser}>
         <Input
           action={{ icon: 'search' }}
           id='userUsernameSearch'
           placeholder='Search by username'
           value={userUsernameSearch}
-          onChange={handleChange}
+          onChange={handleInputChange}
         />
       </Form>
       <Table compact striped selectable>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell />
-            <Table.HeaderCell>id</Table.HeaderCell>
-            <Table.HeaderCell>username</Table.HeaderCell>
-            <Table.HeaderCell>name</Table.HeaderCell>
-            <Table.HeaderCell>email</Table.HeaderCell>
-            <Table.HeaderCell>role</Table.HeaderCell>
+            <Table.HeaderCell>ID</Table.HeaderCell>
+            <Table.HeaderCell>Username</Table.HeaderCell>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Email</Table.HeaderCell>
+            <Table.HeaderCell>Role</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>

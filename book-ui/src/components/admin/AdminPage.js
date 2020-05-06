@@ -26,16 +26,16 @@ class AdminPage extends Component {
     const isAdmin = user.role === 'ADMIN'
     this.setState({ isAdmin })
 
-    this.getUsers()
-    this.getBooks()
+    this.handleGetUsers()
+    this.handleGetBooks()
   }
 
-  handleChange = (e) => {
+  handleInputChange = (e) => {
     const { id, value } = e.target
     this.setState({ [id]: value })
   }
 
-  getUsers = () => {
+  handleGetUsers = () => {
     const Auth = this.context
     const user = Auth.getUser()
 
@@ -52,20 +52,20 @@ class AdminPage extends Component {
       })
   }
 
-  deleteUser = (username) => {
+  handleDeleteUser = (username) => {
     const Auth = this.context
     const user = Auth.getUser()
 
     bookApi.deleteUser(user, username)
       .then(() => {
-        this.getUsers()
+        this.handleGetUsers()
       })
       .catch(error => {
         console.log(error)
       })
   }
 
-  searchUser = () => {
+  handleSearchUser = () => {
     const Auth = this.context
     const user = Auth.getUser()
 
@@ -86,7 +86,7 @@ class AdminPage extends Component {
       })
   }
 
-  getBooks = () => {
+  handleGetBooks = () => {
     const Auth = this.context
     const user = Auth.getUser()
 
@@ -103,20 +103,20 @@ class AdminPage extends Component {
       })
   }
 
-  deleteBook = (isbn) => {
+  handleDeleteBook = (isbn) => {
     const Auth = this.context
     const user = Auth.getUser()
 
     bookApi.deleteBook(user, isbn)
       .then(() => {
-        this.getBooks()
+        this.handleGetBooks()
       })
       .catch(error => {
         console.log(error)
       })
   }
 
-  addBook = () => {
+  handleAddBook = () => {
     const Auth = this.context
     const user = Auth.getUser()
 
@@ -129,14 +129,14 @@ class AdminPage extends Component {
     bookApi.addBook(user, book)
       .then(() => {
         this.clearBookForm()
-        this.getBooks()
+        this.handleGetBooks()
       })
       .catch(error => {
         console.log(error)
       })
   }
 
-  searchBook = () => {
+  handleSearchBook = () => {
     const Auth = this.context
     const user = Auth.getUser()
 
@@ -175,17 +175,17 @@ class AdminPage extends Component {
             isUsersLoading={isUsersLoading}
             users={users}
             userUsernameSearch={userUsernameSearch}
-            deleteUser={this.deleteUser}
-            searchUser={this.searchUser}
+            handleDeleteUser={this.handleDeleteUser}
+            handleSearchUser={this.handleSearchUser}
             isBooksLoading={isBooksLoading}
             books={books}
             bookIsbn={bookIsbn}
             bookTitle={bookTitle}
             bookTextSearch={bookTextSearch}
-            addBook={this.addBook}
-            deleteBook={this.deleteBook}
-            searchBook={this.searchBook}
-            handleChange={this.handleChange}
+            handleAddBook={this.handleAddBook}
+            handleDeleteBook={this.handleDeleteBook}
+            handleSearchBook={this.handleSearchBook}
+            handleInputChange={this.handleInputChange}
           />
         </Container>
       )

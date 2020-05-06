@@ -23,7 +23,7 @@ class Signup extends Component {
     this.setState({ isLoggedIn })
   }
 
-  handleChange = (e) => {
+  handleInputChange = (e) => {
     const { id, value } = e.target
     this.setState({ [id]: value })
   }
@@ -95,7 +95,7 @@ class Signup extends Component {
                   icon='user'
                   iconPosition='left'
                   placeholder='Username'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                 />
                 <Form.Input
                   fluid
@@ -104,7 +104,7 @@ class Signup extends Component {
                   iconPosition='left'
                   placeholder='Password'
                   type='password'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                 />
                 <Form.Input
                   fluid
@@ -112,7 +112,7 @@ class Signup extends Component {
                   icon='address card'
                   iconPosition='left'
                   placeholder='Name'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                 />
                 <Form.Input
                   fluid
@@ -120,7 +120,7 @@ class Signup extends Component {
                   icon='at'
                   iconPosition='left'
                   placeholder='Email'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                 />
                 <Button color='blue' fluid size='large'>Signup</Button>
               </Segment>
