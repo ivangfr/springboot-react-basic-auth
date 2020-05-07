@@ -26,11 +26,11 @@ function signup(user) {
 }
 
 function numberOfUsers() {
-  return instance.get('/public/numberOfUsers');
+  return instance.get('/public/numberOfUsers')
 }
 
 function numberOfBooks() {
-  return instance.get('/public/numberOfBooks');
+  return instance.get('/public/numberOfBooks')
 }
 
 function getUsers(user, username) {
@@ -71,7 +71,7 @@ function addBook(user, book) {
 // -- Axios
 
 const instance = axios.create({
-  baseURL: config.url.API_URL
+  baseURL: config.url.API_BASE_URL
 })
 
 // -- Helper functions

@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
-import { Grid, Form, Icon, Button, Image, Input, Table } from 'semantic-ui-react'
+import { Button, Form, Grid, Image, Input, Table } from 'semantic-ui-react'
+import BookForm from './BookForm'
 
 function BookTable({ books, bookIsbn, bookTitle, bookTextSearch, handleInputChange, handleAddBook, handleDeleteBook, handleSearchBook }) {
   let bookList
@@ -48,35 +49,22 @@ function BookTable({ books, bookIsbn, bookTitle, bookTextSearch, handleInputChan
             </Form>
           </Grid.Column>
           <Grid.Column>
-            <Form onSubmit={handleAddBook}>
-              <Form.Group>
-                <Form.Input
-                  id='bookIsbn'
-                  placeholder='ISBN'
-                  value={bookIsbn}
-                  onChange={handleInputChange}
-                />
-                <Form.Input
-                  id='bookTitle'
-                  placeholder='Title'
-                  value={bookTitle}
-                  onChange={handleInputChange}
-                />
-                <Button icon labelPosition='right'>
-                  Create<Icon name='add' />
-                </Button>
-              </Form.Group>
-            </Form>
+            <BookForm
+              bookIsbn={bookIsbn}
+              bookTitle={bookTitle}
+              handleInputChange={handleInputChange}
+              handleAddBook={handleAddBook}
+            />
           </Grid.Column>
         </Grid.Row>
       </Grid>
       <Table compact striped selectable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell />
-            <Table.HeaderCell>Cover</Table.HeaderCell>
-            <Table.HeaderCell>ISBN</Table.HeaderCell>
-            <Table.HeaderCell>Title</Table.HeaderCell>
+            <Table.HeaderCell width={1}/>
+            <Table.HeaderCell width={3}>Cover</Table.HeaderCell>
+            <Table.HeaderCell width={4}>ISBN</Table.HeaderCell>
+            <Table.HeaderCell width={8}>Title</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>

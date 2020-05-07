@@ -1,9 +1,6 @@
 package com.mycompany.bookapi.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,10 +22,7 @@ public class User {
     private Long id;
 
     private String username;
-
-    @JsonIgnore
     private String password;
-
     private String name;
     private String email;
     private String role;

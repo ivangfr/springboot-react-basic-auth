@@ -43,7 +43,7 @@ function AdminTab(props) {
   ]
 
   return (
-    <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
+    <Tab menu={{ attached: 'top' }} panes={panes} />
   )
 }
 

@@ -36,26 +36,22 @@ class Login extends Component {
 
     bookApi.authenticate(username, password)
       .then(response => {
-        if (response.status === 200) {
-          const { id, name, role } = response.data
-          const authdata = window.btoa(username + ':' + password)
-          const user = { id, name, role, authdata }
+        const { id, name, role } = response.data
+        const authdata = window.btoa(username + ':' + password)
+        const user = { id, name, role, authdata }
 
-          const Auth = this.context
-          Auth.userLogin(user)
+        const Auth = this.context
+        Auth.userLogin(user)
 
-          this.setState({
-            username: '',
-            password: '',
-            isLoggedIn: true,
-            isError: false
-          })
-        } else {
-          this.setState({ isError: true })
-        }
+        this.setState({
+          username: '',
+          password: '',
+          isLoggedIn: true,
+          isError: false
+        })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
         this.setState({ isError: true })
       })
   }

@@ -45,7 +45,7 @@ class AdminPage extends Component {
         this.setState({ users: response.data })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
       .finally(() => {
         this.setState({ isUsersLoading: false })
@@ -61,7 +61,7 @@ class AdminPage extends Component {
         this.handleGetUsers()
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
   }
 
@@ -72,16 +72,12 @@ class AdminPage extends Component {
     const username = this.state.userUsernameSearch
     bookApi.getUsers(user, username)
       .then(response => {
-        if (response.status === 200) {
-          const data = response.data;
-          const users = data instanceof Array ? data : [data]
-          this.setState({ users })
-        } else {
-          this.setState({ users: [] })
-        }
+        const data = response.data
+        const users = data instanceof Array ? data : [data]
+        this.setState({ users })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
         this.setState({ users: [] })
       })
   }
@@ -96,7 +92,7 @@ class AdminPage extends Component {
         this.setState({ books: response.data })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
       .finally(() => {
         this.setState({ isBooksLoading: false })
@@ -112,7 +108,7 @@ class AdminPage extends Component {
         this.handleGetBooks()
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
   }
 
@@ -120,7 +116,9 @@ class AdminPage extends Component {
     const Auth = this.context
     const user = Auth.getUser()
 
-    const { bookIsbn, bookTitle } = this.state
+    let { bookIsbn, bookTitle } = this.state
+    bookIsbn = bookIsbn.trim()
+    bookTitle = bookTitle.trim()
     if (!(bookIsbn && bookTitle)) {
       return
     }
@@ -132,7 +130,7 @@ class AdminPage extends Component {
         this.handleGetBooks()
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
   }
 
@@ -143,16 +141,11 @@ class AdminPage extends Component {
     const text = this.state.bookTextSearch
     bookApi.getBooks(user, text)
       .then(response => {
-        if (response.status === 200) {
-          const data = response.data;
-          const books = data instanceof Array ? data : [data]
-          this.setState({ books })
-        } else {
-          this.setState({ books: [] })
-        }
+        const books = response.data
+        this.setState({ books })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
         this.setState({ books: [] })
       })
   }

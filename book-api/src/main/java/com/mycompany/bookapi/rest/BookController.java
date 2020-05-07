@@ -1,6 +1,8 @@
 package com.mycompany.bookapi.rest;
 
+import com.mycompany.bookapi.mapper.BookMapper;
 import com.mycompany.bookapi.model.Book;
+import com.mycompany.bookapi.rest.dto.BookDto;
 import com.mycompany.bookapi.rest.dto.CreateBookRequest;
 import com.mycompany.bookapi.service.BookService;
 import org.springframework.http.HttpStatus;
@@ -17,36 +19,40 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
 
     private final BookService bookService;
+    private final BookMapper bookMapper;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, BookMapper bookMapper) {
         this.bookService = bookService;
+        this.bookMapper = bookMapper;
     }
 
     @GetMapping
-    public List<Book> getBooks(@RequestParam(value = "text", required = false) String text) {
-        if (text == null) {
-            return bookService.getBooks();
-        }
-        return bookService.getBooksContainingText(text);
+    public List<BookDto> getBooks(@RequestParam(value = "text", required = false) String text) {
+        List<Book> books = (text == null) ? bookService.getBooks() : bookService.getBooksContainingText(text);
+        return books.stream()
+                .map(book -> bookMapper.toBookDto(book))
+                .collect(Collectors.toList());
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Book createBook(@Valid @RequestBody CreateBookRequest createBookRequest) {
-        return bookService.saveBook(new Book(createBookRequest.getIsbn(), createBookRequest.getTitle()));
+    public BookDto createBook(@Valid @RequestBody CreateBookRequest createBookRequest) {
+        Book book = bookMapper.toBook(createBookRequest);
+        return bookMapper.toBookDto(bookService.saveBook(book));
     }
 
     @DeleteMapping("/{isbn}")
-    public Book deleteBook(@PathVariable String isbn) {
+    public BookDto deleteBook(@PathVariable String isbn) {
         Book book = bookService.validateAndGetBook(isbn);
         bookService.deleteBook(book);
-        return book;
+        return bookMapper.toBookDto(book);
     }
 
 }

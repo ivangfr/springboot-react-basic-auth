@@ -23,7 +23,7 @@ function BookList({ isBooksLoading, bookTextSearch, books, handleInputChange, ha
   }
 
   return (
-    <Segment loading={isBooksLoading} color='teal'>
+    <Segment loading={isBooksLoading} color='blue'>
       <Grid stackable divided>
         <Grid.Row columns='2'>
           <Grid.Column width='3'>

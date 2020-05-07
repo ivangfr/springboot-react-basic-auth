@@ -38,7 +38,7 @@ function UserTable({ users, userUsernameSearch, handleInputChange, handleDeleteU
         <Input
           action={{ icon: 'search' }}
           id='userUsernameSearch'
-          placeholder='Search by username'
+          placeholder='Search by Username'
           value={userUsernameSearch}
           onChange={handleInputChange}
         />
@@ -46,12 +46,12 @@ function UserTable({ users, userUsernameSearch, handleInputChange, handleDeleteU
       <Table compact striped selectable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell />
-            <Table.HeaderCell>ID</Table.HeaderCell>
-            <Table.HeaderCell>Username</Table.HeaderCell>
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Email</Table.HeaderCell>
-            <Table.HeaderCell>Role</Table.HeaderCell>
+            <Table.HeaderCell width={1}/>
+            <Table.HeaderCell width={1}>ID</Table.HeaderCell>
+            <Table.HeaderCell width={3}>Username</Table.HeaderCell>
+            <Table.HeaderCell width={4}>Name</Table.HeaderCell>
+            <Table.HeaderCell width={5}>Email</Table.HeaderCell>
+            <Table.HeaderCell width={2}>Role</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>

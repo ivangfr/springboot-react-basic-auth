@@ -43,22 +43,20 @@ class Signup extends Component {
     const user = { username, password, name, email }
     bookApi.signup(user)
       .then(response => {
-        if (response.status === 201) {
-          const { id, name, role } = response.data
-          const authdata = window.btoa(username + ':' + password)
-          const user = { id, name, role, authdata }
+        const { id, name, role } = response.data
+        const authdata = window.btoa(username + ':' + password)
+        const user = { id, name, role, authdata }
 
-          const Auth = this.context
-          Auth.userLogin(user)
+        const Auth = this.context
+        Auth.userLogin(user)
 
-          this.setState({
-            username: '',
-            password: '',
-            isLoggedIn: true,
-            isError: false,
-            errorMessage: ''
-          })
-        }
+        this.setState({
+          username: '',
+          password: '',
+          isLoggedIn: true,
+          isError: false,
+          errorMessage: ''
+        })
       })
       .catch(error => {
         if (error.response && error.response.data) {
@@ -74,6 +72,8 @@ class Signup extends Component {
             isError: true,
             errorMessage
           })
+        } else {
+          console.log(error.message)
         }
       })
   }

@@ -39,7 +39,7 @@ class UserPage extends Component {
         this.setState({ books: response.data })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
       .finally(() => {
         this.setState({ isBooksLoading: false })
@@ -53,16 +53,11 @@ class UserPage extends Component {
     const text = this.state.bookTextSearch
     bookApi.getBooks(user, text)
       .then(response => {
-        if (response.status === 200) {
-          const data = response.data;
-          const books = data instanceof Array ? data : [data]
-          this.setState({ books })
-        } else {
-          this.setState({ books: [] })
-        }
+        const books = response.data
+        this.setState({ books })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
         this.setState({ books: [] })
       })
   }
