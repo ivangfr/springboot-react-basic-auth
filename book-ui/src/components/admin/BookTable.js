@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Button, Form, Grid, Image, Input, Table } from 'semantic-ui-react'
 import BookForm from './BookForm'
 
@@ -34,14 +34,14 @@ function BookTable({ books, bookIsbn, bookTitle, bookTextSearch, handleInputChan
   }
 
   return (
-    <Fragment>
+    <>
       <Grid stackable divided>
         <Grid.Row columns='2'>
           <Grid.Column width='5'>
             <Form onSubmit={handleSearchBook}>
               <Input
                 action={{ icon: 'search' }}
-                id='bookTextSearch'
+                name='bookTextSearch'
                 placeholder='Search by ISBN or Title'
                 value={bookTextSearch}
                 onChange={handleInputChange}
@@ -71,7 +71,7 @@ function BookTable({ books, bookIsbn, bookTitle, bookTextSearch, handleInputChan
           {bookList}
         </Table.Body>
       </Table>
-    </Fragment>
+    </>
   )
 }
 

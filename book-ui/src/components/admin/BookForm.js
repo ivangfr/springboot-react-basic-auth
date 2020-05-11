@@ -7,13 +7,13 @@ function BookForm({ bookIsbn, bookTitle, handleInputChange, handleAddBook }) {
     <Form onSubmit={handleAddBook}>
       <Form.Group>
         <Form.Input
-          id='bookIsbn'
+          name='bookIsbn'
           placeholder='ISBN *'
           value={bookIsbn}
           onChange={handleInputChange}
         />
         <Form.Input
-          id='bookTitle'
+          name='bookTitle'
           placeholder='Title *'
           value={bookTitle}
           onChange={handleInputChange}

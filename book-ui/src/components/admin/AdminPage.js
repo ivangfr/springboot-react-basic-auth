@@ -4,6 +4,7 @@ import { Container } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
 import { bookApi } from '../misc/BookApi'
 import AdminTab from './AdminTab'
+import { handleLogError } from '../misc/Helpers'
 
 class AdminPage extends Component {
   static contextType = AuthContext
@@ -30,9 +31,8 @@ class AdminPage extends Component {
     this.handleGetBooks()
   }
 
-  handleInputChange = (e) => {
-    const { id, value } = e.target
-    this.setState({ [id]: value })
+  handleInputChange = (e, { name, value }) => {
+    this.setState({ [name]: value })
   }
 
   handleGetUsers = () => {
@@ -45,7 +45,7 @@ class AdminPage extends Component {
         this.setState({ users: response.data })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
       })
       .finally(() => {
         this.setState({ isUsersLoading: false })
@@ -61,7 +61,7 @@ class AdminPage extends Component {
         this.handleGetUsers()
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
       })
   }
 
@@ -77,7 +77,7 @@ class AdminPage extends Component {
         this.setState({ users })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
         this.setState({ users: [] })
       })
   }
@@ -92,7 +92,7 @@ class AdminPage extends Component {
         this.setState({ books: response.data })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
       })
       .finally(() => {
         this.setState({ isBooksLoading: false })
@@ -108,7 +108,7 @@ class AdminPage extends Component {
         this.handleGetBooks()
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
       })
   }
 
@@ -130,7 +130,7 @@ class AdminPage extends Component {
         this.handleGetBooks()
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
       })
   }
 
@@ -145,7 +145,7 @@ class AdminPage extends Component {
         this.setState({ books })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
         this.setState({ books: [] })
       })
   }

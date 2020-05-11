@@ -36,7 +36,7 @@ function BookList({ isBooksLoading, bookTextSearch, books, handleInputChange, ha
             <Form onSubmit={handleSearchBook}>
               <Input
                 action={{ icon: 'search' }}
-                id='bookTextSearch'
+                name='bookTextSearch'
                 placeholder='Search by ISBN or Title'
                 value={bookTextSearch}
                 onChange={handleInputChange}

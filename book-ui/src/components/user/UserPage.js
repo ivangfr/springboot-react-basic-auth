@@ -4,6 +4,7 @@ import { Container } from 'semantic-ui-react'
 import BookList from './BookList'
 import AuthContext from '../context/AuthContext'
 import { bookApi } from '../misc/BookApi'
+import { handleLogError } from '../misc/Helpers'
 
 class UserPage extends Component {
   static contextType = AuthContext
@@ -24,9 +25,8 @@ class UserPage extends Component {
     this.handleGetBooks()
   }
 
-  handleInputChange = (e) => {
-    const { id, value } = e.target
-    this.setState({ [id]: value })
+  handleInputChange = (e, { name, value }) => {
+    this.setState({ [name]: value })
   }
 
   handleGetBooks = () => {
@@ -39,7 +39,7 @@ class UserPage extends Component {
         this.setState({ books: response.data })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
       })
       .finally(() => {
         this.setState({ isBooksLoading: false })
@@ -57,7 +57,7 @@ class UserPage extends Component {
         this.setState({ books })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
         this.setState({ books: [] })
       })
   }

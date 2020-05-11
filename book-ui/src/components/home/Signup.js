@@ -3,6 +3,7 @@ import { NavLink, Redirect } from 'react-router-dom'
 import { Button, Form, Grid, Segment, Message } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
 import { bookApi } from '../misc/BookApi'
+import { handleLogError } from '../misc/Helpers'
 
 class Signup extends Component {
   static contextType = AuthContext
@@ -23,9 +24,8 @@ class Signup extends Component {
     this.setState({ isLoggedIn })
   }
 
-  handleInputChange = (e) => {
-    const { id, value } = e.target
-    this.setState({ [id]: value })
+  handleInputChange = (e, { name, value }) => {
+    this.setState({ [name]: value })
   }
 
   handleSubmit = (e) => {
@@ -59,9 +59,9 @@ class Signup extends Component {
         })
       })
       .catch(error => {
+        handleLogError(error)
         if (error.response && error.response.data) {
           const errorData = error.response.data
-          console.log(errorData)
           let errorMessage = 'Invalid fields'
           if (errorData.status === 409) {
             errorMessage = errorData.message
@@ -72,8 +72,6 @@ class Signup extends Component {
             isError: true,
             errorMessage
           })
-        } else {
-          console.log(error.message)
         }
       })
   }
@@ -91,7 +89,7 @@ class Signup extends Component {
                 <Form.Input
                   fluid
                   autoFocus
-                  id='username'
+                  name='username'
                   icon='user'
                   iconPosition='left'
                   placeholder='Username'
@@ -99,7 +97,7 @@ class Signup extends Component {
                 />
                 <Form.Input
                   fluid
-                  id='password'
+                  name='password'
                   icon='lock'
                   iconPosition='left'
                   placeholder='Password'
@@ -108,7 +106,7 @@ class Signup extends Component {
                 />
                 <Form.Input
                   fluid
-                  id='name'
+                  name='name'
                   icon='address card'
                   iconPosition='left'
                   placeholder='Name'
@@ -116,7 +114,7 @@ class Signup extends Component {
                 />
                 <Form.Input
                   fluid
-                  id='email'
+                  name='email'
                   icon='at'
                   iconPosition='left'
                   placeholder='Email'
