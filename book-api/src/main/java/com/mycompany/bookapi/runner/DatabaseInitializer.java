@@ -5,6 +5,7 @@ import com.mycompany.bookapi.model.User;
 import com.mycompany.bookapi.security.WebSecurityConfig;
 import com.mycompany.bookapi.service.BookService;
 import com.mycompany.bookapi.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Slf4j
 @Component
 public class DatabaseInitializer implements CommandLineRunner {
@@ -20,34 +22,29 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final UserService userService;
     private final BookService bookService;
 
-    public DatabaseInitializer(UserService userService, BookService bookService) {
-        this.userService = userService;
-        this.bookService = bookService;
-    }
-
     @Override
     public void run(String... args) {
         if (!userService.getUsers().isEmpty()) {
             return;
         }
-        users.forEach(userService::saveUser);
+        USERS.forEach(userService::saveUser);
         getBooks().forEach(bookService::saveBook);
         log.info("Database initialized");
     }
 
     private List<Book> getBooks() {
-        return Arrays.asList(booksStr.split("\n")).stream()
+        return Arrays.stream(BOOKS_STR.split("\n"))
         .map(bookInfoStr -> bookInfoStr.split(";"))
         .map(bookInfoArr -> new Book(bookInfoArr[0], bookInfoArr[1]))
         .collect(Collectors.toList());
     }
 
-    private final List<User> users = Arrays.asList(
+    private static final List<User> USERS = Arrays.asList(
             new User("admin", "admin", "Admin", "admin@mycompany.com", WebSecurityConfig.ADMIN),
             new User("user", "user", "User", "user@mycompany.com", WebSecurityConfig.USER)
     );
 
-    private static final String booksStr =
+    private static final String BOOKS_STR =
             "9781603090773;Any Empire\n" +
             "9781603090698;August Moon\n" +
             "9781891830372;The Barefoot Serpent (softcover) by Scott Morse\n" +

@@ -36,6 +36,12 @@ The goal of this project is to implement an application called `book-app` to man
   
   `book-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
+## Prerequisites
+
+- `Java 11+`
+- `Docker`
+- `Docker-Compose`
+
 ## Start Environment
 
 - Open a terminal and inside `springboot-react-basic-auth` root folder run

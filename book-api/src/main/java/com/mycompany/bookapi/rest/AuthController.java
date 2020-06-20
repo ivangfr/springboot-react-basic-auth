@@ -7,6 +7,7 @@ import com.mycompany.bookapi.rest.dto.LoginRequest;
 import com.mycompany.bookapi.rest.dto.SignUpRequest;
 import com.mycompany.bookapi.security.WebSecurityConfig;
 import com.mycompany.bookapi.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,15 +20,12 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     private final UserService userService;
-
-    public AuthController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {

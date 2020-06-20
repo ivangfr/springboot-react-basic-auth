@@ -3,18 +3,16 @@ package com.mycompany.bookapi.service;
 import com.mycompany.bookapi.exception.BookNotFoundException;
 import com.mycompany.bookapi.model.Book;
 import com.mycompany.bookapi.repository.BookRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-
-    public BookServiceImpl(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
 
     @Override
     public List<Book> getBooks() {

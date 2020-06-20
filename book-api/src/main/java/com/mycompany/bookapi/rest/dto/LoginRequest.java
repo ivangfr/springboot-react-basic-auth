@@ -1,18 +1,19 @@
 package com.mycompany.bookapi.rest.dto;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Data
 public class LoginRequest {
 
-    @ApiModelProperty(example = "user3")
+    @Schema(example = "user3")
     @NotBlank
     private String username;
 
-    @ApiModelProperty(position = 1, example = "user3")
+    @Schema(example = "user3")
     @NotBlank
     private String password;
 
