@@ -9,11 +9,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Data
 public class LoginRequest {
 
-    @Schema(example = "user3")
+    @Schema(example = "user")
     @NotBlank
     private String username;
 
-    @Schema(example = "user3")
+    @Schema(example = "user")
     @NotBlank
     private String password;
 
