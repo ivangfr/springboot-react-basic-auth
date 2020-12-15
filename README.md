@@ -4,7 +4,7 @@ The goal of this project is to implement an application called `book-app` to man
 
 ## Applications
 
-- **book-api**
+- ### book-api
 
   `Spring Boot` Web Java backend application that exposes a Rest API to create, retrieve and delete books. If a user has `ADMIN` role he/she can also retrieve information of other users or delete them.
   
@@ -28,7 +28,7 @@ The goal of this project is to implement an application called `book-app` to man
   | `POST /api/books -d {"isbn","title"}`                         | Yes     | `ADMIN`         |
   | `DELETE /api/books/{isbn}`                                    | Yes     | `ADMIN`         |
 
-- **book-ui**
+- ### book-ui
 
   `ReactJS` frontend application where a user with role `USER` can retrieve the information of a specific book or a list of books. On the other hand, a user with role `ADMIN` has access to all secured endpoints.
   
