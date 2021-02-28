@@ -8,3 +8,7 @@ spring:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/bookdb?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: secret
+
+app:
+  cors:
+    allowed-origins: http://localhost:3000
