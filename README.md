@@ -87,7 +87,7 @@ The goal of this project is to implement an application called `book-app` to man
 | book-api    | http://localhost:8080/swagger-ui.html |                                                     |
 | book-ui     | http://localhost:3000                 | `admin/admin`, `user/user` or signing up a new user |
 
-> **Note:** the credentials shown in the table are the ones already pre-defined. You can signup new users
+> **Note:** the credentials shown in the table are the ones already pre-defined. You can signup new users.
 
 ## Demo
 
@@ -105,9 +105,9 @@ The goal of this project is to implement an application called `book-app` to man
 
   - Open a browser and access http://localhost:8080/swagger-ui.html. All endpoints with the lock sign are secured. In order to access them, you need a valid `username` and `password` credentials.
 
-  - Click on `Authorize` button (green one, almost on the top of the page, on the right)
+  - Click `Authorize` button (white/green one, almost at the top of the page, right side)
 
-  - In the `Basic authentication` form that will open, provide the `admin` credentials (`admin/admin`) or `user` ones (`user/user`). Then, click on `Authorize` and finally on `Close`
+  - In the `Basic authentication` form that will open, provide the `admin` credentials (`admin/admin`) or `user` ones (`user/user`). Then, click `Authorize` and, finally, click `Close` button.
 
   - Make some call to the endpoints
 
@@ -222,9 +222,9 @@ The goal of this project is to implement an application called `book-app` to man
 
 ## Shutdown
 
-- Go to `book-api` and `book-ui` terminals and press `Ctrl+C` on each one
+- Go to `book-api` and `book-ui` terminals and press `Ctrl+C`
 
-- To stop and remove docker-compose containers, networks and volumes, run the command below in `springboot-react-basic-auth` root folder
+- To stop and remove docker-compose containers, network and volumes, run the command below in `springboot-react-basic-auth` root folder
   ```
   docker-compose down -v
   ```
