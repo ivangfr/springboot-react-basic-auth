@@ -222,9 +222,9 @@ The goal of this project is to implement an application called `book-app` to man
 
 ## Shutdown
 
-- Go to `book-api` and `book-ui` terminals and press `Ctrl+C`
+- To stop `book-api` and `book-ui`, go to the terminals where they are running and press `Ctrl+C`
 
-- To stop and remove docker-compose containers, network and volumes, run the command below in `springboot-react-basic-auth` root folder
+- To stop and remove docker-compose containers, network and volumes, go to a terminal and, inside `springboot-react-basic-auth` root folder, run the command below
   ```
   docker-compose down -v
   ```
