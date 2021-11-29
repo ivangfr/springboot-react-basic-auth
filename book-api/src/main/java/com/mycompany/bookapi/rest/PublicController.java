@@ -24,5 +24,4 @@ public class PublicController {
     public Integer getNumberOfBooks() {
         return bookService.getBooks().size();
     }
-
 }

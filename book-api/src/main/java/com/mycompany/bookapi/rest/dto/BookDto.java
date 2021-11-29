@@ -7,5 +7,4 @@ public class BookDto {
 
   private String isbn;
   private String title;
-
 }

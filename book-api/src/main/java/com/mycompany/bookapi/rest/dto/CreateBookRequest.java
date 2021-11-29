@@ -16,5 +16,4 @@ public class CreateBookRequest {
     @Schema(example = "Spring Security 3.1")
     @NotBlank
     private String title;
-
 }

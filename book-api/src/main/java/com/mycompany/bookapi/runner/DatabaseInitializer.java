@@ -116,5 +116,4 @@ public class DatabaseInitializer implements CommandLineRunner {
             "9781603093712;Upside Down (Book 2): A Hat Full of Spells\n" +
             "9781891830723;Will You Still Love Me If I Wet the Bed by Liz Prince\n" +
             "9781603094405;Ye\n";
-
 }

@@ -16,5 +16,4 @@ public class LoginRequest {
     @Schema(example = "user")
     @NotBlank
     private String password;
-
 }

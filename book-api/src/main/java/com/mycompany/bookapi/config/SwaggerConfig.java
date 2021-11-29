@@ -24,5 +24,4 @@ public class SwaggerConfig {
     }
 
     public static final String BASIC_AUTH_SECURITY_SCHEME = "basicAuth";
-
 }

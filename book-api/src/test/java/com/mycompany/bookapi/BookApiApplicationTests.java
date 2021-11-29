@@ -11,5 +11,4 @@ class BookApiApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

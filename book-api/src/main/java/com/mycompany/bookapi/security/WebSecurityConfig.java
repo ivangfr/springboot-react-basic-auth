@@ -42,5 +42,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String ADMIN = "ADMIN";
     public static final String USER = "USER";
-
 }
