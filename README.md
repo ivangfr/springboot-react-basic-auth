@@ -235,6 +235,7 @@ The goal of this project is to implement an application called `book-app` to man
 
 - Run the following commands
   ```
+  npm upgrade
   npm i -g npm-check-updates
   ncu -u
   npm install
