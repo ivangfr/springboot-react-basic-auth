@@ -216,7 +216,7 @@ The goal of this project is to implement an application called `book-app` to man
 
 - **MySQL**
   ```
-  docker exec -it mysql mysql -uroot -psecret --database=bookdb
+  docker exec -it -e MYSQL_PWD=secret mysql mysql -uroot --database bookdb
   show tables;
   ```
 
