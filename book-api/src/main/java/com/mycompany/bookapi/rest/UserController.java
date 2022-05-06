@@ -28,7 +28,7 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @Operation(security = {@SecurityRequirement(name = "basicAuth")})
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("/me")
     public UserDto getCurrentUser(@AuthenticationPrincipal CustomUserDetails currentUser) {
         return userMapper.toUserDto(userService.validateAndGetUserByUsername(currentUser.getUsername()));
