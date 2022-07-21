@@ -82,12 +82,12 @@ The goal of this project is to implement an application called `book-app` to man
 
 ## Applications URLs
 
-| Application | URL                                   | Credentials                                         |
-| ----------- | ------------------------------------- | --------------------------------------------------- |
-| book-api    | http://localhost:8080/swagger-ui.html |                                                     |
-| book-ui     | http://localhost:3000                 | `admin/admin`, `user/user` or signing up a new user |
+| Application | URL                                         | Credentials                                         |
+| ----------- | ------------------------------------------- | --------------------------------------------------- |
+| book-api    | http://localhost:8080/swagger-ui/index.html |                                                     |
+| book-ui     | http://localhost:3000                       | `admin/admin`, `user/user` or signing up a new user |
 
-> **Note:** the credentials shown in the table are the ones already pre-defined. You can signup new users.
+> **Note**: the credentials shown in the table are the ones already pre-defined. You can signup new users.
 
 ## Demo
 
@@ -103,7 +103,7 @@ The goal of this project is to implement an application called `book-app` to man
 
 - **Manual Endpoints Test using Swagger**
 
-  - Open a browser and access http://localhost:8080/swagger-ui.html. All endpoints with the lock sign are secured. In order to access them, you need a valid `username` and `password` credentials.
+  - Open a browser and access http://localhost:8080/swagger-ui/index.html. All endpoints with the lock sign are secured. In order to access them, you need a valid `username` and `password` credentials.
 
   - Click `Authorize` button (white/green one, almost at the top of the page, right side)
 
