@@ -2,6 +2,7 @@ package com.ivanfranchin.bookapi.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @RequiredArgsConstructor
+@Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
@@ -23,13 +25,13 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/books", "/api/books/**").hasAnyAuthority(ADMIN, USER)
-                .antMatchers(HttpMethod.GET, "/api/users/me").hasAnyAuthority(ADMIN, USER)
-                .antMatchers("/api/books", "/api/books/**").hasAuthority(ADMIN)
-                .antMatchers("/api/users", "/api/users/**").hasAuthority(ADMIN)
-                .antMatchers("/public/**", "/auth/**").permitAll()
-                .antMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
+        http.authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, "/api/books", "/api/books/**").hasAnyAuthority(ADMIN, USER)
+                .requestMatchers(HttpMethod.GET, "/api/users/me").hasAnyAuthority(ADMIN, USER)
+                .requestMatchers("/api/books", "/api/books/**").hasAuthority(ADMIN)
+                .requestMatchers("/api/users", "/api/users/**").hasAuthority(ADMIN)
+                .requestMatchers("/public/**", "/auth/**").permitAll()
+                .requestMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
