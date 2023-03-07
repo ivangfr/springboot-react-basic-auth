@@ -11,5 +11,5 @@ public interface BookRepository extends JpaRepository<Book, String> {
 
     List<Book> findAllByOrderByTitle();
 
-    List<Book> findByIsbnContainingOrTitleContainingOrderByTitle(String isbn, String title);
+    List<Book> findByIsbnContainingOrTitleContainingIgnoreCaseOrderByTitle(String isbn, String title);
 }

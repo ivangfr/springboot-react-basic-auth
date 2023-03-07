@@ -5,9 +5,9 @@ spring:
     hibernate:
       ddl-auto: create
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/bookdb?characterEncoding=UTF-8&serverTimezone=UTC
-    username: root
-    password: secret
+    url: jdbc:postgresql://localhost:5432/bookdb
+    username: postgres
+    password: postgres
 
 app:
   cors:
@@ -16,3 +16,4 @@ app:
 logging:
   level:
     org.springframework.security: DEBUG
+    # org.hibernate.SQL: DEBUG

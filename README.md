@@ -1,6 +1,6 @@
 # springboot-react-basic-auth
 
-The goal of this project is to implement an application called `book-app` to manage books. For it, we will implement a back-end application called `book-api` using [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) and a font-end application called `book-ui` using [ReactJS](https://reactjs.org/). Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) to secure both applications.
+The goal of this project is to implement an application called `book-app` to manage books. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application called `book-api` and a font-end [ReactJS](https://reactjs.org/) application called `book-ui`. Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) to secure both applications.
 
 ## Applications
 
@@ -10,7 +10,7 @@ The goal of this project is to implement an application called `book-app` to man
   
   The application secured endpoints can just be just accessed if a user has valid credentials (`username` and `password`) and has autorization roles for it.
   
-  `book-api` stores its data in [`MySQL`](https://www.mysql.com/) database.
+  `book-api` stores its data in [`Postgres`](https://www.postgresql.org/) database.
 
   `book-api` has the following endpoints
 
@@ -45,14 +45,11 @@ The goal of this project is to implement an application called `book-app` to man
 
 ## Start Environment
 
-- Open a terminal and inside `springboot-react-basic-auth` root folder run
+- In a terminal, make sure you are inside `springboot-react-basic-auth` root folder
+
+- Run the following command to start docker-compose containers
   ```
   docker-compose up -d
-  ```
-  
-- Wait for `mysql` Docker container to be up and running. To check it, run
-  ```
-  docker-compose ps
   ```
 
 ## Running book-app using Maven & Npm
@@ -214,10 +211,10 @@ The goal of this project is to implement an application called `book-app` to man
 
 ## Util Commands
 
-- **MySQL**
+- **Postgres**
   ```
-  docker exec -it -e MYSQL_PWD=secret mysql mysql -uroot --database bookdb
-  show tables;
+  docker exec -it postgres psql -U postgres -d moviedb
+  \dt
   ```
 
 ## Shutdown
