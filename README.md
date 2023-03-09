@@ -2,6 +2,10 @@
 
 The goal of this project is to implement an application called `book-app` to manage books. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application called `book-api` and a font-end [ReactJS](https://reactjs.org/) application called `book-ui`. Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) to secure both applications.
 
+## Project Diagram
+
+![project-diagram](documentation/project-diagram.png)
+
 ## Applications
 
 - ### book-api
