@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 import BookList from './BookList'
 import AuthContext from '../context/AuthContext'
@@ -64,7 +64,7 @@ class UserPage extends Component {
 
   render() {
     if (!this.state.isUser) {
-      return <Redirect to='/' />
+      return <Navigate to='/' />
     } else {
       const { isBooksLoading, books, bookTextSearch } = this.state
       return (
