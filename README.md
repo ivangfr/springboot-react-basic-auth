@@ -217,7 +217,7 @@ The goal of this project is to implement an application called `book-app` to man
 
 - **Postgres**
   ```
-  docker exec -it postgres psql -U postgres -d moviedb
+  docker exec -it postgres psql -U postgres -d bookdb
   \dt
   ```
 
