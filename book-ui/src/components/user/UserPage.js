@@ -65,20 +65,20 @@ class UserPage extends Component {
   render() {
     if (!this.state.isUser) {
       return <Navigate to='/' />
-    } else {
-      const { isBooksLoading, books, bookTextSearch } = this.state
-      return (
-        <Container>
-          <BookList
-            isBooksLoading={isBooksLoading}
-            bookTextSearch={bookTextSearch}
-            books={books}
-            handleInputChange={this.handleInputChange}
-            handleSearchBook={this.handleSearchBook}
-          />
-        </Container>
-      )
     }
+    
+    const { isBooksLoading, books, bookTextSearch } = this.state
+    return (
+      <Container>
+        <BookList
+          isBooksLoading={isBooksLoading}
+          bookTextSearch={bookTextSearch}
+          books={books}
+          handleInputChange={this.handleInputChange}
+          handleSearchBook={this.handleSearchBook}
+        />
+      </Container>
+    )
   }
 }
 

@@ -60,41 +60,41 @@ class Login extends Component {
     const { isLoggedIn, isError } = this.state
     if (isLoggedIn) {
       return <Navigate to={'/'} />
-    } else {
-      return (
-        <Grid textAlign='center'>
-          <Grid.Column style={{ maxWidth: 450 }}>
-            <Form size='large' onSubmit={this.handleSubmit}>
-              <Segment>
-                <Form.Input
-                  fluid
-                  autoFocus
-                  name='username'
-                  icon='user'
-                  iconPosition='left'
-                  placeholder='Username'
-                  onChange={this.handleInputChange}
-                />
-                <Form.Input
-                  fluid
-                  name='password'
-                  icon='lock'
-                  iconPosition='left'
-                  placeholder='Password'
-                  type='password'
-                  onChange={this.handleInputChange}
-                />
-                <Button color='blue' fluid size='large'>Login</Button>
-              </Segment>
-            </Form>
-            <Message>{`Don't have already an account? `}
-              <a href='/signup' color='teal' as={NavLink} to="/signup">Sign Up</a>
-            </Message>
-            {isError && <Message negative>The username or password provided are incorrect!</Message>}
-          </Grid.Column>
-        </Grid>
-      )
     }
+
+    return (
+      <Grid textAlign='center'>
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Form size='large' onSubmit={this.handleSubmit}>
+            <Segment>
+              <Form.Input
+                fluid
+                autoFocus
+                name='username'
+                icon='user'
+                iconPosition='left'
+                placeholder='Username'
+                onChange={this.handleInputChange}
+              />
+              <Form.Input
+                fluid
+                name='password'
+                icon='lock'
+                iconPosition='left'
+                placeholder='Password'
+                type='password'
+                onChange={this.handleInputChange}
+              />
+              <Button color='blue' fluid size='large'>Login</Button>
+            </Segment>
+          </Form>
+          <Message>{`Don't have already an account? `}
+            <a href='/signup' color='teal' as={NavLink} to="/signup">Sign Up</a>
+          </Message>
+          {isError && <Message negative>The username or password provided are incorrect!</Message>}
+        </Grid.Column>
+      </Grid>
+    )
   }
 }
 

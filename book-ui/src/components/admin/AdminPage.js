@@ -160,29 +160,29 @@ class AdminPage extends Component {
   render() {
     if (!this.state.isAdmin) {
       return <Navigate to='/' />
-    } else {
-      const { isUsersLoading, users, userUsernameSearch, isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch } = this.state
-      return (
-        <Container>
-          <AdminTab
-            isUsersLoading={isUsersLoading}
-            users={users}
-            userUsernameSearch={userUsernameSearch}
-            handleDeleteUser={this.handleDeleteUser}
-            handleSearchUser={this.handleSearchUser}
-            isBooksLoading={isBooksLoading}
-            books={books}
-            bookIsbn={bookIsbn}
-            bookTitle={bookTitle}
-            bookTextSearch={bookTextSearch}
-            handleAddBook={this.handleAddBook}
-            handleDeleteBook={this.handleDeleteBook}
-            handleSearchBook={this.handleSearchBook}
-            handleInputChange={this.handleInputChange}
-          />
-        </Container>
-      )
     }
+    
+    const { isUsersLoading, users, userUsernameSearch, isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch } = this.state
+    return (
+      <Container>
+        <AdminTab
+          isUsersLoading={isUsersLoading}
+          users={users}
+          userUsernameSearch={userUsernameSearch}
+          handleDeleteUser={this.handleDeleteUser}
+          handleSearchUser={this.handleSearchUser}
+          isBooksLoading={isBooksLoading}
+          books={books}
+          bookIsbn={bookIsbn}
+          bookTitle={bookTitle}
+          bookTextSearch={bookTextSearch}
+          handleAddBook={this.handleAddBook}
+          handleDeleteBook={this.handleDeleteBook}
+          handleSearchBook={this.handleSearchBook}
+          handleInputChange={this.handleInputChange}
+        />
+      </Container>
+    )
   }
 }
 
