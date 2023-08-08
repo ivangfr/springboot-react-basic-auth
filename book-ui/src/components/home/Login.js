@@ -25,35 +25,34 @@ class Login extends Component {
     this.setState({ [name]: value })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault()
-
+  
     const { username, password } = this.state
     if (!(username && password)) {
       this.setState({ isError: true })
       return
     }
-
-    bookApi.authenticate(username, password)
-      .then(response => {
-        const { id, name, role } = response.data
-        const authdata = window.btoa(username + ':' + password)
-        const user = { id, name, role, authdata }
-
-        const Auth = this.context
-        Auth.userLogin(user)
-
-        this.setState({
-          username: '',
-          password: '',
-          isLoggedIn: true,
-          isError: false
-        })
+  
+    try {
+      const response = await bookApi.authenticate(username, password)
+      const { id, name, role } = response.data
+      const authdata = window.btoa(username + ':' + password)
+      const newUser = { id, name, role, authdata }
+  
+      const Auth = this.context
+      Auth.userLogin(newUser)
+  
+      this.setState({
+        username: '',
+        password: '',
+        isLoggedIn: true,
+        isError: false
       })
-      .catch(error => {
-        handleLogError(error)
-        this.setState({ isError: true })
-      })
+    } catch (error) {
+      handleLogError(error)
+      this.setState({ isError: true })
+    }
   }
 
   render() {

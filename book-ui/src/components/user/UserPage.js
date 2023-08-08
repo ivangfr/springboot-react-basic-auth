@@ -29,37 +29,32 @@ class UserPage extends Component {
     this.setState({ [name]: value })
   }
 
-  handleGetBooks = () => {
-    const Auth = this.context
-    const user = Auth.getUser()
-
-    this.setState({ isBooksLoading: true })
-    bookApi.getBooks(user)
-      .then(response => {
-        this.setState({ books: response.data })
-      })
-      .catch(error => {
-        handleLogError(error)
-      })
-      .finally(() => {
-        this.setState({ isBooksLoading: false })
-      })
+  handleGetBooks = async () => {
+    try {
+      const user = this.context.getUser()
+  
+      this.setState({ isBooksLoading: true })
+      const response = await bookApi.getBooks(user)
+      this.setState({ books: response.data, isBooksLoading: false })
+    } catch (error) {
+      handleLogError(error)
+      this.setState({ isBooksLoading: false })
+    }
   }
 
-  handleSearchBook = () => {
-    const Auth = this.context
-    const user = Auth.getUser()
-
-    const text = this.state.bookTextSearch
-    bookApi.getBooks(user, text)
-      .then(response => {
-        const books = response.data
-        this.setState({ books })
-      })
-      .catch(error => {
-        handleLogError(error)
-        this.setState({ books: [] })
-      })
+  handleSearchBook = async () => {
+    try {
+      const user = this.context.getUser()
+      const text = this.state.bookTextSearch
+  
+      const response = await bookApi.getBooks(user, text)
+      const books = response.data
+  
+      this.setState({ books })
+    } catch (error) {
+      handleLogError(error)
+      this.setState({ books: [] })
+    }
   }
 
   render() {
