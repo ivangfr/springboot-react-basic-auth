@@ -1,80 +1,68 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 import BookList from './BookList'
-import AuthContext from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext'
 import { bookApi } from '../misc/BookApi'
 import { handleLogError } from '../misc/Helpers'
 
-class UserPage extends Component {
-  static contextType = AuthContext
+function UserPage() {
+  const Auth = useAuth()
+  const user = Auth.getUser()
+  const isUser = user.role === 'USER'
 
-  state = {
-    books: [],
-    bookTextSearch: '',
-    isUser: true,
-    isBooksLoading: false
+  const [books, setBooks] = useState([])
+  const [bookTextSearch, setBookTextSearch] = useState('')
+  const [isBooksLoading, setIsBooksLoading] = useState(false)
+
+  useEffect(() => {
+    handleGetBooks()
+  }, [])
+
+  const handleInputChange = (e, { name, value }) => {
+    if (name === 'bookTextSearch') {
+      setBookTextSearch(value)
+    }
   }
 
-  componentDidMount() {
-    const Auth = this.context
-    const user = Auth.getUser()
-    const isUser = user.role === 'USER'
-    this.setState({ isUser })
-
-    this.handleGetBooks()
-  }
-
-  handleInputChange = (e, { name, value }) => {
-    this.setState({ [name]: value })
-  }
-
-  handleGetBooks = async () => {
+  const handleGetBooks = async () => {
     try {
-      const user = this.context.getUser()
-  
-      this.setState({ isBooksLoading: true })
+      setIsBooksLoading(true)
       const response = await bookApi.getBooks(user)
-      this.setState({ books: response.data, isBooksLoading: false })
+      setBooks(response.data)
     } catch (error) {
       handleLogError(error)
-      this.setState({ isBooksLoading: false })
+    } finally {
+      setIsBooksLoading(false)
     }
   }
 
-  handleSearchBook = async () => {
+  const handleSearchBook = async () => {
     try {
-      const user = this.context.getUser()
-      const text = this.state.bookTextSearch
-  
-      const response = await bookApi.getBooks(user, text)
+      const response = await bookApi.getBooks(user, bookTextSearch)
       const books = response.data
-  
-      this.setState({ books })
+      setBooks(books)
     } catch (error) {
       handleLogError(error)
-      this.setState({ books: [] })
+      setBooks([])
     }
   }
 
-  render() {
-    if (!this.state.isUser) {
-      return <Navigate to='/' />
-    }
-    
-    const { isBooksLoading, books, bookTextSearch } = this.state
-    return (
-      <Container>
-        <BookList
-          isBooksLoading={isBooksLoading}
-          bookTextSearch={bookTextSearch}
-          books={books}
-          handleInputChange={this.handleInputChange}
-          handleSearchBook={this.handleSearchBook}
-        />
-      </Container>
-    )
+  if (!isUser) {
+    return <Navigate to='/' />
   }
+
+  return (
+    <Container>
+      <BookList
+        isBooksLoading={isBooksLoading}
+        bookTextSearch={bookTextSearch}
+        books={books}
+        handleInputChange={handleInputChange}
+        handleSearchBook={handleSearchBook}
+      />
+    </Container>
+  )
 }
 
 export default UserPage

@@ -1,179 +1,152 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
-import AuthContext from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext'
 import { bookApi } from '../misc/BookApi'
 import AdminTab from './AdminTab'
 import { handleLogError } from '../misc/Helpers'
 
-class AdminPage extends Component {
-  static contextType = AuthContext
+function AdminPage() {
+  const Auth = useAuth()
+  const user = Auth.getUser()
+  const isAdmin = user.role === 'ADMIN'
 
-  state = {
-    users: [],
-    books: [],
-    bookIsbn: '',
-    bookTitle: '',
-    bookTextSearch: '',
-    userUsernameSearch: '',
-    isAdmin: true,
-    isUsersLoading: false,
-    isBooksLoading: false,
+  const [users, setUsers] = useState([])
+  const [userUsernameSearch, setUserUsernameSearch] = useState('')
+  const [isUsersLoading, setIsUsersLoading] = useState(false)
+
+  const [books, setBooks] = useState([])
+  const [bookIsbn, setBookIsbn] = useState('')
+  const [bookTitle, setBookTitle] = useState('')
+  const [bookTextSearch, setBookTextSearch] = useState('')
+  const [isBooksLoading, setIsBooksLoading] = useState(false)
+
+  useEffect(() => {
+    handleGetUsers()
+    handleGetBooks()
+  }, [])
+
+  const handleInputChange = (e, { name, value }) => {
+    if (name === 'userUsernameSearch') {
+      setUserUsernameSearch(value)
+    } else if (name === 'bookIsbn') {
+      setBookIsbn(value)
+    } else if (name === 'bookTitle') {
+      setBookTitle(value)
+    } else if (name === 'bookTextSearch') {
+      setBookTextSearch(value)
+    }
   }
 
-  componentDidMount() {
-    const Auth = this.context
-    const user = Auth.getUser()
-    const isAdmin = user.role === 'ADMIN'
-    this.setState({ isAdmin })
-
-    this.handleGetUsers()
-    this.handleGetBooks()
-  }
-
-  handleInputChange = (e, { name, value }) => {
-    this.setState({ [name]: value })
-  }
-
-  handleGetUsers = async () => {
+  const handleGetUsers = async () => {
     try {
-      const user = this.context.getUser()
-
-      this.setState({ isUsersLoading: true })
-
+      setIsUsersLoading(true)
       const response = await bookApi.getUsers(user)
       const users = response.data
-
-      this.setState({ users })
+      setUsers(users)
     } catch (error) {
       handleLogError(error)
     } finally {
-      this.setState({ isUsersLoading: false })
+      setIsUsersLoading(false)
     }
   }
 
-  handleDeleteUser = async (username) => {
+  const handleDeleteUser = async (username) => {
     try {
-      const user = this.context.getUser()
-
       await bookApi.deleteUser(user, username)
-      await this.handleGetUsers()
+      await handleGetUsers()
     } catch (error) {
       handleLogError(error)
     }
   }
 
-  handleSearchUser = async () => {
+  const handleSearchUser = async () => {
     try {
-      const user = this.context.getUser()
-
-      const username = this.state.userUsernameSearch
-      const response = await bookApi.getUsers(user, username)
-
+      const response = await bookApi.getUsers(user, userUsernameSearch)
       const data = response.data
       const users = data instanceof Array ? data : [data]
-      this.setState({ users })
+      setUsers(users)
     } catch (error) {
       handleLogError(error)
-      this.setState({ users: [] })
+      setUsers([])
     }
   }
 
-  handleGetBooks = async () => {
+  const handleGetBooks = async () => {
     try {
-      const user = this.context.getUser()
-
-      this.setState({ isBooksLoading: true })
+      setIsBooksLoading(true)
       const response = await bookApi.getBooks(user)
-
-      this.setState({ books: response.data, isBooksLoading: false })
+      setBooks(response.data)
     } catch (error) {
       handleLogError(error)
-      this.setState({ isBooksLoading: false })
+    } finally {
+      setIsBooksLoading(false)
     }
   }
 
-  handleDeleteBook = async (isbn) => {
+  const handleDeleteBook = async (isbn) => {
     try {
-      const user = this.context.getUser()
-
       await bookApi.deleteBook(user, isbn)
-      this.handleGetBooks()
+      await handleGetBooks()
     } catch (error) {
       handleLogError(error)
     }
   }
 
-  handleAddBook = async () => {
+  const handleAddBook = async () => {
     try {
-      const user = this.context.getUser()
-
-      let { bookIsbn, bookTitle } = this.state
-      bookIsbn = bookIsbn.trim()
-      bookTitle = bookTitle.trim()
-
-      if (!(bookIsbn && bookTitle)) {
+      const book = { isbn: bookIsbn.trim(), title: bookTitle.trim() }
+      if (!(book.isbn && book.title)) {
         return
       }
-
-      const book = { isbn: bookIsbn, title: bookTitle }
       await bookApi.addBook(user, book)
-      this.clearBookForm()
-      this.handleGetBooks()
+      clearBookForm()
+      await handleGetBooks()
     } catch (error) {
       handleLogError(error)
     }
   }
 
-  handleSearchBook = async () => {
+  const handleSearchBook = async () => {
     try {
-      const user = this.context.getUser()
-      const text = this.state.bookTextSearch
-
-      const response = await bookApi.getBooks(user, text)
+      const response = await bookApi.getBooks(user, bookTextSearch)
       const books = response.data
-
-      this.setState({ books })
+      setBooks(books)
     } catch (error) {
       handleLogError(error)
-      this.setState({ books: [] })
+      setBooks([])
     }
   }
 
-  clearBookForm = () => {
-    this.setState({
-      bookIsbn: '',
-      bookTitle: ''
-    })
+  const clearBookForm = () => {
+    setBookIsbn('')
+    setBookTitle('')
   }
 
-  render() {
-    if (!this.state.isAdmin) {
-      return <Navigate to='/' />
-    }
-
-    const { isUsersLoading, users, userUsernameSearch, isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch } = this.state
-    return (
-      <Container>
-        <AdminTab
-          isUsersLoading={isUsersLoading}
-          users={users}
-          userUsernameSearch={userUsernameSearch}
-          handleDeleteUser={this.handleDeleteUser}
-          handleSearchUser={this.handleSearchUser}
-          isBooksLoading={isBooksLoading}
-          books={books}
-          bookIsbn={bookIsbn}
-          bookTitle={bookTitle}
-          bookTextSearch={bookTextSearch}
-          handleAddBook={this.handleAddBook}
-          handleDeleteBook={this.handleDeleteBook}
-          handleSearchBook={this.handleSearchBook}
-          handleInputChange={this.handleInputChange}
-        />
-      </Container>
-    )
+  if (!isAdmin) {
+    return <Navigate to='/' />
   }
+
+  return (
+    <Container>
+      <AdminTab
+        isUsersLoading={isUsersLoading}
+        users={users}
+        userUsernameSearch={userUsernameSearch}
+        handleDeleteUser={handleDeleteUser}
+        handleSearchUser={handleSearchUser}
+        isBooksLoading={isBooksLoading}
+        books={books}
+        bookIsbn={bookIsbn}
+        bookTitle={bookTitle}
+        bookTextSearch={bookTextSearch}
+        handleAddBook={handleAddBook}
+        handleDeleteBook={handleDeleteBook}
+        handleSearchBook={handleSearchBook}
+        handleInputChange={handleInputChange}
+      />
+    </Container>
+  )
 }
 
 export default AdminPage

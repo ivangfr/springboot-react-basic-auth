@@ -1,46 +1,46 @@
-import React, { Component, useContext } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 
-const AuthContext = React.createContext()
+const AuthContext = createContext()
 
-class AuthProvider extends Component {
-  state = {
-    user: null
-  }
+function AuthProvider({ children }) {
+  const [user, setUser] = useState(null)
 
-  componentDidMount() {
-    const user = localStorage.getItem('user')
-    this.setState({ user })
-  }
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'))
+    setUser(storedUser)
+  }, [])
 
-  getUser = () => {
+  const getUser = () => {
     return JSON.parse(localStorage.getItem('user'))
   }
 
-  userIsAuthenticated = () => {
+  const userIsAuthenticated = () => {
     return localStorage.getItem('user') !== null
   }
 
-  userLogin = user => {
+  const userLogin = user => {
     localStorage.setItem('user', JSON.stringify(user))
-    this.setState({ user })
+    setUser(user)
   }
 
-  userLogout = () => {
+  const userLogout = () => {
     localStorage.removeItem('user')
-    this.setState({ user: null })
+    setUser(null)
   }
 
-  render() {
-    const { children } = this.props
-    const { user } = this.state
-    const { getUser, userIsAuthenticated, userLogin, userLogout } = this
-
-    return (
-      <AuthContext.Provider value={{ user, getUser, userIsAuthenticated, userLogin, userLogout, }}>
-        {children}
-      </AuthContext.Provider>
-    )
+  const contextValue = {
+    user,
+    getUser,
+    userIsAuthenticated,
+    userLogin,
+    userLogout,
   }
+
+  return (
+    <AuthContext.Provider value={contextValue}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export default AuthContext
