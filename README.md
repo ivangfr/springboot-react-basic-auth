@@ -1,6 +1,6 @@
 # springboot-react-basic-auth
 
-The goal of this project is to implement an application called `book-app` to manage books. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application called `book-api` and a font-end [React](https://react.dev/) application called `book-ui`. Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) to secure both applications.
+The goal of this project is to implement an application called `book-app` to manage books. For it, we will implement a back-end [`Spring Boot`](https://spring.io/projects/spring-boot) application called `book-api` and a font-end [React](https://react.dev/) application called `book-ui`. Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) to secure both applications.
 
 ## Proof-of-Concepts & Articles
 
@@ -27,7 +27,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   
   `book-api` stores its data in [`Postgres`](https://www.postgresql.org/) database.
 
-  `book-api` has the following endpoints
+  `book-api` has the following endpoints:
 
   | Endpoint                                                      | Secured | Roles           |
   | ------------------------------------------------------------- | ------- | --------------- |
@@ -59,9 +59,9 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## Start Environment
 
-- In a terminal, make sure you are inside `springboot-react-basic-auth` root folder
+- In a terminal, make sure you are inside `springboot-react-basic-auth` root folder;
 
-- Run the following command to start docker compose containers
+- Run the following command to start docker compose services:
   ```
   docker compose up -d
   ```
@@ -70,23 +70,23 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - **book-api**
 
-  - Open a terminal and navigate to `springboot-react-basic-auth/book-api` folder
+  - Open a terminal and navigate to `springboot-react-basic-auth/book-api` folder;
 
-  - Run the following `Maven` command to start the application
+  - Run the following `Maven` command to start the application:
     ```
     ./mvnw clean spring-boot:run
     ```
 
 - **book-ui**
 
-  - Open another terminal and navigate to `springboot-react-basic-auth/book-ui` folder
+  - Open another terminal and navigate to `springboot-react-basic-auth/book-ui` folder;
 
-  - Run the command below if you are running the application for the first time
+  - Run the command below if you are running the application for the first time:
     ```
     npm install
     ```
 
-  - Run the `npm` command below to start the application
+  - Run the `npm` command below to start the application:
     ```
     npm start
     ```
@@ -102,11 +102,11 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## Demo
 
-- The gif below shows a `user` loging in
+- The gif below shows a `user` loging in:
 
   ![user-login](documentation/user-login.gif)
 
-- The gif below shows an `admin` loging in
+- The gif below shows an `admin` loging in:
 
   ![admin-login](documentation/admin-login.gif)
 
@@ -114,19 +114,19 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - **Manual Endpoints Test using Swagger**
 
-  - Open a browser and access http://localhost:8080/swagger-ui.html. All endpoints with the lock sign are secured. In order to access them, you need a valid `username` and `password` credentials.
+  - Open a browser and access http://localhost:8080/swagger-ui.html. All endpoints with the lock sign are secured. In order to access them, you need a valid `username` and `password` credentials;
 
-  - Click `Authorize` button (white/green one, almost at the top of the page, right side)
+  - Click `Authorize` button (white/green one, almost at the top of the page, right side);
 
-  - In the `Basic authentication` form that will open, provide the `admin` credentials (`admin/admin`) or `user` ones (`user/user`). Then, click `Authorize` and, finally, click `Close` button.
+  - In the `Basic authentication` form that will open, provide the `admin` credentials (`admin/admin`) or `user` ones (`user/user`). Then, click `Authorize` and, finally, click `Close` button;
 
-  - Make some call to the endpoints
+  - Make some call to the endpoints.
 
 - **Manual Endpoints Test using curl**
 
-  - Open a terminal
+  - Open a terminal:
 
-  - Call `GET /public/numberOfBooks`
+  - Call `GET /public/numberOfBooks`:
     ```
     curl -i localhost:8080/public/numberOfBooks
     ```
@@ -136,21 +136,21 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
     70
     ```
     
-  - Call `GET /api/books` without credentials
+  - Call `GET /api/books` without credentials:
     ```
     curl -i localhost:8080/api/books
     ```
-    As this endpoint requires authentication, it should return
+    As this endpoint requires authentication, it should return:
     ```
     HTTP/1.1 401
     { "timestamp": "...", "status": 401, "error": "Unauthorized", "message": "Unauthorized", "path": "/api/books" }
     ```
     
-  - Call again `GET /api/books` but now with `user` credentials
+  - Call again `GET /api/books` but now with `user` credentials:
     ```
     curl -i -u user:user localhost:8080/api/books
     ```
-    It should return
+    It should return:
     ```
     HTTP/1.1 200
     [
@@ -160,23 +160,23 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
     ]
     ```
     
-  - Call `POST /api/books` with `user` credentials
+  - Call `POST /api/books` with `user` credentials:
     ```
     curl -i -u user:user -X POST localhost:8080/api/books \
     -H "Content-Type: application/json" -d '{"isbn": "9781617292545", "title": "Spring Boot in Action"}'
     ```
-    As `user` doesn't have the role `ADMIN`, it should return
+    As `user` doesn't have the role `ADMIN`, it should return:
     ```
     HTTP/1.1 403
     { "timestamp": "...", "status": 403, "error": "Forbidden", "message": "Forbidden", "path": "/api/books" }
     ```
     
-  - Call `POST /api/books` with `admin` credentials
+  - Call `POST /api/books` with `admin` credentials:
     ```
     curl -i -u admin:admin -X POST localhost:8080/api/books \
     -H "Content-Type: application/json" -d '{"isbn": "9781617292545", "title": "Spring Boot in Action"}'
     ```
-    It should return
+    It should return:
     ```
     HTTP/1.1 201
     { "isbn":"9781617292545","title":"Spring Boot in Action" }
@@ -184,13 +184,13 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - **Automatic Endpoints Test**
 
-  - Open a terminal and make sure you are in `springboot-react-basic-auth` root folder
+  - Open a terminal and make sure you are in `springboot-react-basic-auth` root folder;
   
-  - Run the following script
+  - Run the following script:
     ```
     ./book-api/test-endpoints.sh
     ```
-    It should return something like the output below, where it shows the http code for different requests 
+    It should return something like the output below, where it shows the http code for different requests:
     ```
     POST auth/authenticate
     ======================
@@ -233,18 +233,18 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## Shutdown
 
-- To stop `book-api` and `book-ui`, go to the terminals where they are running and press `Ctrl+C`
+- To stop `book-api` and `book-ui`, go to the terminals where they are running and press `Ctrl+C`;
 
-- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside `springboot-react-basic-auth` root folder, run the command below
+- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside `springboot-react-basic-auth` root folder, run the command below:
   ```
   docker compose down -v
   ```
 
 ## How to upgrade book-ui dependencies to latest version
 
-- In a terminal, make sure you are in `springboot-react-basic-auth/book-ui` folder
+- In a terminal, make sure you are in `springboot-react-basic-auth/book-ui` folder;
 
-- Run the following commands
+- Run the following commands:
   ```
   npm upgrade
   npm i -g npm-check-updates
