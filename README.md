@@ -55,15 +55,15 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [`Java 21+`](https://www.oracle.com/java/technologies/downloads/#java21)
-- [`Podman`](https://podman.io)
+- Some containerization tool [`Docker`](https://www.docker.com), [`Podman`](https://podman.io), etc.
 
 ## Start Environment
 
 - In a terminal, make sure you are inside `springboot-react-basic-auth` root folder;
 
-- Run the following command to start docker containers:
+- Run the following command to start docker compose containers:
   ```
-  podman compose up -d
+  docker compose up -d
   ```
 
 ## Running book-app using Maven & Npm
@@ -227,7 +227,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - **Postgres**
   ```
-  podman exec -it postgres psql -U postgres -d bookdb
+  docker exec -it postgres psql -U postgres -d bookdb
   \dt
   ```
 
@@ -235,9 +235,9 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - To stop `book-api` and `book-ui`, go to the terminals where they are running and press `Ctrl+C`;
 
-- To stop and remove docker containers, network and volumes, go to a terminal and, inside `springboot-react-basic-auth` root folder, run the command below:
+- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside `springboot-react-basic-auth` root folder, run the command below:
   ```
-  podman compose down -v
+  docker compose down -v
   ```
 
 ## How to upgrade book-ui dependencies to latest version
