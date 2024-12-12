@@ -9,7 +9,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 ## Additional Readings
 
 - \[**Medium**\] [**Implementing A Full Stack Web App Using Spring-Boot and React**](https://medium.com/@ivangfr/implementing-a-full-stack-web-app-using-spring-boot-and-react-7db598df4452)
-- \[**Medium**\] [**Implementing Social Login in a Spring Boot and React App**](https://medium.com/@ivangfr/implementing-social-login-in-a-spring-boot-and-react-app-6ce073c9983c)
+- \[**Medium**\] [**Implementing Social Login in a Spring Boot and React App**](https://medium.com/@ivangfr/implementing-social-login-in-a-spring-boot-and-react-app-6ce073c9983c)
 - \[**Medium**\] [**Building a Web Chat with Social Login using Spring Boot: Introduction**](https://medium.com/@ivangfr/building-a-web-chat-with-social-login-using-spring-boot-introduction-644702e6be8e)
 - \[**Medium**\] [**Building a Single Spring Boot App with Keycloak or Okta as IdP: Introduction**](https://medium.com/@ivangfr/building-a-single-spring-boot-app-with-keycloak-or-okta-as-idp-introduction-2814a4829aed)
 
@@ -59,7 +59,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## Start Environment
 
-- In a terminal, make sure you are inside `springboot-react-basic-auth` root folder;
+- In a terminal, make sure you are inside the `springboot-react-basic-auth` root folder;
 
 - Run the following command to start docker compose containers:
   ```
@@ -70,7 +70,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - **book-api**
 
-  - Open a terminal and navigate to `springboot-react-basic-auth/book-api` folder;
+  - Open a terminal and navigate to the `springboot-react-basic-auth/book-api` folder;
 
   - Run the following `Maven` command to start the application:
     ```
@@ -79,7 +79,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - **book-ui**
 
-  - Open another terminal and navigate to `springboot-react-basic-auth/book-ui` folder;
+  - Open another terminal and navigate to the `springboot-react-basic-auth/book-ui` folder;
 
   - Run the command below if you are running the application for the first time:
     ```
@@ -184,7 +184,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - **Automatic Endpoints Test**
 
-  - Open a terminal and make sure you are in `springboot-react-basic-auth` root folder;
+  - Open a terminal and make sure you are in the `springboot-react-basic-auth` root folder;
   
   - Run the following script:
     ```
@@ -235,14 +235,14 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - To stop `book-api` and `book-ui`, go to the terminals where they are running and press `Ctrl+C`;
 
-- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside `springboot-react-basic-auth` root folder, run the command below:
+- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside the `springboot-react-basic-auth` root folder, run the command below:
   ```
   docker compose down -v
   ```
 
 ## How to upgrade book-ui dependencies to latest version
 
-- In a terminal, make sure you are in `springboot-react-basic-auth/book-ui` folder;
+- In a terminal, make sure you are in the `springboot-react-basic-auth/book-ui` folder;
 
 - Run the following commands:
   ```

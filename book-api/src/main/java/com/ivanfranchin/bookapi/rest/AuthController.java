@@ -5,7 +5,7 @@ import com.ivanfranchin.bookapi.model.User;
 import com.ivanfranchin.bookapi.rest.dto.AuthResponse;
 import com.ivanfranchin.bookapi.rest.dto.LoginRequest;
 import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
-import com.ivanfranchin.bookapi.security.WebSecurityConfig;
+import com.ivanfranchin.bookapi.security.SecurityConfig;
 import com.ivanfranchin.bookapi.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +56,7 @@ public class AuthController {
         user.setPassword(signUpRequest.getPassword());
         user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
-        user.setRole(WebSecurityConfig.USER);
+        user.setRole(SecurityConfig.USER);
         return user;
     }
 }

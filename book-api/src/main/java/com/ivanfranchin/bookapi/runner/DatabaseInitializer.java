@@ -2,7 +2,7 @@ package com.ivanfranchin.bookapi.runner;
 
 import com.ivanfranchin.bookapi.model.Book;
 import com.ivanfranchin.bookapi.model.User;
-import com.ivanfranchin.bookapi.security.WebSecurityConfig;
+import com.ivanfranchin.bookapi.security.SecurityConfig;
 import com.ivanfranchin.bookapi.service.BookService;
 import com.ivanfranchin.bookapi.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +40,8 @@ public class DatabaseInitializer implements CommandLineRunner {
     }
 
     private static final List<User> USERS = Arrays.asList(
-            new User("admin", "admin", "Admin", "admin@mycompany.com", WebSecurityConfig.ADMIN),
-            new User("user", "user", "User", "user@mycompany.com", WebSecurityConfig.USER)
+            new User("admin", "admin", "Admin", "admin@mycompany.com", SecurityConfig.ADMIN),
+            new User("user", "user", "User", "user@mycompany.com", SecurityConfig.USER)
     );
 
     private static final String BOOKS_STR =
