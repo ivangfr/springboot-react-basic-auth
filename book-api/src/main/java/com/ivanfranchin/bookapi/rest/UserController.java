@@ -1,6 +1,5 @@
 package com.ivanfranchin.bookapi.rest;
 
-import com.ivanfranchin.bookapi.mapper.UserMapper;
 import com.ivanfranchin.bookapi.model.User;
 import com.ivanfranchin.bookapi.rest.dto.UserDto;
 import com.ivanfranchin.bookapi.security.CustomUserDetails;
@@ -26,26 +25,25 @@ import static com.ivanfranchin.bookapi.config.SwaggerConfig.BASIC_AUTH_SECURITY_
 public class UserController {
 
     private final UserService userService;
-    private final UserMapper userMapper;
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("/me")
     public UserDto getCurrentUser(@AuthenticationPrincipal CustomUserDetails currentUser) {
-        return userMapper.toUserDto(userService.validateAndGetUserByUsername(currentUser.getUsername()));
+        return toUserDto(userService.validateAndGetUserByUsername(currentUser.getUsername()));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping
     public List<UserDto> getUsers() {
         return userService.getUsers().stream()
-                .map(userMapper::toUserDto)
+                .map(this::toUserDto)
                 .collect(Collectors.toList());
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("/{username}")
     public UserDto getUser(@PathVariable String username) {
-        return userMapper.toUserDto(userService.validateAndGetUserByUsername(username));
+        return toUserDto(userService.validateAndGetUserByUsername(username));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
@@ -53,6 +51,10 @@ public class UserController {
     public UserDto deleteUser(@PathVariable String username) {
         User user = userService.validateAndGetUserByUsername(username);
         userService.deleteUser(user);
-        return userMapper.toUserDto(user);
+        return toUserDto(user);
+    }
+
+    public UserDto toUserDto(User user) {
+        return new UserDto(user.getId(), user.getUsername(), user.getName(), user.getEmail(), user.getRole());
     }
 }

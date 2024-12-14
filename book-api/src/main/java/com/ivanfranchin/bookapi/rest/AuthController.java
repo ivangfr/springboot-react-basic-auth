@@ -28,7 +28,7 @@ public class AuthController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        Optional<User> userOptional = userService.validUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
+        Optional<User> userOptional = userService.validUsernameAndPassword(loginRequest.username(), loginRequest.password());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             return ResponseEntity.ok(new AuthResponse(user.getId(), user.getName(), user.getRole()));
@@ -39,11 +39,11 @@ public class AuthController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
     public AuthResponse signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if (userService.hasUserWithUsername(signUpRequest.getUsername())) {
-            throw new DuplicatedUserInfoException(String.format("Username %s is already been used", signUpRequest.getUsername()));
+        if (userService.hasUserWithUsername(signUpRequest.username())) {
+            throw new DuplicatedUserInfoException(String.format("Username %s is already been used", signUpRequest.username()));
         }
-        if (userService.hasUserWithEmail(signUpRequest.getEmail())) {
-            throw new DuplicatedUserInfoException(String.format("Email %s is already been used", signUpRequest.getEmail()));
+        if (userService.hasUserWithEmail(signUpRequest.email())) {
+            throw new DuplicatedUserInfoException(String.format("Email %s is already been used", signUpRequest.email()));
         }
 
         User user = userService.saveUser(createUser(signUpRequest));
@@ -52,10 +52,10 @@ public class AuthController {
 
     private User createUser(SignUpRequest signUpRequest) {
         User user = new User();
-        user.setUsername(signUpRequest.getUsername());
-        user.setPassword(signUpRequest.getPassword());
-        user.setName(signUpRequest.getName());
-        user.setEmail(signUpRequest.getEmail());
+        user.setUsername(signUpRequest.username());
+        user.setPassword(signUpRequest.password());
+        user.setName(signUpRequest.name());
+        user.setEmail(signUpRequest.email());
         user.setRole(SecurityConfig.USER);
         return user;
     }

@@ -1,6 +1,5 @@
 package com.ivanfranchin.bookapi.rest;
 
-import com.ivanfranchin.bookapi.mapper.BookMapper;
 import com.ivanfranchin.bookapi.model.Book;
 import com.ivanfranchin.bookapi.rest.dto.BookDto;
 import com.ivanfranchin.bookapi.rest.dto.CreateBookRequest;
@@ -31,14 +30,13 @@ import static com.ivanfranchin.bookapi.config.SwaggerConfig.BASIC_AUTH_SECURITY_
 public class BookController {
 
     private final BookService bookService;
-    private final BookMapper bookMapper;
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping
     public List<BookDto> getBooks(@RequestParam(value = "text", required = false) String text) {
         List<Book> books = (text == null) ? bookService.getBooks() : bookService.getBooksContainingText(text);
         return books.stream()
-                .map(bookMapper::toBookDto)
+                .map(this::toBookDto)
                 .collect(Collectors.toList());
     }
 
@@ -46,8 +44,8 @@ public class BookController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BookDto createBook(@Valid @RequestBody CreateBookRequest createBookRequest) {
-        Book book = bookMapper.toBook(createBookRequest);
-        return bookMapper.toBookDto(bookService.saveBook(book));
+        Book book = toBook(createBookRequest);
+        return toBookDto(bookService.saveBook(book));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
@@ -55,6 +53,14 @@ public class BookController {
     public BookDto deleteBook(@PathVariable String isbn) {
         Book book = bookService.validateAndGetBook(isbn);
         bookService.deleteBook(book);
-        return bookMapper.toBookDto(book);
+        return toBookDto(book);
+    }
+
+    private Book toBook(CreateBookRequest createBookRequest) {
+        return new Book(createBookRequest.isbn(), createBookRequest.title());
+    }
+
+    private BookDto toBookDto(Book book) {
+        return new BookDto(book.getIsbn(), book.getTitle());
     }
 }
