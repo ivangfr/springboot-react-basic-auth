@@ -1,6 +1,6 @@
 package com.ivanfranchin.bookapi.rest.dto;
 
-import com.ivanfranchin.bookapi.model.Book;
+import com.ivanfranchin.bookapi.book.Book;
 
 public record BookDto(String isbn, String title) {
 

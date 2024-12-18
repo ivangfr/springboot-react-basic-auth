@@ -1,4 +1,4 @@
-package com.ivanfranchin.bookapi.exception;
+package com.ivanfranchin.bookapi.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

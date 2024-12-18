@@ -1,6 +1,5 @@
-package com.ivanfranchin.bookapi.repository;
+package com.ivanfranchin.bookapi.book;
 
-import com.ivanfranchin.bookapi.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

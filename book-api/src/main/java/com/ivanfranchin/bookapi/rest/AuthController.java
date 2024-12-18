@@ -1,11 +1,12 @@
 package com.ivanfranchin.bookapi.rest;
 
-import com.ivanfranchin.bookapi.exception.DuplicatedUserInfoException;
-import com.ivanfranchin.bookapi.model.User;
+import com.ivanfranchin.bookapi.security.SecurityConfig;
+import com.ivanfranchin.bookapi.user.DuplicatedUserInfoException;
+import com.ivanfranchin.bookapi.user.User;
 import com.ivanfranchin.bookapi.rest.dto.AuthResponse;
 import com.ivanfranchin.bookapi.rest.dto.LoginRequest;
 import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
-import com.ivanfranchin.bookapi.service.UserService;
+import com.ivanfranchin.bookapi.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,17 @@ public class AuthController {
             throw new DuplicatedUserInfoException(String.format("Email %s is already been used", signUpRequest.email()));
         }
 
-        User user = userService.saveUser(User.from(signUpRequest));
+        User user = userService.saveUser(this.mapSignUpRequestToUser(signUpRequest));
         return new AuthResponse(user.getId(), user.getName(), user.getRole());
+    }
+
+    private User mapSignUpRequestToUser(SignUpRequest signUpRequest) {
+        User user = new User();
+        user.setUsername(signUpRequest.username());
+        user.setPassword(signUpRequest.password());
+        user.setName(signUpRequest.name());
+        user.setEmail(signUpRequest.email());
+        user.setRole(SecurityConfig.USER);
+        return user;
     }
 }

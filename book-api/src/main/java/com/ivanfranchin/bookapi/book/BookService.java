@@ -1,6 +1,4 @@
-package com.ivanfranchin.bookapi.service;
-
-import com.ivanfranchin.bookapi.model.Book;
+package com.ivanfranchin.bookapi.book;
 
 import java.util.List;
 

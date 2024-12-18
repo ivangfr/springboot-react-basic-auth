@@ -1,8 +1,5 @@
-package com.ivanfranchin.bookapi.service;
+package com.ivanfranchin.bookapi.book;
 
-import com.ivanfranchin.bookapi.model.Book;
-import com.ivanfranchin.bookapi.exception.BookNotFoundException;
-import com.ivanfranchin.bookapi.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

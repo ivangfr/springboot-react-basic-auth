@@ -1,4 +1,4 @@
-package com.ivanfranchin.bookapi.model;
+package com.ivanfranchin.bookapi.book;
 
 import com.ivanfranchin.bookapi.rest.dto.CreateBookRequest;
 import jakarta.persistence.Entity;

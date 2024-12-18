@@ -1,9 +1,9 @@
 package com.ivanfranchin.bookapi.rest;
 
-import com.ivanfranchin.bookapi.model.User;
+import com.ivanfranchin.bookapi.user.User;
 import com.ivanfranchin.bookapi.rest.dto.UserDto;
 import com.ivanfranchin.bookapi.security.CustomUserDetails;
-import com.ivanfranchin.bookapi.service.UserService;
+import com.ivanfranchin.bookapi.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;

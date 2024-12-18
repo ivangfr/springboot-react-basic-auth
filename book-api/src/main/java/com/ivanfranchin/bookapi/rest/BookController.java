@@ -1,9 +1,9 @@
 package com.ivanfranchin.bookapi.rest;
 
-import com.ivanfranchin.bookapi.model.Book;
+import com.ivanfranchin.bookapi.book.Book;
 import com.ivanfranchin.bookapi.rest.dto.BookDto;
 import com.ivanfranchin.bookapi.rest.dto.CreateBookRequest;
-import com.ivanfranchin.bookapi.service.BookService;
+import com.ivanfranchin.bookapi.book.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;

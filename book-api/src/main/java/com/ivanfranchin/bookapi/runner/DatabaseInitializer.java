@@ -1,10 +1,10 @@
 package com.ivanfranchin.bookapi.runner;
 
-import com.ivanfranchin.bookapi.model.Book;
-import com.ivanfranchin.bookapi.model.User;
+import com.ivanfranchin.bookapi.book.Book;
+import com.ivanfranchin.bookapi.user.User;
 import com.ivanfranchin.bookapi.security.SecurityConfig;
-import com.ivanfranchin.bookapi.service.BookService;
-import com.ivanfranchin.bookapi.service.UserService;
+import com.ivanfranchin.bookapi.book.BookService;
+import com.ivanfranchin.bookapi.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
