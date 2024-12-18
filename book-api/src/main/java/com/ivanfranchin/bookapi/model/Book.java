@@ -1,5 +1,6 @@
 package com.ivanfranchin.bookapi.model;
 
+import com.ivanfranchin.bookapi.rest.dto.CreateBookRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -18,4 +19,8 @@ public class Book {
     private String isbn;
 
     private String title;
+
+    public static Book from(CreateBookRequest createBookRequest) {
+        return new Book(createBookRequest.isbn(), createBookRequest.title());
+    }
 }

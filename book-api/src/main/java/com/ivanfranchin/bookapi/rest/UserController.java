@@ -29,21 +29,21 @@ public class UserController {
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("/me")
     public UserDto getCurrentUser(@AuthenticationPrincipal CustomUserDetails currentUser) {
-        return toUserDto(userService.validateAndGetUserByUsername(currentUser.getUsername()));
+        return UserDto.from(userService.validateAndGetUserByUsername(currentUser.getUsername()));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping
     public List<UserDto> getUsers() {
         return userService.getUsers().stream()
-                .map(this::toUserDto)
+                .map(UserDto::from)
                 .collect(Collectors.toList());
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("/{username}")
     public UserDto getUser(@PathVariable String username) {
-        return toUserDto(userService.validateAndGetUserByUsername(username));
+        return UserDto.from(userService.validateAndGetUserByUsername(username));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
@@ -51,10 +51,6 @@ public class UserController {
     public UserDto deleteUser(@PathVariable String username) {
         User user = userService.validateAndGetUserByUsername(username);
         userService.deleteUser(user);
-        return toUserDto(user);
-    }
-
-    public UserDto toUserDto(User user) {
-        return new UserDto(user.getId(), user.getUsername(), user.getName(), user.getEmail(), user.getRole());
+        return UserDto.from(user);
     }
 }

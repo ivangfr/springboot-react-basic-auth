@@ -5,7 +5,6 @@ import com.ivanfranchin.bookapi.model.User;
 import com.ivanfranchin.bookapi.rest.dto.AuthResponse;
 import com.ivanfranchin.bookapi.rest.dto.LoginRequest;
 import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
-import com.ivanfranchin.bookapi.security.SecurityConfig;
 import com.ivanfranchin.bookapi.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -46,17 +45,7 @@ public class AuthController {
             throw new DuplicatedUserInfoException(String.format("Email %s is already been used", signUpRequest.email()));
         }
 
-        User user = userService.saveUser(createUser(signUpRequest));
+        User user = userService.saveUser(User.from(signUpRequest));
         return new AuthResponse(user.getId(), user.getName(), user.getRole());
-    }
-
-    private User createUser(SignUpRequest signUpRequest) {
-        User user = new User();
-        user.setUsername(signUpRequest.username());
-        user.setPassword(signUpRequest.password());
-        user.setName(signUpRequest.name());
-        user.setEmail(signUpRequest.email());
-        user.setRole(SecurityConfig.USER);
-        return user;
     }
 }

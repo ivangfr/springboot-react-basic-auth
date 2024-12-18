@@ -36,7 +36,7 @@ public class BookController {
     public List<BookDto> getBooks(@RequestParam(value = "text", required = false) String text) {
         List<Book> books = (text == null) ? bookService.getBooks() : bookService.getBooksContainingText(text);
         return books.stream()
-                .map(this::toBookDto)
+                .map(BookDto::from)
                 .collect(Collectors.toList());
     }
 
@@ -44,8 +44,8 @@ public class BookController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BookDto createBook(@Valid @RequestBody CreateBookRequest createBookRequest) {
-        Book book = toBook(createBookRequest);
-        return toBookDto(bookService.saveBook(book));
+        Book book = Book.from(createBookRequest);
+        return BookDto.from(bookService.saveBook(book));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
@@ -53,14 +53,6 @@ public class BookController {
     public BookDto deleteBook(@PathVariable String isbn) {
         Book book = bookService.validateAndGetBook(isbn);
         bookService.deleteBook(book);
-        return toBookDto(book);
-    }
-
-    private Book toBook(CreateBookRequest createBookRequest) {
-        return new Book(createBookRequest.isbn(), createBookRequest.title());
-    }
-
-    private BookDto toBookDto(Book book) {
-        return new BookDto(book.getIsbn(), book.getTitle());
+        return BookDto.from(book);
     }
 }
