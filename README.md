@@ -23,9 +23,9 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
   `Spring Boot` Web Java backend application that exposes a Rest API to create, retrieve and delete books. If a user has `ADMIN` role he/she can also retrieve information of other users or delete them.
   
-  The application secured endpoints can just be just accessed if a user has valid credentials (`username` and `password`) and has autorization roles for it.
+  The application's secured endpoints can only be accessed if a user has valid credentials (`username` and `password`) and has authorization roles for it.
   
-  `book-api` stores its data in [`Postgres`](https://www.postgresql.org/) database.
+  `book-api` stores its data in a [`Postgres`](https://www.postgresql.org/) database.
 
   `book-api` has the following endpoints:
 
@@ -47,15 +47,15 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
   `React` frontend application where a user with role `USER` can retrieve the information of a specific book or a list of books. On the other hand, a user with role `ADMIN` has access to all secured endpoints.
   
-  To login, a `user` or `admin` must provide valid `username` and `password` credentials. `book-ui` communicates with `book-api` to get `books` and `users` data.
+  To log in, a `user` or `admin` must provide valid `username` and `password` credentials. `book-ui` communicates with `book-api` to get `books` and `users` data.
   
   `book-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
 ## Prerequisites
 
 - [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-- [`Java 21+`](https://www.oracle.com/java/technologies/downloads/#java21)
-- Some containerization tool [`Docker`](https://www.docker.com), [`Podman`](https://podman.io), etc.
+- [`Java 21`](https://www.oracle.com/java/technologies/downloads/#java21) or higher;
+- A containerization tool (e.g., [`Docker`](https://www.docker.com), [`Podman`](https://podman.io), etc.)
 
 ## Start Environment
 
@@ -102,11 +102,11 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## Demo
 
-- The gif below shows a `user` loging in:
+- The gif below shows a `user` logging in:
 
   ![user-login](documentation/user-login.gif)
 
-- The gif below shows an `admin` loging in:
+- The gif below shows an `admin` logging in:
 
   ![admin-login](documentation/admin-login.gif)
 
@@ -120,7 +120,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
   - In the `Basic authentication` form that will open, provide the `admin` credentials (`admin/admin`) or `user` ones (`user/user`). Then, click `Authorize` and, finally, click `Close` button;
 
-  - Make some call to the endpoints.
+  - Make some calls to the endpoints.
 
 - **Manual Endpoints Test using curl**
 
@@ -235,7 +235,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - To stop `book-api` and `book-ui`, go to the terminals where they are running and press `Ctrl+C`;
 
-- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside the `springboot-react-basic-auth` root folder, run the command below:
+- To stop and remove Docker Compose containers, network, and volumes, go to a terminal and, inside the `springboot-react-basic-auth` root folder, run the command below:
   ```
   docker compose down -v
   ```
