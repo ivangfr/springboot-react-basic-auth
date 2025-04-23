@@ -62,7 +62,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 - In a terminal, make sure you are inside the `springboot-react-basic-auth` root folder;
 
 - Run the following command to start docker compose containers:
-  ```
+  ```bash
   docker compose up -d
   ```
 
@@ -73,7 +73,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   - Open a terminal and navigate to the `springboot-react-basic-auth/book-api` folder;
 
   - Run the following `Maven` command to start the application:
-    ```
+    ```bash
     ./mvnw clean spring-boot:run
     ```
 
@@ -82,12 +82,12 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   - Open another terminal and navigate to the `springboot-react-basic-auth/book-ui` folder;
 
   - Run the command below if you are running the application for the first time:
-    ```
+    ```bash
     npm install
     ```
 
   - Run the `npm` command below to start the application:
-    ```
+    ```bash
     npm start
     ```
 
@@ -127,31 +127,31 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   - Open a terminal:
 
   - Call `GET /public/numberOfBooks`:
-    ```
+    ```bash
     curl -i localhost:8080/public/numberOfBooks
     ```
     It should return
-    ```
+    ```text
     HTTP/1.1 200
     70
     ```
     
   - Call `GET /api/books` without credentials:
-    ```
+    ```bash
     curl -i localhost:8080/api/books
     ```
     As this endpoint requires authentication, it should return:
-    ```
+    ```text
     HTTP/1.1 401
     { "timestamp": "...", "status": 401, "error": "Unauthorized", "message": "Unauthorized", "path": "/api/books" }
     ```
     
   - Call again `GET /api/books` but now with `user` credentials:
-    ```
+    ```bash
     curl -i -u user:user localhost:8080/api/books
     ```
     It should return:
-    ```
+    ```text
     HTTP/1.1 200
     [
       {"isbn":"978-1-60309-445-0","title":"A Shining Beacon"},
@@ -161,23 +161,23 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
     ```
     
   - Call `POST /api/books` with `user` credentials:
-    ```
+    ```bash
     curl -i -u user:user -X POST localhost:8080/api/books \
     -H "Content-Type: application/json" -d '{"isbn": "9781617292545", "title": "Spring Boot in Action"}'
     ```
     As `user` doesn't have the role `ADMIN`, it should return:
-    ```
+    ```text
     HTTP/1.1 403
     { "timestamp": "...", "status": 403, "error": "Forbidden", "message": "Forbidden", "path": "/api/books" }
     ```
     
   - Call `POST /api/books` with `admin` credentials:
-    ```
+    ```bash
     curl -i -u admin:admin -X POST localhost:8080/api/books \
     -H "Content-Type: application/json" -d '{"isbn": "9781617292545", "title": "Spring Boot in Action"}'
     ```
     It should return:
-    ```
+    ```text
     HTTP/1.1 201
     { "isbn":"9781617292545","title":"Spring Boot in Action" }
     ```
@@ -187,11 +187,11 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   - Open a terminal and make sure you are in the `springboot-react-basic-auth` root folder;
   
   - Run the following script:
-    ```
+    ```bash
     ./book-api/test-endpoints.sh
     ```
     It should return something like the output below, where it shows the http code for different requests:
-    ```
+    ```text
     POST auth/authenticate
     ======================
     admin Auth Resp: {"id":1,"name":"Admin","role":"ADMIN"}
@@ -226,7 +226,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 ## Util Commands
 
 - **Postgres**
-  ```
+  ```bash
   docker exec -it postgres psql -U postgres -d bookdb
   \dt
   ```
@@ -236,7 +236,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 - To stop `book-api` and `book-ui`, go to the terminals where they are running and press `Ctrl+C`;
 
 - To stop and remove Docker Compose containers, network, and volumes, go to a terminal and, inside the `springboot-react-basic-auth` root folder, run the command below:
-  ```
+  ```bash
   docker compose down -v
   ```
 
@@ -245,7 +245,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 - In a terminal, make sure you are in the `springboot-react-basic-auth/book-ui` folder;
 
 - Run the following commands:
-  ```
+  ```bash
   npm upgrade
   npm i -g npm-check-updates
   ncu -u
