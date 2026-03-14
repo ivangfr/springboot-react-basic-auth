@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Statistic, Icon, Grid, Container, Image, Segment, Dimmer, Loader } from 'semantic-ui-react'
+import { Container, SimpleGrid, Paper, Text, Title, Center, LoadingOverlay, Skeleton, Stack, ThemeIcon, Group } from '@mantine/core'
+import { IconUser, IconBook } from '@tabler/icons-react'
 import { bookApi } from '../misc/BookApi'
 import { handleLogError } from '../misc/Helpers'
 
@@ -27,41 +28,48 @@ function Home() {
     fetchData()
   }, [])
 
-  if (isLoading) {
-    return (
-      <Segment basic style={{ marginTop: window.innerHeight / 2 }}>
-        <Dimmer active inverted>
-          <Loader inverted size='huge'>Loading</Loader>
-        </Dimmer>
-      </Segment>
-    )
-  }
-
   return (
-    <Container text>
-      <Grid stackable columns={2}>
-        <Grid.Row>
-          <Grid.Column textAlign='center'>
-            <Segment color='blue'>
-              <Statistic>
-                <Statistic.Value><Icon name='user' color='grey' />{numberOfUsers}</Statistic.Value>
-                <Statistic.Label>Users</Statistic.Label>
-              </Statistic>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column textAlign='center'>
-            <Segment color='blue'>
-              <Statistic>
-                <Statistic.Value><Icon name='book' color='grey' />{numberOfBooks}</Statistic.Value>
-                <Statistic.Label>Books</Statistic.Label>
-              </Statistic>
-            </Segment>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+    <Container size="sm" mt="xl">
+      <LoadingOverlay visible={isLoading} overlayProps={{ blur: 2 }} />
 
-      <Image src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' style={{ marginTop: '2em' }} />
-      <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' style={{ marginTop: '2em' }} />
+      <SimpleGrid cols={2} spacing="lg">
+        <Paper withBorder p="xl" radius="md" style={{ borderColor: 'var(--mantine-color-blue-6)', borderTopWidth: 4 }}>
+          <Center>
+            <Stack align="center" gap="xs">
+              <Group gap="xs">
+                <ThemeIcon color="gray" variant="light" size="lg">
+                  <IconUser size={20} />
+                </ThemeIcon>
+                <Title order={2}>{numberOfUsers}</Title>
+              </Group>
+              <Text c="dimmed" tt="uppercase" fw={700} fz="sm">Users</Text>
+            </Stack>
+          </Center>
+        </Paper>
+
+        <Paper withBorder p="xl" radius="md" style={{ borderColor: 'var(--mantine-color-blue-6)', borderTopWidth: 4 }}>
+          <Center>
+            <Stack align="center" gap="xs">
+              <Group gap="xs">
+                <ThemeIcon color="gray" variant="light" size="lg">
+                  <IconBook size={20} />
+                </ThemeIcon>
+                <Title order={2}>{numberOfBooks}</Title>
+              </Group>
+              <Text c="dimmed" tt="uppercase" fw={700} fz="sm">Books</Text>
+            </Stack>
+          </Center>
+        </Paper>
+      </SimpleGrid>
+
+      <Stack mt="xl" gap="md">
+        <Skeleton height={12} radius="xl" animate={false} />
+        <Skeleton height={12} radius="xl" animate={false} />
+        <Skeleton height={12} radius="xl" width="70%" animate={false} />
+        <Skeleton height={12} mt="md" radius="xl" animate={false} />
+        <Skeleton height={12} radius="xl" animate={false} />
+        <Skeleton height={12} radius="xl" width="80%" animate={false} />
+      </Stack>
     </Container>
   )
 }

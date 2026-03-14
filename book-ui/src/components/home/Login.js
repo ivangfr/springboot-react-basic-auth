@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { NavLink, Navigate } from 'react-router-dom'
-import { Button, Form, Grid, Segment, Message } from 'semantic-ui-react'
+import { TextInput, PasswordInput, Button, Paper, Title, Text, Center, Stack, Alert } from '@mantine/core'
+import { IconAlertCircle } from '@tabler/icons-react'
 import { useAuth } from '../context/AuthContext'
 import { bookApi } from '../misc/BookApi'
 import { handleLogError } from '../misc/Helpers'
@@ -12,14 +13,6 @@ function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isError, setIsError] = useState(false)
-
-  const handleInputChange = (e, { name, value }) => {
-    if (name === 'username') {
-      setUsername(value)
-    } else if (name === 'password') {
-      setPassword(value)
-    }
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -51,39 +44,45 @@ function Login() {
   }
 
   return (
-    <Grid textAlign='center'>
-      <Grid.Column style={{ maxWidth: 450 }}>
-        <Form size='large' onSubmit={handleSubmit}>
-          <Segment>
-            <Form.Input
-              fluid
-              autoFocus
-              name='username'
-              icon='user'
-              iconPosition='left'
-              placeholder='Username'
-              value={username}
-              onChange={handleInputChange}
-            />
-            <Form.Input
-              fluid
-              name='password'
-              icon='lock'
-              iconPosition='left'
-              placeholder='Password'
-              type='password'
-              value={password}
-              onChange={handleInputChange}
-            />
-            <Button color='blue' fluid size='large'>Login</Button>
-          </Segment>
-        </Form>
-        <Message>{`Don't have already an account? `}
-          <NavLink to="/signup" as={NavLink} color='teal'>Sign Up</NavLink>
-        </Message>
-        {isError && <Message negative>The username or password provided are incorrect!</Message>}
-      </Grid.Column>
-    </Grid>
+    <Center mt={60}>
+      <Stack w={450} gap="md">
+        <Title ta="center" order={2}>Welcome back</Title>
+
+        <Paper withBorder shadow="sm" p="xl" radius="md">
+          <form onSubmit={handleSubmit}>
+            <Stack gap="sm">
+              <TextInput
+                autoFocus
+                label="Username"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <PasswordInput
+                label="Password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Button type="submit" fullWidth mt="sm">
+                Login
+              </Button>
+            </Stack>
+          </form>
+        </Paper>
+
+        <Text ta="center" c="dimmed" fz="sm">
+          {`Don't have an account? `}
+          <NavLink to="/signup" style={{ color: 'var(--mantine-color-blue-6)' }}>Sign Up</NavLink>
+        </Text>
+
+        {isError && (
+          <Alert icon={<IconAlertCircle size={16} />} color="red" variant="light">
+            The username or password provided are incorrect!
+          </Alert>
+        )}
+      </Stack>
+    </Center>
   )
 }
 

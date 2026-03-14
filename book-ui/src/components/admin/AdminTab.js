@@ -1,5 +1,6 @@
 import React from 'react'
-import { Tab } from 'semantic-ui-react'
+import { Tabs, LoadingOverlay, Box } from '@mantine/core'
+import { IconUsers, IconBook } from '@tabler/icons-react'
 import UserTable from './UserTable'
 import BookTable from './BookTable'
 
@@ -8,11 +9,16 @@ function AdminTab(props) {
   const { isUsersLoading, users, userUsernameSearch, handleDeleteUser, handleSearchUser } = props
   const { isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch, handleAddBook, handleDeleteBook, handleSearchBook } = props
 
-  const panes = [
-    {
-      menuItem: { key: 'users', icon: 'users', content: 'Users' },
-      render: () => (
-        <Tab.Pane loading={isUsersLoading}>
+  return (
+    <Tabs defaultValue='users' mt='md'>
+      <Tabs.List>
+        <Tabs.Tab value='users' leftSection={<IconUsers size={16} />}>Users</Tabs.Tab>
+        <Tabs.Tab value='books' leftSection={<IconBook size={16} />}>Books</Tabs.Tab>
+      </Tabs.List>
+
+      <Tabs.Panel value='users' pt='md'>
+        <Box pos='relative'>
+          <LoadingOverlay visible={isUsersLoading} />
           <UserTable
             users={users}
             userUsernameSearch={userUsernameSearch}
@@ -20,13 +26,12 @@ function AdminTab(props) {
             handleDeleteUser={handleDeleteUser}
             handleSearchUser={handleSearchUser}
           />
-        </Tab.Pane>
-      )
-    },
-    {
-      menuItem: { key: 'books', icon: 'book', content: 'Books' },
-      render: () => (
-        <Tab.Pane loading={isBooksLoading}>
+        </Box>
+      </Tabs.Panel>
+
+      <Tabs.Panel value='books' pt='md'>
+        <Box pos='relative'>
+          <LoadingOverlay visible={isBooksLoading} />
           <BookTable
             books={books}
             bookIsbn={bookIsbn}
@@ -37,13 +42,9 @@ function AdminTab(props) {
             handleDeleteBook={handleDeleteBook}
             handleSearchBook={handleSearchBook}
           />
-        </Tab.Pane>
-      )
-    }
-  ]
-
-  return (
-    <Tab menu={{ attached: 'top' }} panes={panes} />
+        </Box>
+      </Tabs.Panel>
+    </Tabs>
   )
 }
 

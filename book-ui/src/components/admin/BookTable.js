@@ -1,75 +1,71 @@
 import React from 'react'
-import { Button, Form, Grid, Image, Input, Table } from 'semantic-ui-react'
+import { Grid, Table, ActionIcon, TextInput } from '@mantine/core'
+import { IconTrash, IconSearch } from '@tabler/icons-react'
 import BookForm from './BookForm'
+import BookCover from '../misc/BookCover'
 
 function BookTable({ books, bookIsbn, bookTitle, bookTextSearch, handleInputChange, handleAddBook, handleDeleteBook, handleSearchBook }) {
-  let bookList
+  let bookRows
   if (books.length === 0) {
-    bookList = (
-      <Table.Row key='no-book'>
-        <Table.Cell collapsing textAlign='center' colSpan='4'>No book</Table.Cell>
-      </Table.Row>
+    bookRows = (
+      <Table.Tr key='no-book'>
+        <Table.Td colSpan={4} style={{ textAlign: 'center' }}>No book</Table.Td>
+      </Table.Tr>
     )
   } else {
-    bookList = books.map(book => {
-      return (
-        <Table.Row key={book.isbn}>
-          <Table.Cell collapsing>
-            <Button
-              circular
-              color='red'
-              size='small'
-              icon='trash'
-              onClick={() => handleDeleteBook(book.isbn)}
-            />
-          </Table.Cell>
-          <Table.Cell>
-            <Image src={`http://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} size='tiny' bordered rounded />
-          </Table.Cell>
-          <Table.Cell>{book.isbn}</Table.Cell>
-          <Table.Cell>{book.title}</Table.Cell>
-        </Table.Row>
-      )
-    })
+    bookRows = books.map(book => (
+      <Table.Tr key={book.isbn}>
+        <Table.Td>
+          <ActionIcon color='red' variant='filled' radius='xl' size='sm' onClick={() => handleDeleteBook(book.isbn)}>
+            <IconTrash size={14} />
+          </ActionIcon>
+        </Table.Td>
+        <Table.Td>
+            <BookCover isbn={book.isbn} w={50} />
+          </Table.Td>
+        <Table.Td>{book.isbn}</Table.Td>
+        <Table.Td>{book.title}</Table.Td>
+      </Table.Tr>
+    ))
   }
 
   return (
     <>
-      <Grid stackable divided>
-        <Grid.Row columns='2'>
-          <Grid.Column width='5'>
-            <Form onSubmit={handleSearchBook}>
-              <Input
-                action={{ icon: 'search' }}
-                name='bookTextSearch'
-                placeholder='Search by ISBN or Title'
-                value={bookTextSearch}
-                onChange={handleInputChange}
-              />
-            </Form>
-          </Grid.Column>
-          <Grid.Column>
-            <BookForm
-              bookIsbn={bookIsbn}
-              bookTitle={bookTitle}
-              handleInputChange={handleInputChange}
-              handleAddBook={handleAddBook}
+      <Grid mb='md'>
+        <Grid.Col span={{ base: 12, sm: 5 }}>
+          <form onSubmit={(e) => { e.preventDefault(); handleSearchBook() }}>
+            <TextInput
+              name='bookTextSearch'
+              placeholder='Search by ISBN or Title'
+              value={bookTextSearch}
+              onChange={handleInputChange}
+              rightSection={
+                <ActionIcon type='submit' variant='subtle'>
+                  <IconSearch size={16} />
+                </ActionIcon>
+              }
             />
-          </Grid.Column>
-        </Grid.Row>
+          </form>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, sm: 7 }}>
+          <BookForm
+            bookIsbn={bookIsbn}
+            bookTitle={bookTitle}
+            handleInputChange={handleInputChange}
+            handleAddBook={handleAddBook}
+          />
+        </Grid.Col>
       </Grid>
-      <Table compact striped selectable>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell width={1}/>
-            <Table.HeaderCell width={3}>Cover</Table.HeaderCell>
-            <Table.HeaderCell width={4}>ISBN</Table.HeaderCell>
-            <Table.HeaderCell width={8}>Title</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {bookList}
-        </Table.Body>
+      <Table striped highlightOnHover withTableBorder>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th w={40} />
+            <Table.Th w={80}>Cover</Table.Th>
+            <Table.Th>ISBN</Table.Th>
+            <Table.Th>Title</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>{bookRows}</Table.Tbody>
       </Table>
     </>
   )

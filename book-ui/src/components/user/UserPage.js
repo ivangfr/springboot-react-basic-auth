@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import { Container } from 'semantic-ui-react'
+import { Container } from '@mantine/core'
 import BookList from './BookList'
 import { useAuth } from '../context/AuthContext'
 import { bookApi } from '../misc/BookApi'
@@ -17,9 +17,10 @@ function UserPage() {
 
   useEffect(() => {
     handleGetBooks()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleInputChange = (e, { name, value }) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
     if (name === 'bookTextSearch') {
       setBookTextSearch(value)
     }

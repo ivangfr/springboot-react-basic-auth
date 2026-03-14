@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { AppShell } from '@mantine/core'
 import { AuthProvider } from './components/context/AuthContext'
 import PrivateRoute from './components/misc/PrivateRoute'
 import Navbar from './components/misc/Navbar'
@@ -13,15 +14,19 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Navbar />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<Signup />} />
-          <Route path="/adminpage" element={<PrivateRoute><AdminPage /></PrivateRoute>} />
-          <Route path="/userpage" element={<PrivateRoute><UserPage /></PrivateRoute>} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+        <AppShell header={{ height: 60 }}>
+          <Navbar />
+          <AppShell.Main>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/signup' element={<Signup />} />
+              <Route path="/adminpage" element={<PrivateRoute><AdminPage /></PrivateRoute>} />
+              <Route path="/userpage" element={<PrivateRoute><UserPage /></PrivateRoute>} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </AppShell.Main>
+        </AppShell>
       </Router>
     </AuthProvider>
   )

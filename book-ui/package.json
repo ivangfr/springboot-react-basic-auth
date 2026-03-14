@@ -3,16 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mantine/core": "^8.3.17",
+    "@mantine/hooks": "^8.3.17",
+    "@tabler/icons-react": "^3.40.0",
     "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.1",
+    "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "axios": "^1.13.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.1",
     "react-scripts": "5.0.1",
-    "web-vitals": "^5.1.0",
-    "axios": "^1.13.2",
-    "react-router-dom": "^7.12.0",
-    "semantic-ui-react": "^2.1.5"
+    "web-vitals": "^5.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
