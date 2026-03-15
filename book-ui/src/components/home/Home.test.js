@@ -4,11 +4,11 @@ import { render } from '../../test-utils'
 import Home from './Home'
 import { bookApi } from '../misc/BookApi'
 
-jest.mock('../misc/BookApi')
+vi.mock('../misc/BookApi')
 
 describe('Home', () => {
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('renders the Users and Books stat cards after data loads', async () => {

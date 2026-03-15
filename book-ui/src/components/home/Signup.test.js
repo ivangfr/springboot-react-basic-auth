@@ -5,12 +5,12 @@ import { render } from '../../test-utils'
 import Signup from './Signup'
 import { bookApi } from '../misc/BookApi'
 
-jest.mock('../misc/BookApi')
+vi.mock('../misc/BookApi')
 
 describe('Signup', () => {
   beforeEach(() => {
     localStorage.clear()
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('redirects to / when the user is already logged in', () => {

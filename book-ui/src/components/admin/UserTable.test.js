@@ -7,9 +7,9 @@ import UserTable from './UserTable'
 const defaultProps = {
   users: [],
   userUsernameSearch: '',
-  handleInputChange: jest.fn(),
-  handleDeleteUser: jest.fn(),
-  handleSearchUser: jest.fn(),
+  handleInputChange: vi.fn(),
+  handleDeleteUser: vi.fn(),
+  handleSearchUser: vi.fn(),
 }
 
 const sampleUsers = [
@@ -19,7 +19,7 @@ const sampleUsers = [
 
 describe('UserTable', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   it('shows "No user" row when users array is empty', () => {
@@ -56,7 +56,7 @@ describe('UserTable', () => {
   })
 
   it('calls handleDeleteUser with the correct username', async () => {
-    const handleDeleteUser = jest.fn()
+    const handleDeleteUser = vi.fn()
     render(<UserTable {...defaultProps} users={sampleUsers} handleDeleteUser={handleDeleteUser} />)
 
     const rows = screen.getAllByRole('row')
@@ -67,7 +67,7 @@ describe('UserTable', () => {
   })
 
   it('does not call handleDeleteUser when admin delete is clicked (disabled)', async () => {
-    const handleDeleteUser = jest.fn()
+    const handleDeleteUser = vi.fn()
     render(<UserTable {...defaultProps} users={sampleUsers} handleDeleteUser={handleDeleteUser} />)
 
     const rows = screen.getAllByRole('row')
@@ -78,7 +78,7 @@ describe('UserTable', () => {
   })
 
   it('calls handleSearchUser when search form is submitted', async () => {
-    const handleSearchUser = jest.fn()
+    const handleSearchUser = vi.fn()
     render(<UserTable {...defaultProps} handleSearchUser={handleSearchUser} />)
 
     // Submit by clicking the search icon button (the only button when users is empty).
@@ -89,7 +89,7 @@ describe('UserTable', () => {
   })
 
   it('calls handleInputChange when the search input changes', async () => {
-    const handleInputChange = jest.fn()
+    const handleInputChange = vi.fn()
     render(<UserTable {...defaultProps} handleInputChange={handleInputChange} />)
 
     await userEvent.type(screen.getByPlaceholderText('Search by Username'), 'al')

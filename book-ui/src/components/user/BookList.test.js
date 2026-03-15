@@ -8,8 +8,8 @@ const defaultProps = {
   isBooksLoading: false,
   bookTextSearch: '',
   books: [],
-  handleInputChange: jest.fn(),
-  handleSearchBook: jest.fn(),
+  handleInputChange: vi.fn(),
+  handleSearchBook: vi.fn(),
 }
 
 const sampleBooks = [
@@ -19,7 +19,7 @@ const sampleBooks = [
 
 describe('BookList', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   it('shows "No book" when books array is empty', () => {
@@ -42,7 +42,7 @@ describe('BookList', () => {
   })
 
   it('calls handleSearchBook when the search form is submitted', async () => {
-    const handleSearchBook = jest.fn()
+    const handleSearchBook = vi.fn()
     render(<BookList {...defaultProps} handleSearchBook={handleSearchBook} />)
 
     const searchButton = screen.getByRole('button')
@@ -52,7 +52,7 @@ describe('BookList', () => {
   })
 
   it('calls handleInputChange when the search input changes', async () => {
-    const handleInputChange = jest.fn()
+    const handleInputChange = vi.fn()
     render(<BookList {...defaultProps} handleInputChange={handleInputChange} />)
 
     await userEvent.type(screen.getByPlaceholderText('Search by ISBN or Title'), 'java')

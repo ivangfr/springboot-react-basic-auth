@@ -5,7 +5,7 @@ import { render } from '../../test-utils'
 import UserPage from './UserPage'
 import { bookApi } from '../misc/BookApi'
 
-jest.mock('../misc/BookApi')
+vi.mock('../misc/BookApi')
 
 const regularUser = { id: 2, name: 'Alice', role: 'USER', authdata: 'YWxpY2U6cGFzcw==' }
 const adminUser = { id: 1, name: 'Admin', role: 'ADMIN', authdata: 'YWRtaW46YWRtaW4=' }
@@ -13,7 +13,7 @@ const adminUser = { id: 1, name: 'Admin', role: 'ADMIN', authdata: 'YWRtaW46YWRt
 describe('UserPage', () => {
   beforeEach(() => {
     localStorage.clear()
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it('redirects to / when the logged-in user is not USER role', async () => {

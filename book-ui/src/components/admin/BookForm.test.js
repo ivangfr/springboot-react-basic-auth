@@ -8,8 +8,8 @@ function makeProps(overrides = {}) {
   return {
     bookIsbn: '',
     bookTitle: '',
-    handleInputChange: jest.fn(),
-    handleAddBook: jest.fn(),
+    handleInputChange: vi.fn(),
+    handleAddBook: vi.fn(),
     ...overrides,
   }
 }
@@ -49,7 +49,7 @@ describe('BookForm', () => {
   })
 
   it('calls handleInputChange when isbn input changes', async () => {
-    const handleInputChange = jest.fn()
+    const handleInputChange = vi.fn()
     render(<BookForm {...makeProps({ handleInputChange })} />)
 
     await userEvent.type(screen.getByPlaceholderText('ISBN *'), '9')
@@ -58,7 +58,7 @@ describe('BookForm', () => {
   })
 
   it('calls handleInputChange when title input changes', async () => {
-    const handleInputChange = jest.fn()
+    const handleInputChange = vi.fn()
     render(<BookForm {...makeProps({ handleInputChange })} />)
 
     await userEvent.type(screen.getByPlaceholderText('Title *'), 'C')
@@ -67,7 +67,7 @@ describe('BookForm', () => {
   })
 
   it('calls handleAddBook when form is submitted', async () => {
-    const handleAddBook = jest.fn()
+    const handleAddBook = vi.fn()
     render(<BookForm {...makeProps({ bookIsbn: '978-3-16-148410-0', bookTitle: 'Clean Code', handleAddBook })} />)
 
     await userEvent.click(screen.getByRole('button', { name: /create/i }))

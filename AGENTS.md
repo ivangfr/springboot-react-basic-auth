@@ -81,18 +81,21 @@ npm start
 # Production build
 npm run build
 
-# Run all tests (interactive watch mode)
+# Run all tests (non-interactive, single pass)
 npm test
 
-# Run a single test file (non-interactive)
-npm test -- --watchAll=false --testPathPattern="ComponentName.test"
+# Run in watch mode
+npm run test:watch
+
+# Run a single test file
+npm test -- src/components/admin/AdminPage.test.js
 
 # Run tests matching a name pattern
-npm test -- --watchAll=false -t "test description"
+npm test -- -t "test description"
 ```
 
-> No separate ESLint or Prettier scripts exist. Linting is handled by react-scripts using the
-> `eslintConfig` in `package.json` (`extends: ["react-app", "react-app/jest"]`).
+> No separate ESLint or Prettier scripts exist. ESLint is configured via `eslint.config.js`
+> (flat config) using `eslint-plugin-react` and `eslint-plugin-react-hooks`.
 
 ### Infrastructure
 
@@ -203,9 +206,9 @@ docker compose up -d
 - Prefer `MockMvc` (via `@AutoConfigureMockMvc`) for controller-layer tests; use Mockito for unit tests of services.
 - Available test starters: JUnit 5, Mockito, AssertJ, Hamcrest, MockMvc, `spring-security-test`.
 
-### Frontend (Jest + React Testing Library)
+### Frontend (Vitest + React Testing Library)
 
 - Test files should be co-located with their components: `ComponentName.test.js`.
 - Use `@testing-library/react` (`render`, `screen`, `fireEvent`) and `@testing-library/user-event`.
-- Extend Jest matchers by importing `@testing-library/jest-dom` (already configured in `setupTests.js`).
+- Extend Vitest matchers by importing `@testing-library/jest-dom` (already configured in `setupTests.js`).
 - Mock Axios calls rather than making real HTTP requests in unit tests.

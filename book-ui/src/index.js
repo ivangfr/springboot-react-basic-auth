@@ -4,7 +4,6 @@ import { MantineProvider, createTheme } from '@mantine/core'
 import '@mantine/core/styles.css'
 import './index.css'
 import App from './App'
-import reportWebVitals from './reportWebVitals'
 
 const theme = createTheme({
   primaryColor: 'blue',
@@ -16,5 +15,3 @@ root.render(
     <App />
   </MantineProvider>
 )
-
-reportWebVitals()

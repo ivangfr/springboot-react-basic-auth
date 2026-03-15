@@ -2,7 +2,7 @@ import { handleLogError } from './Helpers'
 
 describe('handleLogError', () => {
   beforeEach(() => {
-    jest.spyOn(console, 'log').mockImplementation(() => {})
+    vi.spyOn(console, 'log').mockImplementation(() => {})
   })
 
   afterEach(() => {

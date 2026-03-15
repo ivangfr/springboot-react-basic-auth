@@ -49,7 +49,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   
   To log in, a `user` or `admin` must provide valid `username` and `password` credentials. `book-ui` communicates with `book-api` to get `books` and `users` data.
   
-  `book-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
+  `book-ui` uses [`Mantine`](https://mantine.dev/) as CSS-styled framework.
 
 ## Prerequisites
 

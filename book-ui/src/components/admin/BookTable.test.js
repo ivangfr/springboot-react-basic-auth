@@ -9,15 +9,15 @@ const defaultProps = {
   bookIsbn: '',
   bookTitle: '',
   bookTextSearch: '',
-  handleInputChange: jest.fn(),
-  handleAddBook: jest.fn(),
-  handleDeleteBook: jest.fn(),
-  handleSearchBook: jest.fn(),
+  handleInputChange: vi.fn(),
+  handleAddBook: vi.fn(),
+  handleDeleteBook: vi.fn(),
+  handleSearchBook: vi.fn(),
 }
 
 describe('BookTable', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   it('shows "No book" row when books array is empty', () => {
@@ -45,7 +45,7 @@ describe('BookTable', () => {
   })
 
   it('calls handleDeleteBook with the correct isbn when delete button is clicked', async () => {
-    const handleDeleteBook = jest.fn()
+    const handleDeleteBook = vi.fn()
     const books = [{ isbn: '111', title: 'Book One' }]
     render(<BookTable {...defaultProps} books={books} handleDeleteBook={handleDeleteBook} />)
 
@@ -59,7 +59,7 @@ describe('BookTable', () => {
   })
 
   it('calls handleSearchBook when the search form is submitted', async () => {
-    const handleSearchBook = jest.fn()
+    const handleSearchBook = vi.fn()
     render(<BookTable {...defaultProps} handleSearchBook={handleSearchBook} />)
 
     // The search ActionIcon is of type='submit' and is in the search form.
@@ -71,7 +71,7 @@ describe('BookTable', () => {
   })
 
   it('calls handleInputChange when search input changes', async () => {
-    const handleInputChange = jest.fn()
+    const handleInputChange = vi.fn()
     render(<BookTable {...defaultProps} handleInputChange={handleInputChange} />)
 
     await userEvent.type(screen.getByPlaceholderText('Search by ISBN or Title'), 'java')

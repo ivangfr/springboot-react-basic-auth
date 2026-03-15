@@ -5,7 +5,7 @@ import { render } from '../../test-utils'
 import AdminPage from './AdminPage'
 import { bookApi } from '../misc/BookApi'
 
-jest.mock('../misc/BookApi')
+vi.mock('../misc/BookApi')
 
 const adminUser = { id: 1, name: 'Admin', role: 'ADMIN', authdata: 'YWRtaW46YWRtaW4=' }
 const nonAdminUser = { id: 2, name: 'Bob', role: 'USER', authdata: 'Ym9iOnBhc3M=' }
@@ -13,7 +13,7 @@ const nonAdminUser = { id: 2, name: 'Bob', role: 'USER', authdata: 'Ym9iOnBhc3M=
 describe('AdminPage', () => {
   beforeEach(() => {
     localStorage.clear()
-    jest.resetAllMocks()
+    vi.resetAllMocks()
     bookApi.getUsers.mockResolvedValue({ data: [] })
     bookApi.getBooks.mockResolvedValue({ data: [] })
   })
