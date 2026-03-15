@@ -252,6 +252,18 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   npm install
   ```
 
+## How to upgrade GIFs
+
+- Record video using QuickTime. A `.mov` file will be generated.
+- Convert the `.mov` file to `.gif` using [FFmpeg](https://www.ffmpeg.org)
+  ```
+  ffmpeg -i admin-login.mov -vf "fps=10,scale=800:-1:flags=lanczos" admin-login-1.gif
+  ```
+- Optimize the generated `.gif` using [Gifsicle](https://github.com/kohler/gifsicle)
+  ```
+  gifsicle -O3 --colors 256 admin-login-1.gif -o admin-login.gif
+  ```
+
 ## References
 
 - https://www.taniarascia.com/using-context-api-in-react/
