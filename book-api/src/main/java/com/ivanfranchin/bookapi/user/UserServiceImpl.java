@@ -1,5 +1,7 @@
 package com.ivanfranchin.bookapi.user;
 
+import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
+import com.ivanfranchin.bookapi.security.SecurityConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User createUser(SignUpRequest signUpRequest) {
+        User user = new User();
+        user.setUsername(signUpRequest.username());
+        user.setPassword(passwordEncoder.encode(signUpRequest.password()));
+        user.setName(signUpRequest.name());
+        user.setEmail(signUpRequest.email());
+        user.setRole(SecurityConfig.USER);
+        return saveUser(user);
+    }
+
+    @Override
     public User saveUser(User user) {
         return userRepository.save(user);
     }
@@ -54,5 +67,10 @@ public class UserServiceImpl implements UserService {
     public Optional<User> validUsernameAndPassword(String username, String password) {
         return getUserByUsername(username)
                 .filter(user -> passwordEncoder.matches(password, user.getPassword()));
+    }
+
+    @Override
+    public long countUsers() {
+        return userRepository.count();
     }
 }

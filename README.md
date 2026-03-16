@@ -240,6 +240,26 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   docker compose down -v
   ```
 
+## Running Tests
+
+- **book-api**
+
+  - Open a terminal and navigate to the `springboot-react-basic-auth/book-api` folder;
+
+  - Run all tests:
+    ```bash
+    ./mvnw clean test
+    ```
+
+- **book-ui**
+
+  - Open a terminal and navigate to the `springboot-react-basic-auth/book-ui` folder;
+
+  - Run all tests:
+    ```bash
+    npm test
+    ```
+
 ## How to upgrade book-ui dependencies to latest version
 
 - In a terminal, make sure you are in the `springboot-react-basic-auth/book-ui` folder;

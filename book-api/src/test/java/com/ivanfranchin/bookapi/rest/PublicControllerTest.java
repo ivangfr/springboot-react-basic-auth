@@ -1,10 +1,8 @@
 package com.ivanfranchin.bookapi.rest;
 
-import com.ivanfranchin.bookapi.book.Book;
 import com.ivanfranchin.bookapi.book.BookService;
 import com.ivanfranchin.bookapi.security.CustomUserDetailsService;
 import com.ivanfranchin.bookapi.security.SecurityConfig;
-import com.ivanfranchin.bookapi.user.User;
 import com.ivanfranchin.bookapi.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +10,6 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,7 +34,7 @@ class PublicControllerTest {
 
     @Test
     void getNumberOfUsers_noAuth_returns200() throws Exception {
-        when(userService.getUsers()).thenReturn(List.of(newUser("admin"), newUser("user")));
+        when(userService.countUsers()).thenReturn(2L);
 
         mockMvc.perform(get("/public/numberOfUsers"))
                 .andExpect(status().isOk())
@@ -47,20 +43,10 @@ class PublicControllerTest {
 
     @Test
     void getNumberOfBooks_noAuth_returns200() throws Exception {
-        when(bookService.getBooks()).thenReturn(List.of(
-                new Book("111", "Alpha"),
-                new Book("222", "Beta"),
-                new Book("333", "Gamma")
-        ));
+        when(bookService.countBooks()).thenReturn(3L);
 
         mockMvc.perform(get("/public/numberOfBooks"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("3"));
-    }
-
-    private User newUser(String username) {
-        User user = new User();
-        user.setUsername(username);
-        return user;
     }
 }

@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -36,9 +35,6 @@ class AuthControllerTest {
 
     @MockitoBean
     UserService userService;
-
-    @MockitoBean
-    PasswordEncoder passwordEncoder;
 
     @MockitoBean
     CustomUserDetailsService customUserDetailsService;
@@ -98,10 +94,9 @@ class AuthControllerTest {
     void signUp_newUser_returns201() throws Exception {
         when(userService.hasUserWithUsername("bob")).thenReturn(false);
         when(userService.hasUserWithEmail("bob@example.com")).thenReturn(false);
-        when(passwordEncoder.encode("pass")).thenReturn("{bcrypt}hashed");
 
         User saved = newUser(3L, "bob", "Bob", "bob@example.com", "USER");
-        when(userService.saveUser(any(User.class))).thenReturn(saved);
+        when(userService.createUser(any(SignUpRequest.class))).thenReturn(saved);
 
         SignUpRequest request = new SignUpRequest("bob", "pass", "Bob", "bob@example.com");
 
@@ -129,7 +124,7 @@ class AuthControllerTest {
     void signUp_duplicateEmail_returns409() throws Exception {
         when(userService.hasUserWithUsername("newuser")).thenReturn(false);
         when(userService.hasUserWithEmail("alice@example.com"))
-                .thenThrow(new DuplicatedUserInfoException("Email alice@example.com is already been used"));
+                .thenThrow(new DuplicatedUserInfoException("Email alice@example.com is already in use"));
 
         SignUpRequest request = new SignUpRequest("newuser", "pass", "New User", "alice@example.com");
 

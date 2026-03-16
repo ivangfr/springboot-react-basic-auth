@@ -48,9 +48,6 @@ class UserControllerTest {
     @WithCustomUserDetails(username = "alice", role = "USER")
     @Test
     void getCurrentUser_asUser_returns200() throws Exception {
-        User user = newUser(1L, "alice", "USER");
-        when(userService.validateAndGetUserByUsername("alice")).thenReturn(user);
-
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("alice"))
@@ -166,10 +163,15 @@ class UserControllerTest {
 
         @Override
         public SecurityContext createSecurityContext(WithCustomUserDetails annotation) {
-            CustomUserDetails principal = new CustomUserDetails();
-            principal.setUsername(annotation.username());
-            principal.setPassword("password");
-            principal.setAuthorities(List.of(new SimpleGrantedAuthority(annotation.role())));
+            String username = annotation.username();
+            CustomUserDetails principal = new CustomUserDetails(
+                    null,
+                    username,
+                    "password",
+                    username,
+                    username + "@example.com",
+                    List.of(new SimpleGrantedAuthority(annotation.role()))
+            );
 
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                     principal, null, principal.getAuthorities());

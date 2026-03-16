@@ -16,12 +16,12 @@ public class PublicController {
     private final BookService bookService;
 
     @GetMapping("/numberOfUsers")
-    public Integer getNumberOfUsers() {
-        return userService.getUsers().size();
+    public long getNumberOfUsers() {
+        return userService.countUsers();
     }
 
     @GetMapping("/numberOfBooks")
-    public Integer getNumberOfBooks() {
-        return bookService.getBooks().size();
+    public long getNumberOfBooks() {
+        return bookService.countBooks();
     }
 }
