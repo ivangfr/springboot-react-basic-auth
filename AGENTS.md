@@ -210,5 +210,5 @@ docker compose up -d
 
 - Test files should be co-located with their components: `ComponentName.test.js`.
 - Use `@testing-library/react` (`render`, `screen`, `fireEvent`) and `@testing-library/user-event`.
-- Extend Vitest matchers by importing `@testing-library/jest-dom` (already configured in `setupTests.js`).
+- Extend Vitest matchers via `expect.extend(matchers)` from `@testing-library/jest-dom/matchers` (already configured in `setupTests.js`).
 - Mock Axios calls rather than making real HTTP requests in unit tests.
