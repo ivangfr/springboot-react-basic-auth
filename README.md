@@ -1,6 +1,6 @@
 # springboot-react-basic-auth
 
-The goal of this project is to implement an application called `book-app` to manage books. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/index.html) application called `book-api` and a font-end [React](https://react.dev/) application called `book-ui`. Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) to secure both applications.
+The goal of this project is to implement an application called `book-app` to manage books. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/index.html) application called `book-api` and a front-end [React](https://react.dev/) application called `book-ui`. Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) to secure both applications.
 
 ## Proof-of-Concepts & Articles
 
@@ -15,7 +15,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## Project Diagram
 
-![project-diagram](documentation/project-diagram.jpeg)
+![project-diagram](documentation/project-diagram.png)
 
 ## Applications
 
@@ -274,15 +274,13 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## How to upgrade GIFs
 
-- Record video using QuickTime. A `.mov` file will be generated.
-- Convert the `.mov` file to `.gif` using [FFmpeg](https://www.ffmpeg.org)
-  ```
-  ffmpeg -i admin-login.mov -vf "fps=10,scale=800:-1:flags=lanczos" admin-login-1.gif
-  ```
-- Optimize the generated `.gif` using [Gifsicle](https://github.com/kohler/gifsicle)
-  ```
-  gifsicle -O3 --colors 256 admin-login-1.gif -o admin-login.gif
-  ```
+TODO - Add Medium article about how to record and optimize GIFs.
+
+## Support
+
+If you find this project helpful, consider buying me a coffee to support future development. Thanks you! ❤️
+
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy_Me_a_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/ivan.franchin)
 
 ## References
 

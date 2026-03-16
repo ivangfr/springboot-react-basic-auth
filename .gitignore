@@ -46,6 +46,7 @@ coverage/
 
 # production
 build/
+book-ui/dist/
 
 # misc
 .env.local

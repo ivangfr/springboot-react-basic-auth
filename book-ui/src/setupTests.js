@@ -1,4 +1,6 @@
-import '@testing-library/jest-dom'
+import { expect } from 'vitest'
+import * as matchers from '@testing-library/jest-dom/matchers'
+expect.extend(matchers)
 
 // jsdom doesn't implement window.matchMedia; Mantine requires it.
 Object.defineProperty(window, 'matchMedia', {
