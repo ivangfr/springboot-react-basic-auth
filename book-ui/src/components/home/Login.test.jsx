@@ -24,8 +24,8 @@ describe('Login', () => {
   it('renders the login form when not authenticated', () => {
     render(<Login />)
 
-    expect(screen.getByLabelText(/username/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
+    expect(screen.getByPlaceholderText(/username/i)).toBeInTheDocument()
+    expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument()
   })
 
@@ -45,8 +45,8 @@ describe('Login', () => {
 
     render(<Login />)
 
-    await userEvent.type(screen.getByLabelText(/username/i), 'alice')
-    await userEvent.type(screen.getByLabelText(/password/i), 'secret')
+    await userEvent.type(screen.getByPlaceholderText(/username/i), 'alice')
+    await userEvent.type(screen.getByPlaceholderText(/password/i), 'secret')
     await userEvent.click(screen.getByRole('button', { name: /login/i }))
 
     await waitFor(() => {
@@ -62,8 +62,8 @@ describe('Login', () => {
 
     render(<Login />)
 
-    await userEvent.type(screen.getByLabelText(/username/i), 'alice')
-    await userEvent.type(screen.getByLabelText(/password/i), 'wrong')
+    await userEvent.type(screen.getByPlaceholderText(/username/i), 'alice')
+    await userEvent.type(screen.getByPlaceholderText(/password/i), 'wrong')
     await userEvent.click(screen.getByRole('button', { name: /login/i }))
 
     await waitFor(() => {

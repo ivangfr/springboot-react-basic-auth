@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { NavLink, Navigate } from 'react-router-dom'
-import { TextInput, PasswordInput, Button, Paper, Title, Text, Center, Stack, Alert } from '@mantine/core'
-import { IconAlertCircle } from '@tabler/icons-react'
+import { TextInput, PasswordInput, Button, Paper, Stack, Alert, Anchor, Center, Box } from '@mantine/core'
+import { IconInfoCircle } from '@tabler/icons-react'
 import { useAuth } from '../context/AuthContext'
 import { bookApi } from '../misc/BookApi'
 import { handleLogError } from '../misc/Helpers'
@@ -44,17 +44,18 @@ function Signup() {
       setErrorMessage('')
     } catch (error) {
       handleLogError(error)
+      let errMsg = 'An unexpected error occurred. Please try again.'
       if (error.response && error.response.data) {
         const errorData = error.response.data
-        let errMsg = 'Invalid fields'
+        errMsg = 'Invalid fields'
         if (errorData.status === 409) {
           errMsg = errorData.message
         } else if (errorData.status === 400) {
           errMsg = errorData.errors[0].defaultMessage
         }
-        setIsError(true)
-        setErrorMessage(errMsg)
       }
+      setIsError(true)
+      setErrorMessage(errMsg)
     }
   }
 
@@ -63,56 +64,50 @@ function Signup() {
   }
 
   return (
-    <Center mt={60}>
-      <Stack w={450} gap="md">
-        <Title ta="center" order={2}>Create an account</Title>
-
-        <Paper withBorder shadow="sm" p="xl" radius="md">
-          <form onSubmit={handleSubmit}>
-            <Stack gap="sm">
+    <Center mt='xl'>
+      <Box w={450}>
+        <form onSubmit={handleSubmit}>
+          <Paper withBorder p='xl' radius='md'>
+            <Stack>
               <TextInput
                 autoFocus
-                label="Username"
-                placeholder="Username"
+                name='username'
+                placeholder='Username'
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
               <PasswordInput
-                label="Password"
-                placeholder="Password"
+                name='password'
+                placeholder='Password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <TextInput
-                label="Name"
-                placeholder="Name"
+                name='name'
+                placeholder='Name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
               <TextInput
-                label="Email"
-                placeholder="Email"
+                name='email'
+                placeholder='Email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <Button type="submit" fullWidth mt="sm">
-                Sign Up
-              </Button>
+              <Button type='submit' fullWidth>Sign Up</Button>
             </Stack>
-          </form>
+          </Paper>
+        </form>
+        <Paper withBorder p='sm' radius='md' mt='sm' ta='center'>
+          Already have an account?{' '}
+          <Anchor component={NavLink} to='/login'>Login</Anchor>
         </Paper>
-
-        <Text ta="center" c="dimmed" fz="sm">
-          {`Already have an account? `}
-          <NavLink to="/login" style={{ color: 'var(--mantine-color-blue-6)' }}>Login</NavLink>
-        </Text>
-
         {isError && (
-          <Alert icon={<IconAlertCircle size={16} />} color="red" variant="light">
+          <Alert color='red' variant='light' mt='sm' icon={<IconInfoCircle />}>
             {errorMessage}
           </Alert>
         )}
-      </Stack>
+      </Box>
     </Center>
   )
 }

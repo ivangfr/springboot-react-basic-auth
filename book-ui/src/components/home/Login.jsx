@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { NavLink, Navigate } from 'react-router-dom'
-import { TextInput, PasswordInput, Button, Paper, Title, Text, Center, Stack, Alert } from '@mantine/core'
-import { IconAlertCircle } from '@tabler/icons-react'
+import { TextInput, PasswordInput, Button, Paper, Stack, Alert, Anchor, Center, Box } from '@mantine/core'
+import { IconInfoCircle } from '@tabler/icons-react'
 import { useAuth } from '../context/AuthContext'
 import { bookApi } from '../misc/BookApi'
 import { handleLogError } from '../misc/Helpers'
@@ -40,48 +40,44 @@ function Login() {
   }
 
   if (isLoggedIn) {
-    return <Navigate to={'/'} />
+    return <Navigate to='/' />
   }
 
   return (
-    <Center mt={60}>
-      <Stack w={450} gap="md">
-        <Title ta="center" order={2}>Welcome back</Title>
-
-        <Paper withBorder shadow="sm" p="xl" radius="md">
-          <form onSubmit={handleSubmit}>
-            <Stack gap="sm">
+    <Center mt='xl'>
+      <Box w={450}>
+        <form onSubmit={handleSubmit}>
+          <Paper withBorder p='xl' radius='md'>
+            <Stack>
               <TextInput
                 autoFocus
-                label="Username"
-                placeholder="Username"
+                name='username'
+                label='Username'
+                placeholder='Username'
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
               <PasswordInput
-                label="Password"
-                placeholder="Password"
+                name='password'
+                label='Password'
+                placeholder='Password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <Button type="submit" fullWidth mt="sm">
-                Login
-              </Button>
+              <Button type='submit' fullWidth>Login</Button>
             </Stack>
-          </form>
+          </Paper>
+        </form>
+        <Paper withBorder p='sm' radius='md' mt='sm' ta='center'>
+          Don't have an account?{' '}
+          <Anchor component={NavLink} to='/signup'>Sign Up</Anchor>
         </Paper>
-
-        <Text ta="center" c="dimmed" fz="sm">
-          {`Don't have an account? `}
-          <NavLink to="/signup" style={{ color: 'var(--mantine-color-blue-6)' }}>Sign Up</NavLink>
-        </Text>
-
         {isError && (
-          <Alert icon={<IconAlertCircle size={16} />} color="red" variant="light">
+          <Alert color='red' variant='light' mt='sm' icon={<IconInfoCircle />}>
             The username or password provided are incorrect!
           </Alert>
         )}
-      </Stack>
+      </Box>
     </Center>
   )
 }
