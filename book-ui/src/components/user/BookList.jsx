@@ -1,4 +1,3 @@
-import React from 'react'
 import { Grid, Title, TextInput, ActionIcon, Card, Text, Stack, Box, LoadingOverlay, Skeleton, Paper } from '@mantine/core'
 import { IconBook, IconSearch } from '@tabler/icons-react'
 import BookCover from '../misc/BookCover'

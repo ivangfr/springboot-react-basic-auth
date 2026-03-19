@@ -1,4 +1,3 @@
-import React from 'react'
 import { Tabs, LoadingOverlay, Box } from '@mantine/core'
 import { IconUsers, IconBook } from '@tabler/icons-react'
 import UserTable from './UserTable'

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Table, ActionIcon, TextInput } from '@mantine/core'
 import { IconTrash, IconSearch } from '@tabler/icons-react'
 

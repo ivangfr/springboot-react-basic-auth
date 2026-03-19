@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Container, SimpleGrid, Paper, Text, Title, Center, LoadingOverlay, Skeleton, Stack, ThemeIcon, Group } from '@mantine/core'
 import { IconUser, IconBook } from '@tabler/icons-react'
 import { bookApi } from '../misc/BookApi'

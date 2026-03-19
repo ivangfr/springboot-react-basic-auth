@@ -3,22 +3,8 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [
-    react({
-      include: '**/*.{js,jsx}',
-    }),
+    react(),
   ],
-  esbuild: {
-    include: /src\/.*\.js$/,
-    exclude: [],
-    loader: 'jsx',
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      loader: {
-        '.js': 'jsx',
-      },
-    },
-  },
   server: {
     port: 3000,
   },
