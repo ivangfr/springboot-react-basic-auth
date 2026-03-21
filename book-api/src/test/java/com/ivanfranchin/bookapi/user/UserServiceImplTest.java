@@ -30,12 +30,12 @@ class UserServiceImplTest {
     @Test
     void getUsers_returnsAllUsers() {
         List<User> users = List.of(newUser("alice"), newUser("bob"));
-        when(userRepository.findAll()).thenReturn(users);
+        when(userRepository.findAllByOrderByUsername()).thenReturn(users);
 
         List<User> result = userService.getUsers();
 
         assertThat(result).isEqualTo(users);
-        verify(userRepository).findAll();
+        verify(userRepository).findAllByOrderByUsername();
     }
 
     @Test

@@ -4,39 +4,7 @@
 
 Full-stack application with:
 - **Backend**: `book-api/` — Spring Boot 4.x, Java 25, PostgreSQL, HTTP Basic Auth, stateless REST API
-- **Frontend**: `book-ui/` — React 19, plain JavaScript (no TypeScript), Axios, Mantine
-
----
-
-## Repository Structure
-
-```
-springboot-react-basic-auth/
-├── book-api/                  # Spring Boot backend
-│   ├── mvnw                   # Maven wrapper (use this, not system mvn)
-│   ├── pom.xml
-│   ├── test-endpoints.sh      # Manual curl-based integration smoke test
-│   └── src/
-│       ├── main/java/com/ivanfranchin/bookapi/
-│       │   ├── book/          # Entity, Repository, Service, Exception
-│       │   ├── user/          # Entity, Repository, Service, Exceptions
-│       │   ├── rest/          # Controllers (Auth, Book, User, Public)
-│       │   │   └── dto/       # Java records: request/response DTOs
-│       │   ├── security/      # SecurityConfig, CorsConfig, CustomUserDetails
-│       │   ├── config/        # SwaggerConfig, ErrorAttributesConfig
-│       │   └── runner/        # DatabaseInitializer (seeds data on startup)
-│       └── test/
-└── book-ui/                   # React frontend
-    ├── package.json
-    └── src/
-        ├── components/
-        │   ├── admin/         # AdminPage, BookForm, BookTable, UserTable
-        │   ├── context/       # AuthContext (React Context + localStorage)
-        │   ├── home/          # Home, Login, Signup
-        │   ├── misc/          # BookApi (axios), Helpers, Navbar, PrivateRoute
-        │   └── user/          # UserPage, BookList
-        └── Constants.js       # API base URL config
-```
+- **Frontend**: `book-ui/` — React 19, plain JavaScript (no TypeScript), Axios, Mantine v8
 
 ---
 
@@ -88,7 +56,7 @@ npm test
 npm run test:watch
 
 # Run a single test file
-npm test -- src/components/admin/AdminPage.test.js
+npm test -- src/components/admin/AdminPage.test.jsx
 
 # Run tests matching a name pattern
 npm test -- -t "test description"
@@ -113,7 +81,7 @@ docker compose up -d
 - **Java version**: 25. Use modern Java features appropriately.
 - **Indentation**: 4 spaces.
 - **DTOs**: Use Java `record` types for all request and response DTOs. Never use mutable classes for DTOs.
-- **Entities**: Plain classes with Lombok annotations (`@Data`, `@NoArgsConstructor`, `@AllArgsConstructor`, `@RequiredArgsConstructor`). Use `@Slf4j` for logging.
+- **Entities**: Plain classes with Lombok annotations. `@Data` and `@NoArgsConstructor` are used on all entities; `@AllArgsConstructor` is added when a full constructor is needed. Use `@Slf4j` for logging where needed (e.g., `DatabaseInitializer`).
 - **No `var`**: Avoid `var`; prefer explicit types for clarity.
 - **Import ordering** (blank line between each group):
   1. Project-internal (`com.ivanfranchin.*`)
@@ -121,12 +89,13 @@ docker compose up -d
   3. Spring Framework (`org.springframework.*`)
   4. Java standard library (`java.*`)
   5. Static imports last (after a blank line)
-- **Validation**: Use Bean Validation annotations (`@NotBlank`, `@Email`, `@Size`) on record components and activate with `@Valid` on controller parameters.
+- **Validation**: Use Bean Validation annotations (`@NotBlank`, `@Email`) on record components and activate with `@Valid` on controller parameters.
 - **Controllers**: Return plain domain objects or records where possible. Use `ResponseEntity` only when the HTTP status must be conditional at runtime.
 
 ### JavaScript (Frontend)
 
-- **Language**: Plain JavaScript (ES2020+). No TypeScript. No JSX files use `.tsx`.
+- **Language**: Plain JavaScript (ES2020+). No TypeScript.
+- **File extensions**: React components use `.jsx`; non-component JS files (utilities, constants, config) use `.js`.
 - **Indentation**: 2 spaces.
 - **Quotes**: Single quotes for all strings and imports.
 - **Semicolons**: None — the codebase uses a no-semicolon style consistently.
@@ -158,12 +127,12 @@ docker compose up -d
 
 | Artifact | Convention | Examples |
 |---|---|---|
-| Component files | `PascalCase.js` | `AdminPage.js`, `BookTable.js`, `PrivateRoute.js` |
+| Component files | `PascalCase.jsx` | `AdminPage.jsx`, `BookTable.jsx`, `PrivateRoute.jsx` |
 | Utility/service files | `PascalCase.js` | `BookApi.js`, `Helpers.js` |
-| Context files | `PascalCase` + `Context.js` | `AuthContext.js` |
+| Context files | `PascalCase` + `Context.jsx` | `AuthContext.jsx` |
 | Component functions | `PascalCase` | `function AdminPage()` |
 | Event handlers | `camelCase`, `handle` prefix | `handleSubmit`, `handleDeleteBook` |
-| Boolean functions | `camelCase`, `is`/`has` prefix | `userIsAuthenticated`, `isAdmin` |
+| Boolean state/vars | `camelCase`, `is`/`has` prefix | `isAdmin`, `isError`, `isBooksLoading` |
 | State variables | `[value, setValue]` from `useState` | `[books, setBooks]`, `[isError, setIsError]` |
 | Loading state | `is*Loading` pattern | `isBooksLoading`, `isUsersLoading` |
 | Constants | `UPPER_SNAKE_CASE` | `API_BASE_URL` |
@@ -190,7 +159,7 @@ docker compose up -d
 ### Frontend
 
 - Use the shared `handleLogError(error)` from `Helpers.js` in every `catch` block — never call `console.log` directly on errors.
-- Wrap all async API calls in `try/catch/finally`; always reset loading state in `finally`.
+- Wrap data-fetching async calls in `try/catch/finally`; reset loading state in `finally`. Delete and search operations that have no loading indicator may omit `finally`.
 - Represent UI error state as a boolean `isError` (and optionally `errorMessage`) rendered via a Mantine `<Alert>` component.
 - Inspect `error.response.data.status` for specific HTTP codes (e.g., `409` conflict, `400` validation) to display targeted error messages.
 
@@ -203,12 +172,15 @@ docker compose up -d
 - Test classes live in `src/test/java/` mirroring the main package structure.
 - Use `@SpringBootTest` for integration tests that require the full application context.
 - Use `@Disabled` only temporarily; remove the annotation once a test is properly implemented.
-- Prefer `MockMvc` (via `@AutoConfigureMockMvc`) for controller-layer tests; use Mockito for unit tests of services.
-- Available test starters: JUnit 5, Mockito, AssertJ, Hamcrest, MockMvc, `spring-security-test`.
+- Prefer `MockMvc` with `@WebMvcTest(SomeController.class)` for controller-layer slice tests; use Mockito (`@ExtendWith(MockitoExtension.class)`) for unit tests of services.
+- Use `@MockitoBean` (Spring Boot 4 / `org.springframework.test.context.bean.override.mockito.MockitoBean`) to inject mocks into the Spring context — **not** `@MockBean` (Spring Boot 3, removed in Spring Boot 4).
+- Available test libraries: JUnit 5, Mockito, AssertJ, MockMvc, `spring-security-test`.
 
 ### Frontend (Vitest + React Testing Library)
 
-- Test files should be co-located with their components: `ComponentName.test.js`.
-- Use `@testing-library/react` (`render`, `screen`, `fireEvent`) and `@testing-library/user-event`.
-- Extend Vitest matchers via `expect.extend(matchers)` from `@testing-library/jest-dom/matchers` (already configured in `setupTests.js`).
-- Mock Axios calls rather than making real HTTP requests in unit tests.
+- Test files should be co-located with their components: `ComponentName.test.jsx` for components, `UtilityName.test.js` for plain JS utilities.
+- **Always import `render` from `../../test-utils`** (not directly from `@testing-library/react`). `test-utils.jsx` exports `renderWithProviders`, which wraps the component under `MantineProvider`, `MemoryRouter`, and `AuthProvider` — required for any component that uses Mantine, routing, or auth context.
+- Use `screen`, `fireEvent`, and `@testing-library/user-event` from `@testing-library/react` / `@testing-library/user-event` for querying and interacting with the DOM.
+- Vitest globals (`describe`, `it`, `expect`, `beforeEach`, `vi`) are enabled project-wide via `vite.config.js` — no imports needed.
+- Mock the entire `BookApi` module with `vi.mock('../misc/BookApi')`, then set per-test return values with `.mockResolvedValue()` / `.mockRejectedValue()`.
+- Jest-dom matchers (`toBeInTheDocument`, `toHaveTextContent`, etc.) are globally extended in `setupTests.js` — use them directly in `expect()`.
