@@ -139,13 +139,12 @@ class UserControllerTest {
 
     @WithMockUser(authorities = "ADMIN")
     @Test
-    void deleteUser_asAdmin_returns200() throws Exception {
+    void deleteUser_asAdmin_returns204() throws Exception {
         User user = newUser(2L, "alice", "USER");
         when(userService.validateAndGetUserByUsername("alice")).thenReturn(user);
 
         mockMvc.perform(delete("/api/users/alice"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("alice"));
+                .andExpect(status().isNoContent());
     }
 
     @WithMockUser(authorities = "ADMIN")

@@ -48,10 +48,10 @@ public class BookController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{isbn}")
-    public BookDto deleteBook(@PathVariable String isbn) {
+    public void deleteBook(@PathVariable String isbn) {
         Book book = bookService.validateAndGetBook(isbn);
         bookService.deleteBook(book);
-        return BookDto.from(book);
     }
 }

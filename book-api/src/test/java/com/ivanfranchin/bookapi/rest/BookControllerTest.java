@@ -155,14 +155,12 @@ class BookControllerTest {
 
     @WithMockUser(authorities = "ADMIN")
     @Test
-    void deleteBook_asAdmin_returns200() throws Exception {
+    void deleteBook_asAdmin_returns204() throws Exception {
         Book book = new Book("123", "Spring in Action");
         when(bookService.validateAndGetBook("123")).thenReturn(book);
 
         mockMvc.perform(delete("/api/books/123"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.isbn").value("123"))
-                .andExpect(jsonPath("$.title").value("Spring in Action"));
+                .andExpect(status().isNoContent());
     }
 
     @WithMockUser(authorities = "ADMIN")

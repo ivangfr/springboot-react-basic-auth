@@ -217,13 +217,13 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
             GET /api/users/me |           401 |         200 |          200 |
                GET /api/users |           401 |         403 |          200 |
          GET /api/users/user2 |           401 |         403 |          200 |
-      DELETE /api/users/user2 |           401 |         403 |          200 |
+      DELETE /api/users/user2 |           401 |         403 |          204 |
     ......................... + ............. + ........... + ............ |
                GET /api/books |           401 |         200 |          200 |
               POST /api/books |           401 |         403 |          201 |
-        DELETE /api/books/abc |           401 |         403 |          200 |
+        DELETE /api/books/abc |           401 |         403 |          204 |
     ------------------------------------------------------------------------
-     [200] Success -  [201] Created -  [401] Unauthorized -  [403] Forbidden
+     [200] Success -  [201] Created -  [204] No Content -  [401] Unauthorized -  [403] Forbidden
     ```
 
 ## Util Commands
