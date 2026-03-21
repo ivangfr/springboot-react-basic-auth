@@ -5,9 +5,9 @@ import com.ivanfranchin.bookapi.rest.dto.LoginRequest;
 import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
 import com.ivanfranchin.bookapi.security.CustomUserDetailsService;
 import com.ivanfranchin.bookapi.security.SecurityConfig;
-import com.ivanfranchin.bookapi.user.DuplicatedUserInfoException;
 import com.ivanfranchin.bookapi.user.User;
 import com.ivanfranchin.bookapi.user.UserService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,10 +127,24 @@ class AuthControllerTest {
     @Test
     void signUp_duplicateEmail_returns409() throws Exception {
         when(userService.hasUserWithUsername("newuser")).thenReturn(false);
-        when(userService.hasUserWithEmail("alice@example.com"))
-                .thenThrow(new DuplicatedUserInfoException("Email alice@example.com is already in use"));
+        when(userService.hasUserWithEmail("alice@example.com")).thenReturn(true);
 
         SignUpRequest request = new SignUpRequest("newuser", "pass", "New User", "alice@example.com");
+
+        mockMvc.perform(post("/auth/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    void signUp_concurrentDuplicate_returns409() throws Exception {
+        when(userService.hasUserWithUsername("bob")).thenReturn(false);
+        when(userService.hasUserWithEmail("bob@example.com")).thenReturn(false);
+        when(userService.saveUser(any(User.class)))
+                .thenThrow(new DataIntegrityViolationException("unique constraint violation"));
+
+        SignUpRequest request = new SignUpRequest("bob", "pass", "Bob", "bob@example.com");
 
         mockMvc.perform(post("/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
