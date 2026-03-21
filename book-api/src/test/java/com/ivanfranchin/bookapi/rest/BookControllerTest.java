@@ -58,6 +58,19 @@ class BookControllerTest {
                 .andExpect(jsonPath("$[0].title").value("Alpha"));
     }
 
+    @WithMockUser(authorities = "ADMIN")
+    @Test
+    void getBooks_noText_asAdmin_returns200() throws Exception {
+        when(bookService.getBooks()).thenReturn(List.of(
+                new Book("111", "Alpha"),
+                new Book("222", "Beta")
+        ));
+
+        mockMvc.perform(get("/api/books"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
+    }
+
     @WithMockUser(authorities = "USER")
     @Test
     void getBooks_withText_asUser_returns200() throws Exception {
@@ -166,5 +179,11 @@ class BookControllerTest {
     void deleteBook_asUser_returns403() throws Exception {
         mockMvc.perform(delete("/api/books/123"))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void deleteBook_unauthenticated_returns401() throws Exception {
+        mockMvc.perform(delete("/api/books/123"))
+                .andExpect(status().isUnauthorized());
     }
 }

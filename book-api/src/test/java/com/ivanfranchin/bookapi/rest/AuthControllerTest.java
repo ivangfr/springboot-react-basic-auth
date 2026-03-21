@@ -8,6 +8,7 @@ import com.ivanfranchin.bookapi.security.SecurityConfig;
 import com.ivanfranchin.bookapi.user.DuplicatedUserInfoException;
 import com.ivanfranchin.bookapi.user.User;
 import com.ivanfranchin.bookapi.user.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -38,6 +39,9 @@ class AuthControllerTest {
 
     @MockitoBean
     CustomUserDetailsService customUserDetailsService;
+
+    @MockitoBean
+    PasswordEncoder passwordEncoder;
 
     // -- POST /auth/authenticate --
 
@@ -96,7 +100,7 @@ class AuthControllerTest {
         when(userService.hasUserWithEmail("bob@example.com")).thenReturn(false);
 
         User saved = newUser(3L, "bob", "Bob", "bob@example.com", "USER");
-        when(userService.createUser(any(SignUpRequest.class))).thenReturn(saved);
+        when(userService.saveUser(any(User.class))).thenReturn(saved);
 
         SignUpRequest request = new SignUpRequest("bob", "pass", "Bob", "bob@example.com");
 
@@ -157,6 +161,26 @@ class AuthControllerTest {
     @Test
     void signUp_blankName_returns400() throws Exception {
         SignUpRequest request = new SignUpRequest("bob", "pass", "", "bob@example.com");
+
+        mockMvc.perform(post("/auth/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void signUp_blankPassword_returns400() throws Exception {
+        SignUpRequest request = new SignUpRequest("bob", "", "Bob", "bob@example.com");
+
+        mockMvc.perform(post("/auth/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void signUp_blankEmail_returns400() throws Exception {
+        SignUpRequest request = new SignUpRequest("bob", "pass", "Bob", "");
 
         mockMvc.perform(post("/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)

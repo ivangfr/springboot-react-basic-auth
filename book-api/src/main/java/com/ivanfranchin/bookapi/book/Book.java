@@ -1,5 +1,6 @@
 package com.ivanfranchin.bookapi.book;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -17,5 +18,6 @@ public class Book {
     @Id
     private String isbn;
 
+    @Column(nullable = false)
     private String title;
 }

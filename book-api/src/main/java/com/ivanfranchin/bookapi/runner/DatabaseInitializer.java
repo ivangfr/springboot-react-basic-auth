@@ -27,12 +27,19 @@ public class DatabaseInitializer implements CommandLineRunner {
         if (userService.countUsers() > 0) {
             return;
         }
-        USERS.forEach(user -> {
+        getUsers().forEach(user -> {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userService.saveUser(user);
         });
         getBooks().forEach(bookService::saveBook);
         log.info("Database initialized");
+    }
+
+    private List<User> getUsers() {
+        return List.of(
+                new User("admin", "admin", "Admin", "admin@mycompany.com", SecurityConfig.ADMIN),
+                new User("user", "user", "User", "user@mycompany.com", SecurityConfig.USER)
+        );
     }
 
     private List<Book> getBooks() {
@@ -41,11 +48,6 @@ public class DatabaseInitializer implements CommandLineRunner {
                 .map(bookInfoArr -> new Book(bookInfoArr[0], bookInfoArr[1]))
                 .toList();
     }
-
-    private static final List<User> USERS = List.of(
-            new User("admin", "admin", "Admin", "admin@mycompany.com", SecurityConfig.ADMIN),
-            new User("user", "user", "User", "user@mycompany.com", SecurityConfig.USER)
-    );
 
     private static final String BOOKS_STR =
             """

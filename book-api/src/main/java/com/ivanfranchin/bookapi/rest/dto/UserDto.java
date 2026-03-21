@@ -2,6 +2,7 @@ package com.ivanfranchin.bookapi.rest.dto;
 
 import com.ivanfranchin.bookapi.security.CustomUserDetails;
 import com.ivanfranchin.bookapi.user.User;
+import org.springframework.security.core.GrantedAuthority;
 
 public record UserDto(Long id, String username, String name, String email, String role) {
 
@@ -21,7 +22,7 @@ public record UserDto(Long id, String username, String name, String email, Strin
                 userDetails.getUsername(),
                 userDetails.getName(),
                 userDetails.getEmail(),
-                userDetails.getAuthorities().iterator().next().getAuthority()
+                userDetails.getAuthorities().stream().findFirst().map(GrantedAuthority::getAuthority).orElse(null)
         );
     }
 }

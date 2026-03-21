@@ -1,7 +1,5 @@
 package com.ivanfranchin.bookapi.user;
 
-import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
-import com.ivanfranchin.bookapi.security.SecurityConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,17 +38,6 @@ public class UserServiceImpl implements UserService {
     public User validateAndGetUserByUsername(String username) {
         return getUserByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with username %s not found", username)));
-    }
-
-    @Override
-    public User createUser(SignUpRequest signUpRequest) {
-        User user = new User();
-        user.setUsername(signUpRequest.username());
-        user.setPassword(passwordEncoder.encode(signUpRequest.password()));
-        user.setName(signUpRequest.name());
-        user.setEmail(signUpRequest.email());
-        user.setRole(SecurityConfig.USER);
-        return saveUser(user);
     }
 
     @Override

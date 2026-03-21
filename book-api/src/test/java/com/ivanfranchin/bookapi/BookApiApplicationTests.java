@@ -7,8 +7,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-@SpringBootTest
+import javax.sql.DataSource;
+
+@SpringBootTest(properties = {
+        "spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect",
+        "spring.jpa.hibernate.ddl-auto=none"
+})
 class BookApiApplicationTests {
+
+    @MockitoBean
+    DataSource dataSource;
 
     @MockitoBean
     UserRepository userRepository;

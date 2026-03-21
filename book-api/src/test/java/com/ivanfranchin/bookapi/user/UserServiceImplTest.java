@@ -138,6 +138,27 @@ class UserServiceImplTest {
         assertThat(result).isEmpty();
     }
 
+    @Test
+    void getUserByUsername_delegatesToRepository() {
+        User user = newUser("alice");
+        when(userRepository.findByUsername("alice")).thenReturn(Optional.of(user));
+
+        Optional<User> result = userService.getUserByUsername("alice");
+
+        assertThat(result).isPresent().contains(user);
+        verify(userRepository).findByUsername("alice");
+    }
+
+    @Test
+    void countUsers_delegatesToRepository() {
+        when(userRepository.count()).thenReturn(7L);
+
+        long result = userService.countUsers();
+
+        assertThat(result).isEqualTo(7L);
+        verify(userRepository).count();
+    }
+
     private User newUser(String username) {
         User user = new User();
         user.setUsername(username);

@@ -84,4 +84,14 @@ class BookServiceImplTest {
 
         verify(bookRepository).delete(book);
     }
+
+    @Test
+    void countBooks_delegatesToRepository() {
+        when(bookRepository.count()).thenReturn(42L);
+
+        long result = bookService.countBooks();
+
+        assertThat(result).isEqualTo(42L);
+        verify(bookRepository).count();
+    }
 }

@@ -54,6 +54,15 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.role").value("USER"));
     }
 
+    @WithCustomUserDetails(username = "alice", role = "ADMIN")
+    @Test
+    void getCurrentUser_asAdmin_returns200() throws Exception {
+        mockMvc.perform(get("/api/users/me"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value("alice"))
+                .andExpect(jsonPath("$.role").value("ADMIN"));
+    }
+
     @Test
     void getCurrentUser_unauthenticated_returns401() throws Exception {
         mockMvc.perform(get("/api/users/me"))
@@ -103,6 +112,19 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.username").value("alice"));
     }
 
+    @WithMockUser(authorities = "USER")
+    @Test
+    void getUser_asUser_returns403() throws Exception {
+        mockMvc.perform(get("/api/users/alice"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void getUser_unauthenticated_returns401() throws Exception {
+        mockMvc.perform(get("/api/users/alice"))
+                .andExpect(status().isUnauthorized());
+    }
+
     @WithMockUser(authorities = "ADMIN")
     @Test
     void getUser_notFound_returns404() throws Exception {
@@ -124,6 +146,16 @@ class UserControllerTest {
         mockMvc.perform(delete("/api/users/alice"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("alice"));
+    }
+
+    @WithMockUser(authorities = "ADMIN")
+    @Test
+    void deleteUser_notFound_returns404() throws Exception {
+        when(userService.validateAndGetUserByUsername("ghost"))
+                .thenThrow(new UserNotFoundException("User with username ghost not found"));
+
+        mockMvc.perform(delete("/api/users/ghost"))
+                .andExpect(status().isNotFound());
     }
 
     @WithMockUser(authorities = "USER")

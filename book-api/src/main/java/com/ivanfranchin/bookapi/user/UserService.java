@@ -1,7 +1,5 @@
 package com.ivanfranchin.bookapi.user;
 
-import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -16,8 +14,6 @@ public interface UserService {
     boolean hasUserWithEmail(String email);
 
     User validateAndGetUserByUsername(String username);
-
-    User createUser(SignUpRequest signUpRequest);
 
     User saveUser(User user);
 
