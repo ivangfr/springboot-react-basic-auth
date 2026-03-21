@@ -120,4 +120,104 @@ describe('AdminPage', () => {
       expect(bookApi.deleteUser).toHaveBeenCalledWith(adminUser, 'alice')
     })
   })
+
+  it('calls bookApi.addBook and refreshes books when BookForm is submitted', async () => {
+    localStorage.setItem('user', JSON.stringify(adminUser))
+    bookApi.addBook.mockResolvedValue({})
+
+    render(<AdminPage />)
+
+    await waitFor(() => expect(bookApi.getBooks).toHaveBeenCalled())
+
+    // Switch to Books tab
+    const booksTab = screen.getByRole('tab', { name: /books/i })
+    await userEvent.click(booksTab)
+
+    // Fill in the BookForm fields
+    await userEvent.type(screen.getByPlaceholderText('ISBN *'), '978-0-13-468599-1')
+    await userEvent.type(screen.getByPlaceholderText('Title *'), 'Effective Java')
+
+    // Reset mock so we can assert the refresh call
+    bookApi.getBooks.mockResolvedValue({ data: [{ isbn: '978-0-13-468599-1', title: 'Effective Java' }] })
+
+    await userEvent.click(screen.getByRole('button', { name: /create/i }))
+
+    await waitFor(() => {
+      expect(bookApi.addBook).toHaveBeenCalledWith(adminUser, { isbn: '978-0-13-468599-1', title: 'Effective Java' })
+    })
+    await waitFor(() => {
+      expect(bookApi.getBooks).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  it('calls bookApi.getBooks with search text when book search is submitted', async () => {
+    localStorage.setItem('user', JSON.stringify(adminUser))
+
+    render(<AdminPage />)
+
+    await waitFor(() => expect(bookApi.getBooks).toHaveBeenCalled())
+
+    // Switch to Books tab
+    const booksTab = screen.getByRole('tab', { name: /books/i })
+    await userEvent.click(booksTab)
+
+    bookApi.getBooks.mockResolvedValue({ data: [{ isbn: '999', title: 'Spy Novel' }] })
+
+    await userEvent.type(screen.getByPlaceholderText('Search by ISBN or Title'), 'spy')
+
+    const searchButton = screen.getByPlaceholderText('Search by ISBN or Title').closest('form').querySelector('[type="submit"]')
+    await userEvent.click(searchButton)
+
+    await waitFor(() => {
+      expect(bookApi.getBooks).toHaveBeenCalledWith(adminUser, 'spy')
+    })
+  })
+
+  it('calls bookApi.getUsers with search text when user search is submitted', async () => {
+    localStorage.setItem('user', JSON.stringify(adminUser))
+
+    render(<AdminPage />)
+
+    await waitFor(() => expect(bookApi.getUsers).toHaveBeenCalled())
+
+    bookApi.getUsers.mockResolvedValue({ data: [{ id: 3, username: 'alice', name: 'Alice', email: 'a@b.com', role: 'USER' }] })
+
+    await userEvent.type(screen.getByPlaceholderText('Search by Username'), 'alice')
+
+    const searchButton = screen.getByPlaceholderText('Search by Username').closest('form').querySelector('[type="submit"]')
+    await userEvent.click(searchButton)
+
+    await waitFor(() => {
+      expect(bookApi.getUsers).toHaveBeenCalledWith(adminUser, 'alice')
+    })
+  })
+
+  it('handles getUsers API error gracefully and shows no users', async () => {
+    localStorage.setItem('user', JSON.stringify(adminUser))
+
+    bookApi.getUsers.mockRejectedValue({ message: 'Network error' })
+
+    render(<AdminPage />)
+
+    await waitFor(() => {
+      expect(screen.getByText('No user')).toBeInTheDocument()
+    })
+  })
+
+  it('handles getBooks API error gracefully and shows no books', async () => {
+    localStorage.setItem('user', JSON.stringify(adminUser))
+
+    bookApi.getBooks.mockRejectedValue({ message: 'Network error' })
+
+    render(<AdminPage />)
+
+    await waitFor(() => expect(bookApi.getUsers).toHaveBeenCalled())
+
+    const booksTab = screen.getByRole('tab', { name: /books/i })
+    await userEvent.click(booksTab)
+
+    await waitFor(() => {
+      expect(screen.getByText('No book')).toBeInTheDocument()
+    })
+  })
 })
