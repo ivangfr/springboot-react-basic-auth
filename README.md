@@ -105,13 +105,13 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## Demo
 
-- The gif below shows an `admin` logging in:
-
-  ![admin-login](documentation/admin-login.gif)
-
 - The gif below shows a `user` logging in:
 
   ![user-login](documentation/user-login.gif)
+
+- The gif below shows an `admin` logging in:
+
+  ![admin-login](documentation/admin-login.gif)
 
 ## Testing book-api Endpoints
 
