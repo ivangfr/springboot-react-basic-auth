@@ -159,7 +159,7 @@ docker compose up -d
 ### Frontend
 
 - Use the shared `handleLogError(error)` from `Helpers.js` in every `catch` block — never call `console.log` directly on errors.
-- Wrap data-fetching async calls in `try/catch/finally`; reset loading state in `finally`. Delete and search operations that have no loading indicator may omit `finally`.
+- Wrap data-fetching async calls in `try/catch/finally`; reset loading state in `finally`. For delete handlers, set loading to `true` before the call and reset it to `false` in the `catch` block only — the chained `handleGet*` call resets it via its own `finally` on the happy path.
 - Represent UI error state as a boolean `isError` (and optionally `errorMessage`) rendered via a Mantine `<Alert>` component.
 - Inspect `error.response.data.status` for specific HTTP codes (e.g., `409` conflict, `400` validation) to display targeted error messages.
 

@@ -53,15 +53,18 @@ function AdminPage() {
   }
 
   const handleDeleteUser = async (username) => {
+    setIsUsersLoading(true)
     try {
       await bookApi.deleteUser(user, username)
       await handleGetUsers()
     } catch (error) {
       handleLogError(error)
+      setIsUsersLoading(false)
     }
   }
 
   const handleSearchUser = async () => {
+    setIsUsersLoading(true)
     try {
       const response = await bookApi.getUsers(user, userUsernameSearch)
       const data = response.data
@@ -70,6 +73,8 @@ function AdminPage() {
     } catch (error) {
       handleLogError(error)
       setUsers([])
+    } finally {
+      setIsUsersLoading(false)
     }
   }
 
@@ -86,18 +91,22 @@ function AdminPage() {
   }
 
   const handleDeleteBook = async (isbn) => {
+    setIsBooksLoading(true)
     try {
       await bookApi.deleteBook(user, isbn)
       await handleGetBooks()
     } catch (error) {
       handleLogError(error)
+      setIsBooksLoading(false)
     }
   }
 
   const handleAddBook = async () => {
+    setIsBooksLoading(true)
     try {
       const book = { isbn: bookIsbn.trim(), title: bookTitle.trim() }
       if (!(book.isbn && book.title)) {
+        setIsBooksLoading(false)
         return
       }
       await bookApi.addBook(user, book)
@@ -105,10 +114,12 @@ function AdminPage() {
       await handleGetBooks()
     } catch (error) {
       handleLogError(error)
+      setIsBooksLoading(false)
     }
   }
 
   const handleSearchBook = async () => {
+    setIsBooksLoading(true)
     try {
       const response = await bookApi.getBooks(user, bookTextSearch)
       const books = response.data
@@ -116,6 +127,8 @@ function AdminPage() {
     } catch (error) {
       handleLogError(error)
       setBooks([])
+    } finally {
+      setIsBooksLoading(false)
     }
   }
 

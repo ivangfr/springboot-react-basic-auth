@@ -23,10 +23,10 @@ describe('Signup', () => {
   it('renders the signup form when not authenticated', () => {
     render(<Signup />)
 
-    expect(screen.getByPlaceholderText(/username/i)).toBeInTheDocument()
-    expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('Name')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/username/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
+    expect(screen.getByLabelText('Name')).toBeInTheDocument()
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /sign up/i })).toBeInTheDocument()
   })
 
@@ -34,7 +34,7 @@ describe('Signup', () => {
     render(<Signup />)
 
     // Submit with only username filled.
-    await userEvent.type(screen.getByPlaceholderText(/username/i), 'alice')
+    await userEvent.type(screen.getByLabelText(/username/i), 'alice')
     await userEvent.click(screen.getByRole('button', { name: /sign up/i }))
 
     await waitFor(() => {
@@ -50,10 +50,10 @@ describe('Signup', () => {
 
     render(<Signup />)
 
-    await userEvent.type(screen.getByPlaceholderText(/username/i), 'alice')
-    await userEvent.type(screen.getByPlaceholderText(/password/i), 'secret')
-    await userEvent.type(screen.getByPlaceholderText('Name'), 'Alice')
-    await userEvent.type(screen.getByPlaceholderText(/email/i), 'alice@example.com')
+    await userEvent.type(screen.getByLabelText(/username/i), 'alice')
+    await userEvent.type(screen.getByLabelText(/password/i), 'secret')
+    await userEvent.type(screen.getByLabelText('Name'), 'Alice')
+    await userEvent.type(screen.getByLabelText(/email/i), 'alice@example.com')
     await userEvent.click(screen.getByRole('button', { name: /sign up/i }))
 
     await waitFor(() => {
@@ -74,10 +74,10 @@ describe('Signup', () => {
 
     render(<Signup />)
 
-    await userEvent.type(screen.getByPlaceholderText(/username/i), 'alice')
-    await userEvent.type(screen.getByPlaceholderText(/password/i), 'secret')
-    await userEvent.type(screen.getByPlaceholderText('Name'), 'Alice')
-    await userEvent.type(screen.getByPlaceholderText(/email/i), 'alice@example.com')
+    await userEvent.type(screen.getByLabelText(/username/i), 'alice')
+    await userEvent.type(screen.getByLabelText(/password/i), 'secret')
+    await userEvent.type(screen.getByLabelText('Name'), 'Alice')
+    await userEvent.type(screen.getByLabelText(/email/i), 'alice@example.com')
     await userEvent.click(screen.getByRole('button', { name: /sign up/i }))
 
     await waitFor(() => {
@@ -97,10 +97,10 @@ describe('Signup', () => {
 
     render(<Signup />)
 
-    await userEvent.type(screen.getByPlaceholderText(/username/i), 'alice')
-    await userEvent.type(screen.getByPlaceholderText(/password/i), 'secret')
-    await userEvent.type(screen.getByPlaceholderText('Name'), 'Alice')
-    await userEvent.type(screen.getByPlaceholderText(/email/i), 'not-an-email')
+    await userEvent.type(screen.getByLabelText(/username/i), 'alice')
+    await userEvent.type(screen.getByLabelText(/password/i), 'secret')
+    await userEvent.type(screen.getByLabelText('Name'), 'Alice')
+    await userEvent.type(screen.getByLabelText(/email/i), 'not-an-email')
     await userEvent.click(screen.getByRole('button', { name: /sign up/i }))
 
     await waitFor(() => {
