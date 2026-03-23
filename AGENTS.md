@@ -57,10 +57,16 @@ npm test -- src/components/admin/AdminPage.test.jsx
 
 # Run tests matching a name pattern
 npm test -- -t "test description"
+
+# Lint source files
+npm run lint
+
+# Lint and auto-fix safe issues
+npm run lint -- --fix
 ```
 
-> No separate ESLint or Prettier scripts exist. ESLint is configured via `eslint.config.js`
-> (flat config) using `@eslint/js` recommended as a base, plus `eslint-plugin-react` and `eslint-plugin-react-hooks`.
+> ESLint is configured via `eslint.config.js` (flat config) using `@eslint/js` recommended as a base,
+> plus `eslint-plugin-react` and `eslint-plugin-react-hooks`. No Prettier config exists.
 
 ### Infrastructure
 
