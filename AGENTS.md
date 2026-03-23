@@ -3,7 +3,7 @@
 ## Project Overview
 
 Full-stack application with:
-- **Backend**: `book-api/` — Spring Boot 4.x, Java 25, PostgreSQL, HTTP Basic Auth, stateless REST API
+- **Backend**: `book-api/` — Spring Boot 4.0.3, Java 25, PostgreSQL, HTTP Basic Auth, stateless REST API
 - **Frontend**: `book-ui/` — React 19, plain JavaScript (no TypeScript), Axios, Mantine v8
 
 ---
@@ -32,7 +32,7 @@ Full-stack application with:
 ./mvnw test -Dtest="BookApi*"
 
 # Manual integration test (requires running app + DB)
-./test-endpoints.sh
+./book-api/test-endpoints.sh
 ```
 
 > There is no Checkstyle or linting plugin configured. No lint command exists.
@@ -52,9 +52,6 @@ npm run build
 # Run all tests (non-interactive, single pass)
 npm test
 
-# Run in watch mode
-npm run test:watch
-
 # Run a single test file
 npm test -- src/components/admin/AdminPage.test.jsx
 
@@ -63,7 +60,7 @@ npm test -- -t "test description"
 ```
 
 > No separate ESLint or Prettier scripts exist. ESLint is configured via `eslint.config.js`
-> (flat config) using `eslint-plugin-react` and `eslint-plugin-react-hooks`.
+> (flat config) using `@eslint/js` recommended as a base, plus `eslint-plugin-react` and `eslint-plugin-react-hooks`.
 
 ### Infrastructure
 
@@ -81,7 +78,7 @@ docker compose up -d
 - **Java version**: 25. Use modern Java features appropriately.
 - **Indentation**: 4 spaces.
 - **DTOs**: Use Java `record` types for all request and response DTOs. Never use mutable classes for DTOs.
-- **Entities**: Plain classes with Lombok annotations. `@Data` and `@NoArgsConstructor` are used on all entities; `@AllArgsConstructor` is added when a full constructor is needed. Use `@Slf4j` for logging where needed (e.g., `DatabaseInitializer`).
+- **Entities**: Plain classes with Lombok annotations. `@Data` and `@NoArgsConstructor` are used on all entities; `@AllArgsConstructor` is added when all fields are needed in the constructor (e.g., `Book`). Entities that require a partial or custom constructor (e.g., `User`) use a hand-written constructor instead of `@AllArgsConstructor`. Use `@Slf4j` for logging where needed (e.g., `DatabaseInitializer`).
 - **No `var`**: Avoid `var`; prefer explicit types for clarity.
 - **Import ordering** (blank line between each group):
   1. Project-internal (`com.ivanfranchin.*`)
@@ -102,7 +99,7 @@ docker compose up -d
 - **Components**: Functional components only. No class components.
 - **Import ordering** (no blank-line separation enforced, but follow this order):
   1. React and react-* packages (`react`, `react-router-dom`)
-  2. Third-party UI library (`@mantine/core`, `@mantine/hooks`, `@tabler/icons-react`)
+  2. Third-party UI library (`@mantine/core`, `@tabler/icons-react`)
   3. Internal context (`../context/AuthContext`)
   4. Internal services/utilities (`../misc/BookApi`, `../misc/Helpers`)
   5. Sibling components
@@ -173,14 +170,18 @@ docker compose up -d
 - Use `@SpringBootTest` for integration tests that require the full application context.
 - Use `@Disabled` only temporarily; remove the annotation once a test is properly implemented.
 - Prefer `MockMvc` with `@WebMvcTest(SomeController.class)` for controller-layer slice tests; use Mockito (`@ExtendWith(MockitoExtension.class)`) for unit tests of services.
+- **Spring Boot 4 package changes**: `@WebMvcTest` is now imported from `org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest` (not the Boot 3 path `org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest`).
+- Always pair `@WebMvcTest` with `@Import(SecurityConfig.class)` so the security filter chain is loaded in the slice context.
 - Use `@MockitoBean` (Spring Boot 4 / `org.springframework.test.context.bean.override.mockito.MockitoBean`) to inject mocks into the Spring context — **not** `@MockBean` (Spring Boot 3, removed in Spring Boot 4).
+- When a controller injects `@AuthenticationPrincipal CustomUserDetails`, the generic `@WithMockUser` is insufficient — define a custom `@WithSecurityContext` annotation and factory to populate a real `CustomUserDetails` principal in the security context.
 - Available test libraries: JUnit 5, Mockito, AssertJ, MockMvc, `spring-security-test`.
 
 ### Frontend (Vitest + React Testing Library)
 
 - Test files should be co-located with their components: `ComponentName.test.jsx` for components, `UtilityName.test.js` for plain JS utilities.
-- **Always import `render` from `../../test-utils`** (not directly from `@testing-library/react`). `test-utils.jsx` exports `renderWithProviders`, which wraps the component under `MantineProvider`, `MemoryRouter`, and `AuthProvider` — required for any component that uses Mantine, routing, or auth context.
+- **Import `render` from `../../test-utils`** (not directly from `@testing-library/react`) for any component that uses Mantine, routing, or auth context. `test-utils.jsx` exports `renderWithProviders` aliased as `render`, which wraps the component under `MantineProvider`, `MemoryRouter`, and `AuthProvider`. Justified exceptions: tests that exercise the providers themselves (e.g., `AuthContext.test.jsx`) or components that require a custom parent wrapper not provided by `test-utils` (e.g., `Navbar.test.jsx`) may import directly from `@testing-library/react`.
 - Use `screen`, `fireEvent`, and `@testing-library/user-event` from `@testing-library/react` / `@testing-library/user-event` for querying and interacting with the DOM.
 - Vitest globals (`describe`, `it`, `expect`, `beforeEach`, `vi`) are enabled project-wide via `vite.config.js` — no imports needed.
 - Mock the entire `BookApi` module with `vi.mock('../misc/BookApi')`, then set per-test return values with `.mockResolvedValue()` / `.mockRejectedValue()`.
 - Jest-dom matchers (`toBeInTheDocument`, `toHaveTextContent`, etc.) are globally extended in `setupTests.js` — use them directly in `expect()`.
+- `setupTests.js` also mocks `window.matchMedia` (required by Mantine) and replaces `window.localStorage` with an in-memory implementation to work around jsdom limitations.
