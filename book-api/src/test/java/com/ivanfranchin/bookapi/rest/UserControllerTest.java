@@ -137,14 +137,36 @@ class UserControllerTest {
 
     // -- DELETE /api/users/{username} --
 
-    @WithMockUser(authorities = "ADMIN")
+    @WithCustomUserDetails(username = "admin", role = "ADMIN")
     @Test
     void deleteUser_asAdmin_returns204() throws Exception {
         User user = newUser(2L, "alice", "USER");
         when(userService.validateAndGetUserByUsername("alice")).thenReturn(user);
+        when(userService.countAdmins()).thenReturn(2);
 
         mockMvc.perform(delete("/api/users/alice"))
                 .andExpect(status().isNoContent());
+    }
+
+    @WithCustomUserDetails(username = "admin", role = "ADMIN")
+    @Test
+    void deleteUser_selfDeletion_returns400() throws Exception {
+        User user = newUser(1L, "admin", "ADMIN");
+        when(userService.validateAndGetUserByUsername("admin")).thenReturn(user);
+
+        mockMvc.perform(delete("/api/users/admin"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @WithCustomUserDetails(username = "admin", role = "ADMIN")
+    @Test
+    void deleteUser_lastAdmin_returns400() throws Exception {
+        User user = newUser(2L, "alice", "ADMIN");
+        when(userService.validateAndGetUserByUsername("alice")).thenReturn(user);
+        when(userService.countAdmins()).thenReturn(1);
+
+        mockMvc.perform(delete("/api/users/alice"))
+                .andExpect(status().isBadRequest());
     }
 
     @WithMockUser(authorities = "ADMIN")

@@ -159,6 +159,16 @@ class UserServiceImplTest {
         verify(userRepository).count();
     }
 
+    @Test
+    void countAdmins_delegatesToRepository() {
+        when(userRepository.countByRole("ADMIN")).thenReturn(2);
+
+        int result = userService.countAdmins();
+
+        assertThat(result).isEqualTo(2);
+        verify(userRepository).countByRole("ADMIN");
+    }
+
     private User newUser(String username) {
         User user = new User();
         user.setUsername(username);

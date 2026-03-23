@@ -7,6 +7,10 @@ public interface UserService {
 
     List<User> getUsers();
 
+    long countUsers();
+
+    int countAdmins();
+
     Optional<User> getUserByUsername(String username);
 
     boolean hasUserWithUsername(String username);
@@ -20,6 +24,4 @@ public interface UserService {
     void deleteUser(User user);
 
     Optional<User> validUsernameAndPassword(String username, String password);
-
-    long countUsers();
 }
