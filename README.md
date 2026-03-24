@@ -1,6 +1,9 @@
 # springboot-react-basic-auth
 
-The goal of this project is to implement an application called `book-app` to manage books. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/index.html) application called `book-api` and a font-end [React](https://react.dev/) application called `book-ui`. Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) to secure both applications.
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-ivan.franchin-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/ivan.franchin)
+
+The goal of this project is to implement an application called `book-app` to manage books. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/index.html) application called `book-api` and a front-end [React](https://react.dev/) application called `book-ui`. Besides, we will use [`Basic Authentication`](https://en.wikipedia.org/wiki/Basic_access_authentication) to secure both applications.
 
 ## Proof-of-Concepts & Articles
 
@@ -15,7 +18,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## Project Diagram
 
-![project-diagram](documentation/project-diagram.jpeg)
+![project-diagram](documentation/project-diagram.png)
 
 ## Applications
 
@@ -49,7 +52,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   
   To log in, a `user` or `admin` must provide valid `username` and `password` credentials. `book-ui` communicates with `book-api` to get `books` and `users` data.
   
-  `book-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
+  `book-ui` uses [`Mantine`](https://mantine.dev/) as a UI component library, with [`Tabler Icons`](https://tabler.io/icons) for icons.
 
 ## Prerequisites
 
@@ -214,13 +217,13 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
             GET /api/users/me |           401 |         200 |          200 |
                GET /api/users |           401 |         403 |          200 |
          GET /api/users/user2 |           401 |         403 |          200 |
-      DELETE /api/users/user2 |           401 |         403 |          200 |
+      DELETE /api/users/user2 |           401 |         403 |          204 |
     ......................... + ............. + ........... + ............ |
                GET /api/books |           401 |         200 |          200 |
               POST /api/books |           401 |         403 |          201 |
-        DELETE /api/books/abc |           401 |         403 |          200 |
+        DELETE /api/books/abc |           401 |         403 |          204 |
     ------------------------------------------------------------------------
-     [200] Success -  [201] Created -  [401] Unauthorized -  [403] Forbidden
+     [200] Success -  [201] Created -  [204] No Content -  [401] Unauthorized -  [403] Forbidden
     ```
 
 ## Util Commands
@@ -240,6 +243,26 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   docker compose down -v
   ```
 
+## Running Tests
+
+- **book-api**
+
+  - Open a terminal and navigate to the `springboot-react-basic-auth/book-api` folder;
+
+  - Run all tests:
+    ```bash
+    ./mvnw clean test
+    ```
+
+- **book-ui**
+
+  - Open a terminal and navigate to the `springboot-react-basic-auth/book-ui` folder;
+
+  - Run all tests:
+    ```bash
+    npm test
+    ```
+
 ## How to upgrade book-ui dependencies to latest version
 
 - In a terminal, make sure you are in the `springboot-react-basic-auth/book-ui` folder;
@@ -251,6 +274,20 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   ncu -u
   npm install
   ```
+
+## How to optimize GIFs and PNGs in documentation folder
+
+\[**Medium**\] [**How I Reduce GIF and Screenshot Sizes for My Technical Articles on macOS**](https://medium.com/itnext/how-i-reduce-gif-and-screenshot-sizes-for-my-technical-articles-on-macos-7fea331afc68)
+
+## Support
+
+If you find this useful, consider buying me a coffee:
+
+<a href="https://buymeacoffee.com/ivan.franchin"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="50"></a>
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE).
 
 ## References
 

@@ -11,17 +11,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
-    @Value("${spring.application.name}")
-    private String applicationName;
+    public static final String BASIC_AUTH_SECURITY_SCHEME = "basicAuth";
 
     @Bean
-    OpenAPI customOpenAPI() {
+    OpenAPI customOpenAPI(@Value("${spring.application.name}") String applicationName) {
         return new OpenAPI()
                 .components(
                         new Components().addSecuritySchemes(BASIC_AUTH_SECURITY_SCHEME,
                                 new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
                 .info(new Info().title(applicationName));
     }
-
-    public static final String BASIC_AUTH_SECURITY_SCHEME = "basicAuth";
 }

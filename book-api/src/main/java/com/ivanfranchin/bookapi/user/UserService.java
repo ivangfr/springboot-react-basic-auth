@@ -7,6 +7,10 @@ public interface UserService {
 
     List<User> getUsers();
 
+    long countUsers();
+
+    int countAdmins();
+
     Optional<User> getUserByUsername(String username);
 
     boolean hasUserWithUsername(String username);

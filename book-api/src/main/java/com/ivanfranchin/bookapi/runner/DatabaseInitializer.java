@@ -11,9 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,10 +24,10 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (!userService.getUsers().isEmpty()) {
+        if (userService.countUsers() > 0) {
             return;
         }
-        USERS.forEach(user -> {
+        getUsers().forEach(user -> {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userService.saveUser(user);
         });
@@ -37,17 +35,19 @@ public class DatabaseInitializer implements CommandLineRunner {
         log.info("Database initialized");
     }
 
-    private List<Book> getBooks() {
-        return Arrays.stream(BOOKS_STR.split("\n"))
-                .map(bookInfoStr -> bookInfoStr.split(";"))
-                .map(bookInfoArr -> new Book(bookInfoArr[0], bookInfoArr[1]))
-                .collect(Collectors.toList());
+    private List<User> getUsers() {
+        return List.of(
+                new User("admin", "admin", "Admin", "admin@mycompany.com", SecurityConfig.ADMIN),
+                new User("user", "user", "User", "user@mycompany.com", SecurityConfig.USER)
+        );
     }
 
-    private static final List<User> USERS = Arrays.asList(
-            new User("admin", "admin", "Admin", "admin@mycompany.com", SecurityConfig.ADMIN),
-            new User("user", "user", "User", "user@mycompany.com", SecurityConfig.USER)
-    );
+    private List<Book> getBooks() {
+        return BOOKS_STR.lines()
+                .map(bookInfoStr -> bookInfoStr.split(";"))
+                .map(bookInfoArr -> new Book(bookInfoArr[0], bookInfoArr[1]))
+                .toList();
+    }
 
     private static final String BOOKS_STR =
             """
@@ -73,7 +73,6 @@ public class DatabaseInitializer implements CommandLineRunner {
                     9781603090360;Far Arden
                     9781603090537;Fingerprints
                     9781891830976;Fox Bunny Funny
-                    9780958578349;From Hell
                     9781603093866;God Is Disappointed / Apocrypha Now — SLIPCASE SET
                     9781603090988;God Is Disappointed in You
                     9781603090087;Hieronymus B.

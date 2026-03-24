@@ -82,5 +82,5 @@ printf "%25s | %13s | %11s | %12s |\n" "GET /api/books" ${book_get_books[without
 printf "%25s | %13s | %11s | %12s |\n" "POST /api/books" ${book_create_book[without_creds]} ${book_create_book[user_creds]} ${book_create_book[admin_creds]}
 printf "%25s | %13s | %11s | %12s |\n" "DELETE /api/books/abc" ${book_delete_book[without_creds]} ${book_delete_book[user_creds]} ${book_delete_book[admin_creds]}
 printf "%72s\n" "------------------------------------------------------------------------"
-printf " [200] Success -  [201] Created -  [401] Unauthorized -  [403] Forbidden"
+printf " [200] Success -  [201] Created -  [204] No Content -  [401] Unauthorized -  [403] Forbidden"
 printf "\n"

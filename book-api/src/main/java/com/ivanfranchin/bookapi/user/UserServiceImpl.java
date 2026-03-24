@@ -1,5 +1,7 @@
 package com.ivanfranchin.bookapi.user;
 
+import com.ivanfranchin.bookapi.security.SecurityConfig;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsers() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderByUsername();
+    }
+
+    @Override
+    public long countUsers() {
+        return userRepository.count();
+    }
+
+    @Override
+    public int countAdmins() {
+        return userRepository.countByRole(SecurityConfig.ADMIN);
     }
 
     @Override

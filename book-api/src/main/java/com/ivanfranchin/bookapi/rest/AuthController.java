@@ -9,6 +9,7 @@ import com.ivanfranchin.bookapi.user.User;
 import com.ivanfranchin.bookapi.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,13 +43,18 @@ public class AuthController {
     @PostMapping("/signup")
     public AuthResponse signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         if (userService.hasUserWithUsername(signUpRequest.username())) {
-            throw new DuplicatedUserInfoException(String.format("Username %s is already been used", signUpRequest.username()));
+            throw new DuplicatedUserInfoException(String.format("Username %s is already in use", signUpRequest.username()));
         }
         if (userService.hasUserWithEmail(signUpRequest.email())) {
-            throw new DuplicatedUserInfoException(String.format("Email %s is already been used", signUpRequest.email()));
+            throw new DuplicatedUserInfoException(String.format("Email %s is already in use", signUpRequest.email()));
         }
 
-        User user = userService.saveUser(this.mapSignUpRequestToUser(signUpRequest));
+        User user;
+        try {
+            user = userService.saveUser(this.mapSignUpRequestToUser(signUpRequest));
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicatedUserInfoException("Username or email already in use");
+        }
         return new AuthResponse(user.getId(), user.getName(), user.getRole());
     }
 

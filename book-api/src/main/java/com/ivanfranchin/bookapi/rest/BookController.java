@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ivanfranchin.bookapi.config.SwaggerConfig.BASIC_AUTH_SECURITY_SCHEME;
 
@@ -34,25 +33,25 @@ public class BookController {
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping
     public List<BookDto> getBooks(@RequestParam(value = "text", required = false) String text) {
-        List<Book> books = (text == null) ? bookService.getBooks() : bookService.getBooksContainingText(text);
+        List<Book> books = (text == null || text.isBlank()) ? bookService.getBooks() : bookService.getBooksContainingText(text);
         return books.stream()
                 .map(BookDto::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BookDto createBook(@Valid @RequestBody CreateBookRequest createBookRequest) {
-        Book book = Book.from(createBookRequest);
+        Book book = createBookRequest.toDomain();
         return BookDto.from(bookService.saveBook(book));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{isbn}")
-    public BookDto deleteBook(@PathVariable String isbn) {
+    public void deleteBook(@PathVariable String isbn) {
         Book book = bookService.validateAndGetBook(isbn);
         bookService.deleteBook(book);
-        return BookDto.from(book);
     }
 }

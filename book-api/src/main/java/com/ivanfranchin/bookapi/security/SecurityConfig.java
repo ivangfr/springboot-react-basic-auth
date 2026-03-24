@@ -14,6 +14,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+    public static final String ADMIN = "ADMIN";
+    public static final String USER = "USER";
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http
@@ -36,6 +39,4 @@ public class SecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    public static final String ADMIN = "ADMIN";
-    public static final String USER = "USER";
 }
