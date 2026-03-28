@@ -3,7 +3,7 @@ package com.ivanfranchin.bookapi.rest;
 import com.ivanfranchin.bookapi.rest.dto.AuthResponse;
 import com.ivanfranchin.bookapi.rest.dto.LoginRequest;
 import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
-import com.ivanfranchin.bookapi.security.SecurityConfig;
+import com.ivanfranchin.bookapi.security.Role;
 import com.ivanfranchin.bookapi.user.DuplicatedUserInfoException;
 import com.ivanfranchin.bookapi.user.User;
 import com.ivanfranchin.bookapi.user.UserService;
@@ -64,7 +64,7 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(signUpRequest.password()));
         user.setName(signUpRequest.name());
         user.setEmail(signUpRequest.email());
-        user.setRole(SecurityConfig.USER);
+        user.setRole(Role.USER);
         return user;
     }
 }

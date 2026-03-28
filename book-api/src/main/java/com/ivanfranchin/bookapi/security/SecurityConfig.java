@@ -14,17 +14,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    public static final String ADMIN = "ADMIN";
-    public static final String USER = "USER";
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers(HttpMethod.GET, "/api/books", "/api/books/**").hasAnyAuthority(ADMIN, USER)
-                        .requestMatchers(HttpMethod.GET, "/api/users/me").hasAnyAuthority(ADMIN, USER)
-                        .requestMatchers("/api/books", "/api/books/**").hasAuthority(ADMIN)
-                        .requestMatchers("/api/users", "/api/users/**").hasAuthority(ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/api/books", "/api/books/**").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+                        .requestMatchers(HttpMethod.GET, "/api/users/me").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+                        .requestMatchers("/api/books", "/api/books/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers("/api/users", "/api/users/**").hasAuthority(Role.ADMIN.name())
                         .requestMatchers("/public/**", "/auth/**").permitAll()
                         .requestMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())

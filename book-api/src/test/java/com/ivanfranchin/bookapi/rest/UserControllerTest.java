@@ -2,6 +2,7 @@ package com.ivanfranchin.bookapi.rest;
 
 import com.ivanfranchin.bookapi.security.CustomUserDetails;
 import com.ivanfranchin.bookapi.security.CustomUserDetailsService;
+import com.ivanfranchin.bookapi.security.Role;
 import com.ivanfranchin.bookapi.security.SecurityConfig;
 import com.ivanfranchin.bookapi.user.User;
 import com.ivanfranchin.bookapi.user.UserNotFoundException;
@@ -75,8 +76,8 @@ class UserControllerTest {
     @Test
     void getUsers_asAdmin_returns200() throws Exception {
         when(userService.getUsers()).thenReturn(List.of(
-                newUser(1L, "admin", "ADMIN"),
-                newUser(2L, "user", "USER")
+                newUser(1L, "admin", Role.ADMIN),
+                newUser(2L, "user", Role.USER)
         ));
 
         mockMvc.perform(get("/api/users"))
@@ -104,7 +105,7 @@ class UserControllerTest {
     @WithMockUser(authorities = "ADMIN")
     @Test
     void getUser_asAdmin_returns200() throws Exception {
-        User user = newUser(2L, "alice", "USER");
+        User user = newUser(2L, "alice", Role.USER);
         when(userService.validateAndGetUserByUsername("alice")).thenReturn(user);
 
         mockMvc.perform(get("/api/users/alice"))
@@ -140,7 +141,7 @@ class UserControllerTest {
     @WithCustomUserDetails(username = "admin", role = "ADMIN")
     @Test
     void deleteUser_asAdmin_returns204() throws Exception {
-        User user = newUser(2L, "alice", "USER");
+        User user = newUser(2L, "alice", Role.USER);
         when(userService.validateAndGetUserByUsername("alice")).thenReturn(user);
         when(userService.countAdmins()).thenReturn(2);
 
@@ -151,7 +152,7 @@ class UserControllerTest {
     @WithCustomUserDetails(username = "admin", role = "ADMIN")
     @Test
     void deleteUser_selfDeletion_returns400() throws Exception {
-        User user = newUser(1L, "admin", "ADMIN");
+        User user = newUser(1L, "admin", Role.ADMIN);
         when(userService.validateAndGetUserByUsername("admin")).thenReturn(user);
 
         mockMvc.perform(delete("/api/users/admin"))
@@ -161,7 +162,7 @@ class UserControllerTest {
     @WithCustomUserDetails(username = "admin", role = "ADMIN")
     @Test
     void deleteUser_lastAdmin_returns400() throws Exception {
-        User user = newUser(2L, "alice", "ADMIN");
+        User user = newUser(2L, "alice", Role.ADMIN);
         when(userService.validateAndGetUserByUsername("alice")).thenReturn(user);
         when(userService.countAdmins()).thenReturn(1);
 
@@ -192,7 +193,7 @@ class UserControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-    private User newUser(Long id, String username, String role) {
+    private User newUser(Long id, String username, Role role) {
         User user = new User();
         user.setId(id);
         user.setUsername(username);

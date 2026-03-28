@@ -2,7 +2,7 @@ package com.ivanfranchin.bookapi.runner;
 
 import com.ivanfranchin.bookapi.book.Book;
 import com.ivanfranchin.bookapi.user.User;
-import com.ivanfranchin.bookapi.security.SecurityConfig;
+import com.ivanfranchin.bookapi.security.Role;
 import com.ivanfranchin.bookapi.book.BookService;
 import com.ivanfranchin.bookapi.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +37,8 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     private List<User> getUsers() {
         return List.of(
-                new User("admin", "admin", "Admin", "admin@mycompany.com", SecurityConfig.ADMIN),
-                new User("user", "user", "User", "user@mycompany.com", SecurityConfig.USER)
+                new User("admin", "admin", "Admin", "admin@mycompany.com", Role.ADMIN),
+                new User("user", "user", "User", "user@mycompany.com", Role.USER)
         );
     }
 

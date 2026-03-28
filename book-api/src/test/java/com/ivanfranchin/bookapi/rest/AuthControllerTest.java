@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ivanfranchin.bookapi.rest.dto.LoginRequest;
 import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
 import com.ivanfranchin.bookapi.security.CustomUserDetailsService;
+import com.ivanfranchin.bookapi.security.Role;
 import com.ivanfranchin.bookapi.security.SecurityConfig;
 import com.ivanfranchin.bookapi.user.User;
 import com.ivanfranchin.bookapi.user.UserService;
@@ -47,7 +48,7 @@ class AuthControllerTest {
 
     @Test
     void authenticate_validCredentials_returns200() throws Exception {
-        User user = newUser(1L, "alice", "Alice", "alice@example.com", "USER");
+        User user = newUser(1L, "alice", "Alice", "alice@example.com", Role.USER);
         when(userService.validUsernameAndPassword("alice", "secret")).thenReturn(Optional.of(user));
 
         LoginRequest request = new LoginRequest("alice", "secret");
@@ -99,7 +100,7 @@ class AuthControllerTest {
         when(userService.hasUserWithUsername("bob")).thenReturn(false);
         when(userService.hasUserWithEmail("bob@example.com")).thenReturn(false);
 
-        User saved = newUser(3L, "bob", "Bob", "bob@example.com", "USER");
+        User saved = newUser(3L, "bob", "Bob", "bob@example.com", Role.USER);
         when(userService.saveUser(any(User.class))).thenReturn(saved);
 
         SignUpRequest request = new SignUpRequest("bob", "pass", "Bob", "bob@example.com");
@@ -202,7 +203,7 @@ class AuthControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    private User newUser(Long id, String username, String name, String email, String role) {
+    private User newUser(Long id, String username, String name, String email, Role role) {
         User user = new User();
         user.setId(id);
         user.setUsername(username);

@@ -1,6 +1,9 @@
 package com.ivanfranchin.bookapi.user;
 
+import com.ivanfranchin.bookapi.security.Role;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,9 +29,11 @@ public class User {
     private String password;
     private String name;
     private String email;
-    private String role;
 
-    public User(String username, String password, String name, String email, String role) {
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public User(String username, String password, String name, String email, Role role) {
         this.username = username;
         this.password = password;
         this.name = name;

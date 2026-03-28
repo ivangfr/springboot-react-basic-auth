@@ -1,5 +1,6 @@
 package com.ivanfranchin.bookapi.user;
 
+import com.ivanfranchin.bookapi.security.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,5 +18,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
-    int countByRole(String role);
+    int countByRole(Role role);
 }

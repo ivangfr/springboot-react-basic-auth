@@ -1,10 +1,10 @@
 package com.ivanfranchin.bookapi.rest.dto;
 
 import com.ivanfranchin.bookapi.security.CustomUserDetails;
+import com.ivanfranchin.bookapi.security.Role;
 import com.ivanfranchin.bookapi.user.User;
-import org.springframework.security.core.GrantedAuthority;
 
-public record UserDto(Long id, String username, String name, String email, String role) {
+public record UserDto(Long id, String username, String name, String email, Role role) {
 
     public static UserDto from(User user) {
         return new UserDto(
@@ -17,12 +17,15 @@ public record UserDto(Long id, String username, String name, String email, Strin
     }
 
     public static UserDto from(CustomUserDetails userDetails) {
+        String authority = userDetails.getAuthorities().stream().findFirst()
+                .map(a -> a.getAuthority())
+                .orElse(null);
         return new UserDto(
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getName(),
                 userDetails.getEmail(),
-                userDetails.getAuthorities().stream().findFirst().map(GrantedAuthority::getAuthority).orElse(null)
+                authority != null ? Role.valueOf(authority) : null
         );
     }
 }

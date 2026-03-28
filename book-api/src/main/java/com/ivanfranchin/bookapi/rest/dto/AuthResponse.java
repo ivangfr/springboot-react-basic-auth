@@ -1,4 +1,6 @@
 package com.ivanfranchin.bookapi.rest.dto;
 
-public record AuthResponse(Long id, String name, String role) {
+import com.ivanfranchin.bookapi.security.Role;
+
+public record AuthResponse(Long id, String name, Role role) {
 }

@@ -1,5 +1,6 @@
 package com.ivanfranchin.bookapi.user;
 
+import com.ivanfranchin.bookapi.security.Role;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -161,12 +162,12 @@ class UserServiceImplTest {
 
     @Test
     void countAdmins_delegatesToRepository() {
-        when(userRepository.countByRole("ADMIN")).thenReturn(2);
+        when(userRepository.countByRole(Role.ADMIN)).thenReturn(2);
 
         int result = userService.countAdmins();
 
         assertThat(result).isEqualTo(2);
-        verify(userRepository).countByRole("ADMIN");
+        verify(userRepository).countByRole(Role.ADMIN);
     }
 
     private User newUser(String username) {
@@ -174,7 +175,7 @@ class UserServiceImplTest {
         user.setUsername(username);
         user.setName(username);
         user.setEmail(username + "@example.com");
-        user.setRole("USER");
+        user.setRole(Role.USER);
         return user;
     }
 }
