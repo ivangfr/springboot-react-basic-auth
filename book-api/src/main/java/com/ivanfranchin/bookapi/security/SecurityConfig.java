@@ -25,6 +25,7 @@ public class SecurityConfig {
                         .requestMatchers("/public/**", "/auth/**").permitAll()
                         .requestMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())
+                .cors(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
