@@ -35,14 +35,14 @@ public class DatabaseInitializer implements CommandLineRunner {
         log.info("Database initialized");
     }
 
-    private List<User> getUsers() {
+    private static List<User> getUsers() {
         return List.of(
                 new User("admin", "admin", "Admin", "admin@mycompany.com", Role.ADMIN),
                 new User("user", "user", "User", "user@mycompany.com", Role.USER)
         );
     }
 
-    private List<Book> getBooks() {
+    private static List<Book> getBooks() {
         return BOOKS_STR.lines()
                 .map(bookInfoStr -> bookInfoStr.split(";"))
                 .map(bookInfoArr -> new Book(bookInfoArr[0], bookInfoArr[1]))

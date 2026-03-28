@@ -1,12 +1,14 @@
 package com.ivanfranchin.bookapi.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ivanfranchin.bookapi.book.Book;
 import com.ivanfranchin.bookapi.book.BookNotFoundException;
 import com.ivanfranchin.bookapi.book.BookService;
 import com.ivanfranchin.bookapi.rest.dto.CreateBookRequest;
 import com.ivanfranchin.bookapi.security.CustomUserDetailsService;
 import com.ivanfranchin.bookapi.security.SecurityConfig;
+
+import tools.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -33,7 +35,8 @@ class BookControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    ObjectMapper objectMapper;
 
     @MockitoBean
     BookService bookService;

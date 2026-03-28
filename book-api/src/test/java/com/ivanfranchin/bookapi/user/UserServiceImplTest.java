@@ -162,9 +162,9 @@ class UserServiceImplTest {
 
     @Test
     void countAdmins_delegatesToRepository() {
-        when(userRepository.countByRole(Role.ADMIN)).thenReturn(2);
+        when(userRepository.countByRole(Role.ADMIN)).thenReturn(2L);
 
-        int result = userService.countAdmins();
+        long result = userService.countAdmins();
 
         assertThat(result).isEqualTo(2);
         verify(userRepository).countByRole(Role.ADMIN);

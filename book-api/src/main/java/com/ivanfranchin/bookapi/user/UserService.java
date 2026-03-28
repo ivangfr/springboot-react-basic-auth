@@ -9,7 +9,7 @@ public interface UserService {
 
     long countUsers();
 
-    int countAdmins();
+    long countAdmins();
 
     Optional<User> getUserByUsername(String username);
 

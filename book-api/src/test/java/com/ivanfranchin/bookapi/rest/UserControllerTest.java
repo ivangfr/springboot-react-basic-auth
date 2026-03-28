@@ -143,7 +143,7 @@ class UserControllerTest {
     void deleteUser_asAdmin_returns204() throws Exception {
         User user = newUser(2L, "alice", Role.USER);
         when(userService.validateAndGetUserByUsername("alice")).thenReturn(user);
-        when(userService.countAdmins()).thenReturn(2);
+        when(userService.countAdmins()).thenReturn(2L);
 
         mockMvc.perform(delete("/api/users/alice"))
                 .andExpect(status().isNoContent());
@@ -164,7 +164,7 @@ class UserControllerTest {
     void deleteUser_lastAdmin_returns400() throws Exception {
         User user = newUser(2L, "alice", Role.ADMIN);
         when(userService.validateAndGetUserByUsername("alice")).thenReturn(user);
-        when(userService.countAdmins()).thenReturn(1);
+        when(userService.countAdmins()).thenReturn(1L);
 
         mockMvc.perform(delete("/api/users/alice"))
                 .andExpect(status().isBadRequest());

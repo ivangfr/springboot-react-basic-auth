@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int countAdmins() {
+    public long countAdmins() {
         return userRepository.countByRole(Role.ADMIN);
     }
 
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User validateAndGetUserByUsername(String username) {
         return getUserByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(String.format("User with username %s not found", username)));
+                .orElseThrow(() -> new UserNotFoundException("User with username %s not found".formatted(username)));
     }
 
     @Override

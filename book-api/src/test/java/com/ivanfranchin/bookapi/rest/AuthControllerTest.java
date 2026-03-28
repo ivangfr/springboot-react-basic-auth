@@ -1,6 +1,5 @@
 package com.ivanfranchin.bookapi.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ivanfranchin.bookapi.rest.dto.LoginRequest;
 import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
 import com.ivanfranchin.bookapi.security.CustomUserDetailsService;
@@ -8,6 +7,9 @@ import com.ivanfranchin.bookapi.security.Role;
 import com.ivanfranchin.bookapi.security.SecurityConfig;
 import com.ivanfranchin.bookapi.user.User;
 import com.ivanfranchin.bookapi.user.UserService;
+
+import tools.jackson.databind.ObjectMapper;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.junit.jupiter.api.Test;
@@ -33,7 +35,8 @@ class AuthControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    ObjectMapper objectMapper;
 
     @MockitoBean
     UserService userService;

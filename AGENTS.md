@@ -3,7 +3,7 @@
 ## Project Overview
 
 Full-stack application with:
-- **Backend**: `book-api/` — Spring Boot 4.0.3, Java 25, PostgreSQL, HTTP Basic Auth, stateless REST API
+- **Backend**: `book-api/` — Spring Boot 4.0.5, Java 25, PostgreSQL, HTTP Basic Auth, stateless REST API
 - **Frontend**: `book-ui/` — React 19, plain JavaScript (no TypeScript), Axios, Mantine v8
 
 ---
