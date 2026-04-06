@@ -1,18 +1,38 @@
 package com.ivanfranchin.bookapi.book;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-public interface BookService {
+@RequiredArgsConstructor
+@Service
+public class BookService {
 
-    List<Book> getBooks();
+    private final BookRepository bookRepository;
 
-    List<Book> getBooksContainingText(String text);
+    public List<Book> getBooks() {
+        return bookRepository.findAllByOrderByTitle();
+    }
 
-    Book validateAndGetBook(String isbn);
+    public List<Book> getBooksContainingText(String text) {
+        return bookRepository.findByIsbnContainingOrTitleContainingIgnoreCaseOrderByTitle(text, text);
+    }
 
-    Book saveBook(Book book);
+    public Book validateAndGetBook(String isbn) {
+        return bookRepository.findById(isbn)
+                .orElseThrow(() -> new BookNotFoundException("Book with isbn %s not found".formatted(isbn)));
+    }
 
-    void deleteBook(Book book);
+    public Book saveBook(Book book) {
+        return bookRepository.save(book);
+    }
 
-    long countBooks();
+    public void deleteBook(Book book) {
+        bookRepository.delete(book);
+    }
+
+    public long countBooks() {
+        return bookRepository.count();
+    }
 }

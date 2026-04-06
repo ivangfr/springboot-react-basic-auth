@@ -12,16 +12,17 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class BookServiceImplTest {
+class BookServiceTest {
 
     @Mock
     BookRepository bookRepository;
 
     @InjectMocks
-    BookServiceImpl bookService;
+    BookService bookService;
 
     @Test
     void getBooks_returnsAllBooksSorted() {
@@ -32,6 +33,7 @@ class BookServiceImplTest {
 
         assertThat(result).isEqualTo(books);
         verify(bookRepository).findAllByOrderByTitle();
+        verifyNoMoreInteractions(bookRepository);
     }
 
     @Test
@@ -44,6 +46,7 @@ class BookServiceImplTest {
 
         assertThat(result).isEqualTo(books);
         verify(bookRepository).findByIsbnContainingOrTitleContainingIgnoreCaseOrderByTitle(text, text);
+        verifyNoMoreInteractions(bookRepository);
     }
 
     @Test
@@ -54,6 +57,7 @@ class BookServiceImplTest {
         Book result = bookService.validateAndGetBook("123");
 
         assertThat(result).isEqualTo(book);
+        verifyNoMoreInteractions(bookRepository);
     }
 
     @Test
@@ -63,6 +67,7 @@ class BookServiceImplTest {
         assertThatThrownBy(() -> bookService.validateAndGetBook("000"))
                 .isInstanceOf(BookNotFoundException.class)
                 .hasMessageContaining("000");
+        verifyNoMoreInteractions(bookRepository);
     }
 
     @Test
@@ -74,6 +79,7 @@ class BookServiceImplTest {
 
         assertThat(result).isEqualTo(book);
         verify(bookRepository).save(book);
+        verifyNoMoreInteractions(bookRepository);
     }
 
     @Test
@@ -83,6 +89,7 @@ class BookServiceImplTest {
         bookService.deleteBook(book);
 
         verify(bookRepository).delete(book);
+        verifyNoMoreInteractions(bookRepository);
     }
 
     @Test
@@ -93,5 +100,6 @@ class BookServiceImplTest {
 
         assertThat(result).isEqualTo(42L);
         verify(bookRepository).count();
+        verifyNoMoreInteractions(bookRepository);
     }
 }
