@@ -85,6 +85,7 @@ docker compose up -d
 - **Indentation**: 4 spaces.
 - **DTOs**: Use Java `record` types for all request and response DTOs. Never use mutable classes for DTOs.
 - **Entities**: Plain classes with Lombok annotations. `@Data` and `@NoArgsConstructor` are used on all entities; `@AllArgsConstructor` is added when all fields are needed in the constructor (e.g., `Book`). Entities that require a partial or custom constructor (e.g., `User`) use a hand-written constructor instead of `@AllArgsConstructor`. Use `@Slf4j` for logging where needed (e.g., `DatabaseInitializer`).
+- **No service interfaces**: Services are concrete classes (e.g., `BookService.java`, `UserService.java`). No `XxxService` interface + `XxxServiceImpl` pattern.
 - **No `var`**: Avoid `var`; prefer explicit types for clarity.
 - **Import ordering** (blank line between each group):
   1. Project-internal (`com.ivanfranchin.*`)
@@ -173,9 +174,13 @@ docker compose up -d
 ### Backend (JUnit 5 + Spring Boot Test)
 
 - Test classes live in `src/test/java/` mirroring the main package structure.
+- Test file naming:
+  - Controller tests: `XxxControllerTest.java`
+  - Service tests: `XxxServiceTest.java`
 - Use `@SpringBootTest` for integration tests that require the full application context.
 - Use `@Disabled` only temporarily; remove the annotation once a test is properly implemented.
-- Prefer `MockMvc` with `@WebMvcTest(SomeController.class)` for controller-layer slice tests; use Mockito (`@ExtendWith(MockitoExtension.class)`) for unit tests of services.
+- Service unit tests: Use `@ExtendWith(MockitoExtension.class)` with `@InjectMocks` for the service and `@Mock` for dependencies. Always verify no unexpected interactions with `verifyNoMoreInteractions()`.
+- Controller tests: Prefer `MockMvc` with `@WebMvcTest(SomeController.class)` for controller-layer slice tests.
 - **Spring Boot 4 package changes**: `@WebMvcTest` is now imported from `org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest` (not the Boot 3 path `org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest`).
 - Always pair `@WebMvcTest` with `@Import(SecurityConfig.class)` so the security filter chain is loaded in the slice context.
 - Use `@MockitoBean` (Spring Boot 4 / `org.springframework.test.context.bean.override.mockito.MockitoBean`) to inject mocks into the Spring context — **not** `@MockBean` (Spring Boot 3, removed in Spring Boot 4).
