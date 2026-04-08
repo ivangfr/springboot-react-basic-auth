@@ -1,35 +1,30 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { render } from '../../test-utils'
+import { render, makeAdminUser, makeRegularUser, seedLocalStorage } from '../../test-utils'
 import UserPage from './UserPage'
 import { bookApi } from '../misc/BookApi'
 
 vi.mock('../misc/BookApi')
 
-const regularUser = { id: 2, name: 'Alice', role: 'USER', authdata: 'YWxpY2U6cGFzcw==' }
-const adminUser = { id: 1, name: 'Admin', role: 'ADMIN', authdata: 'YWRtaW46YWRtaW4=' }
+beforeEach(() => {
+  vi.clearAllMocks()
+  localStorage.clear()
+})
 
 describe('UserPage', () => {
-  beforeEach(() => {
-    localStorage.clear()
-    vi.resetAllMocks()
-  })
-
-  it('redirects to / when the logged-in user is not USER role', async () => {
-    localStorage.setItem('user', JSON.stringify(adminUser))
+  it('redirects to / when user is not USER', async () => {
+    seedLocalStorage(makeAdminUser())
     bookApi.getBooks.mockResolvedValue({ data: [] })
 
-    render(<UserPage />, { initialEntries: ['/userpage'] })
+    render(<UserPage />, { initialRoute: '/userpage' })
 
-    // BookList should not be rendered.
     expect(screen.queryByText('Books')).not.toBeInTheDocument()
-
-    // Wait for the useEffect async calls to fully settle so no act() warnings are emitted.
     await waitFor(() => expect(bookApi.getBooks).toHaveBeenCalled())
   })
 
   it('fetches and displays books on mount', async () => {
-    localStorage.setItem('user', JSON.stringify(regularUser))
+    const regularUser = makeRegularUser()
+    seedLocalStorage(regularUser)
     bookApi.getBooks.mockResolvedValue({ data: [{ isbn: '111', title: 'Clean Code' }] })
 
     render(<UserPage />)
@@ -41,7 +36,7 @@ describe('UserPage', () => {
   })
 
   it('shows "No book" when API returns empty array', async () => {
-    localStorage.setItem('user', JSON.stringify(regularUser))
+    seedLocalStorage(makeRegularUser())
     bookApi.getBooks.mockResolvedValue({ data: [] })
 
     render(<UserPage />)
@@ -52,7 +47,8 @@ describe('UserPage', () => {
   })
 
   it('calls bookApi.getBooks with search text when search is submitted', async () => {
-    localStorage.setItem('user', JSON.stringify(regularUser))
+    const regularUser = makeRegularUser()
+    seedLocalStorage(regularUser)
     bookApi.getBooks.mockResolvedValue({ data: [] })
 
     render(<UserPage />)
@@ -70,12 +66,11 @@ describe('UserPage', () => {
   })
 
   it('handles API error on mount silently', async () => {
-    localStorage.setItem('user', JSON.stringify(regularUser))
+    seedLocalStorage(makeRegularUser())
     bookApi.getBooks.mockRejectedValue({ message: 'Network Error' })
 
     render(<UserPage />)
 
-    // Wait for the async effect (including the finally block) to fully settle.
     await waitFor(() => {
       expect(bookApi.getBooks).toHaveBeenCalled()
       expect(screen.getByText('No book')).toBeInTheDocument()

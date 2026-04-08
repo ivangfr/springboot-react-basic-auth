@@ -3,19 +3,23 @@ import { MantineProvider } from '@mantine/core'
 import { MemoryRouter } from 'react-router-dom'
 import { AuthProvider } from './components/context/AuthContext'
 
-/**
- * Wraps the given UI with MantineProvider, AuthProvider, and MemoryRouter.
- *
- * @param {React.ReactElement} ui - The component to render.
- * @param {object} options
- * @param {string[]} [options.initialEntries=['/'] ] - Initial router entries for MemoryRouter.
- * @param {object} [options.renderOptions={}] - Extra options forwarded to RTL render().
- */
-function renderWithProviders(ui, { initialEntries = ['/'], ...renderOptions } = {}) {
+export function makeAdminUser() {
+  return { id: 1, name: 'Admin', role: 'ADMIN', authdata: 'YWRtaW46YWRtaW4=' }
+}
+
+export function makeRegularUser() {
+  return { id: 2, name: 'Bob', role: 'USER', authdata: 'Ym9iOnBhc3M=' }
+}
+
+export function seedLocalStorage(user) {
+  localStorage.setItem('user', JSON.stringify(user))
+}
+
+function renderWithProviders(ui, { initialRoute = '/', ...renderOptions } = {}) {
   function Wrapper({ children }) {
     return (
       <MantineProvider>
-        <MemoryRouter initialEntries={initialEntries}>
+        <MemoryRouter initialEntries={[initialRoute]}>
           <AuthProvider>
             {children}
           </AuthProvider>
@@ -27,6 +31,5 @@ function renderWithProviders(ui, { initialEntries = ['/'], ...renderOptions } = 
   return render(ui, { wrapper: Wrapper, ...renderOptions })
 }
 
-// Re-export everything from RTL so tests only need to import from test-utils.
 export * from '@testing-library/react'
 export { renderWithProviders as render }

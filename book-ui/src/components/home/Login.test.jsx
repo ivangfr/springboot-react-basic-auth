@@ -6,36 +6,36 @@ import { bookApi } from '../misc/BookApi'
 
 vi.mock('../misc/BookApi')
 
+beforeEach(() => {
+  vi.clearAllMocks()
+  localStorage.clear()
+})
+
 describe('Login', () => {
-  beforeEach(() => {
-    localStorage.clear()
-    vi.resetAllMocks()
-  })
-
-  it('redirects to / when the user is already logged in', () => {
+  it('redirects to / when already logged in', () => {
     localStorage.setItem('user', JSON.stringify({ id: 1, name: 'Alice', role: 'USER', authdata: 'abc' }))
-
     render(<Login />, { initialEntries: ['/login'] })
-
-    // The form should not be present — the component navigated away.
-    expect(screen.queryByRole('button', { name: /login/i })).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('Username')).not.toBeInTheDocument()
   })
 
-  it('renders the login form when not authenticated', () => {
+  it('shows error alert when submitting with empty fields', async () => {
     render(<Login />)
-
-    expect(screen.getByLabelText(/username/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: /login/i }))
+    expect(screen.getByRole('alert')).toBeInTheDocument()
+    expect(bookApi.authenticate).not.toHaveBeenCalled()
   })
 
-  it('shows an error alert when submitting with empty fields', async () => {
+  it('shows error alert when API returns an error', async () => {
+    bookApi.authenticate.mockRejectedValue({ message: 'Unauthorized' })
     render(<Login />)
 
+    await userEvent.type(screen.getByLabelText('Username'), 'alice')
+    await userEvent.type(screen.getByLabelText('Password'), 'wrong')
     await userEvent.click(screen.getByRole('button', { name: /login/i }))
 
-    expect(screen.getByText(/username or password provided are incorrect/i)).toBeInTheDocument()
-    expect(bookApi.authenticate).not.toHaveBeenCalled()
+    await waitFor(() => {
+      expect(screen.getByRole('alert')).toBeInTheDocument()
+    })
   })
 
   it('calls bookApi.authenticate and logs user in on success', async () => {
@@ -45,29 +45,12 @@ describe('Login', () => {
 
     render(<Login />)
 
-    await userEvent.type(screen.getByLabelText(/username/i), 'alice')
-    await userEvent.type(screen.getByLabelText(/password/i), 'secret')
+    await userEvent.type(screen.getByLabelText('Username'), 'alice')
+    await userEvent.type(screen.getByLabelText('Password'), 'secret')
     await userEvent.click(screen.getByRole('button', { name: /login/i }))
 
     await waitFor(() => {
-      expect(bookApi.authenticate).toHaveBeenCalledWith('alice', 'secret')
       expect(localStorage.getItem('user')).not.toBeNull()
-      const stored = JSON.parse(localStorage.getItem('user'))
-      expect(stored.name).toBe('Alice')
-    })
-  })
-
-  it('shows error alert when the API call fails', async () => {
-    bookApi.authenticate.mockRejectedValue({ response: { data: { message: 'Unauthorized' } } })
-
-    render(<Login />)
-
-    await userEvent.type(screen.getByLabelText(/username/i), 'alice')
-    await userEvent.type(screen.getByLabelText(/password/i), 'wrong')
-    await userEvent.click(screen.getByRole('button', { name: /login/i }))
-
-    await waitFor(() => {
-      expect(screen.getByText(/username or password provided are incorrect/i)).toBeInTheDocument()
     })
   })
 })

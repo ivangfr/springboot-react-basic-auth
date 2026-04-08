@@ -1,35 +1,29 @@
 import { screen } from '@testing-library/react'
-import { render } from '../../test-utils'
+import { render, makeAdminUser, seedLocalStorage } from '../../test-utils'
 import PrivateRoute from './PrivateRoute'
 
+beforeEach(() => {
+  localStorage.clear()
+})
+
 describe('PrivateRoute', () => {
-  beforeEach(() => {
-    localStorage.clear()
-  })
-
-  it('renders children when the user is authenticated', () => {
-    const user = { id: 1, name: 'Alice', role: 'ADMIN', authdata: 'abc' }
-    localStorage.setItem('user', JSON.stringify(user))
-
+  it('renders children when authenticated', () => {
+    seedLocalStorage(makeAdminUser())
     render(
       <PrivateRoute>
         <div>Protected content</div>
       </PrivateRoute>
     )
-
     expect(screen.getByText('Protected content')).toBeInTheDocument()
   })
 
-  it('redirects to /login when the user is not authenticated', () => {
-    // No user in localStorage — unauthenticated.
+  it('redirects to /login when not authenticated', () => {
     render(
       <PrivateRoute>
         <div>Protected content</div>
       </PrivateRoute>,
-      { initialEntries: ['/adminpage'] }
+      { initialRoute: '/adminpage' }
     )
-
-    // The protected content should not be rendered.
     expect(screen.queryByText('Protected content')).not.toBeInTheDocument()
   })
 })
