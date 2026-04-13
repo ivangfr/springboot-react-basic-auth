@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 set -euo pipefail
 
 for cmd in curl; do
@@ -15,17 +15,17 @@ if ! curl -sf --max-time 3 "${BASE_URL}/public/numberOfUsers" > /dev/null 2>&1; 
   exit 1
 fi
 
-typeset -A public_number_of_users
-typeset -A public_number_of_books
+declare -A public_number_of_users
+declare -A public_number_of_books
 
-typeset -A user_get_me
-typeset -A user_get_users
-typeset -A user_get_user
-typeset -A user_delete_user
+declare -A user_get_me
+declare -A user_get_users
+declare -A user_get_user
+declare -A user_delete_user
 
-typeset -A book_get_books
-typeset -A book_create_book
-typeset -A book_delete_book
+declare -A book_get_books
+declare -A book_create_book
+declare -A book_delete_book
 
 
 ADMIN_AUTH_RESP=$(curl -s -X POST "${BASE_URL}/auth/authenticate" -H 'Content-Type: application/json' -d '{"username": "admin", "password": "admin"}')
