@@ -29,17 +29,18 @@ function BookCover({ isbn, w, h }) {
         onError={handleError}
         alt=''
       />
-      {(!isLoaded || isMissing)
-        ? <Skeleton w={w} h={height} radius='sm' animate={!isLoaded} />
-        : <Image
-            src={src}
-            w={w}
-            h={height}
-            fit='contain'
-            radius='sm'
-            style={{ border: '1px solid var(--mantine-color-gray-3)' }}
-          />
-      }
+      {!isLoaded || isMissing ? (
+        <Skeleton w={w} h={height} radius='sm' animate={!isLoaded} />
+      ) : (
+        <Image
+          src={src}
+          w={w}
+          h={height}
+          fit='contain'
+          radius='sm'
+          style={{ border: '1px solid var(--mantine-color-gray-3)' }}
+        />
+      )}
     </>
   )
 }

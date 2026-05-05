@@ -1,11 +1,16 @@
 import { render, screen, act, waitFor } from '@testing-library/react'
 import { AuthProvider, useAuth } from './AuthContext'
-import { makeAdminUser, makeRegularUser, seedLocalStorage } from '../../test-utils'
+import {
+  makeAdminUser,
+  makeRegularUser,
+  seedLocalStorage
+} from '../../test-utils'
 import { MantineProvider } from '@mantine/core'
 import { MemoryRouter } from 'react-router-dom'
 
 function AuthProbe() {
-  const { user, getUser, userIsAuthenticated, userLogin, userLogout } = useAuth()
+  const { user, getUser, userIsAuthenticated, userLogin, userLogout } =
+    useAuth()
   return (
     <div>
       <span data-testid='user'>{user ? user.name : 'null'}</span>
@@ -51,7 +56,9 @@ describe('AuthContext', () => {
 
   it('userLogin persists user to localStorage and updates state', async () => {
     renderProbe()
-    await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent('null'))
+    await waitFor(() =>
+      expect(screen.getByTestId('user')).toHaveTextContent('null')
+    )
 
     await act(async () => {
       screen.getByText('Login').click()
@@ -66,7 +73,9 @@ describe('AuthContext', () => {
   it('userLogout removes user from localStorage and clears state', async () => {
     seedLocalStorage(makeRegularUser())
     renderProbe()
-    await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent('Bob'))
+    await waitFor(() =>
+      expect(screen.getByTestId('user')).toHaveTextContent('Bob')
+    )
 
     await act(async () => {
       screen.getByText('Logout').click()

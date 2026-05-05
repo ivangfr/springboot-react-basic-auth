@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { SimpleGrid, Paper, Text, Container, Box, LoadingOverlay } from '@mantine/core'
+import {
+  SimpleGrid,
+  Paper,
+  Text,
+  Container,
+  Box,
+  LoadingOverlay
+} from '@mantine/core'
 import { IconUsers, IconBook } from '@tabler/icons-react'
 import { bookApi } from '../misc/BookApi'
 import { handleLogError } from '../misc/Helpers'
@@ -32,12 +39,16 @@ function Home() {
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
           <Paper withBorder p='xl' radius='md' ta='center'>
             <IconUsers size={32} color='gray' />
-            <Text size='3rem' fw={700}>{numberOfUsers}</Text>
+            <Text size='3rem' fw={700}>
+              {numberOfUsers}
+            </Text>
             <Text c='dimmed'>Users</Text>
           </Paper>
           <Paper withBorder p='xl' radius='md' ta='center'>
             <IconBook size={32} color='gray' />
-            <Text size='3rem' fw={700}>{numberOfBooks}</Text>
+            <Text size='3rem' fw={700}>
+              {numberOfBooks}
+            </Text>
             <Text c='dimmed'>Books</Text>
           </Paper>
         </SimpleGrid>

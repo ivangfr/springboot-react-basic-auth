@@ -14,9 +14,13 @@ export const bookApi = {
 }
 
 function authenticate(username, password) {
-  return instance.post('/auth/authenticate', { username, password }, {
-    headers: { 'Content-type': 'application/json' }
-  })
+  return instance.post(
+    '/auth/authenticate',
+    { username, password },
+    {
+      headers: { 'Content-type': 'application/json' }
+    }
+  )
 }
 
 function signup(user) {
@@ -36,26 +40,26 @@ function numberOfBooks() {
 function getUsers(user, username) {
   const url = username ? `/api/users/${username}` : '/api/users'
   return instance.get(url, {
-    headers: { 'Authorization': basicAuth(user) }
+    headers: { Authorization: basicAuth(user) }
   })
 }
 
 function deleteUser(user, username) {
   return instance.delete(`/api/users/${username}`, {
-    headers: { 'Authorization': basicAuth(user) }
+    headers: { Authorization: basicAuth(user) }
   })
 }
 
 function getBooks(user, text) {
   const url = text ? `/api/books?text=${text}` : '/api/books'
   return instance.get(url, {
-    headers: { 'Authorization': basicAuth(user) }
+    headers: { Authorization: basicAuth(user) }
   })
 }
 
 function deleteBook(user, isbn) {
   return instance.delete(`/api/books/${isbn}`, {
-    headers: { 'Authorization': basicAuth(user) }
+    headers: { Authorization: basicAuth(user) }
   })
 }
 
@@ -63,7 +67,7 @@ function addBook(user, book) {
   return instance.post('/api/books', book, {
     headers: {
       'Content-type': 'application/json',
-      'Authorization': basicAuth(user)
+      Authorization: basicAuth(user)
     }
   })
 }

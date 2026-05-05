@@ -13,7 +13,10 @@ beforeEach(() => {
 
 describe('Login', () => {
   it('redirects to / when already logged in', () => {
-    localStorage.setItem('user', JSON.stringify({ id: 1, name: 'Alice', role: 'USER', authdata: 'abc' }))
+    localStorage.setItem(
+      'user',
+      JSON.stringify({ id: 1, name: 'Alice', role: 'USER', authdata: 'abc' })
+    )
     render(<Login />, { initialEntries: ['/login'] })
     expect(screen.queryByLabelText('Username')).not.toBeInTheDocument()
   })

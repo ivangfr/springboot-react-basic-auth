@@ -1,16 +1,24 @@
 import { Table, ActionIcon, TextInput } from '@mantine/core'
 import { IconTrash, IconSearch } from '@tabler/icons-react'
 
-function UserTable({ users, userUsernameSearch, handleInputChange, handleDeleteUser, handleSearchUser }) {
+function UserTable({
+  users,
+  userUsernameSearch,
+  handleInputChange,
+  handleDeleteUser,
+  handleSearchUser
+}) {
   let userRows
   if (users.length === 0) {
     userRows = (
       <Table.Tr key='no-user'>
-        <Table.Td colSpan={6} style={{ textAlign: 'center' }}>No user</Table.Td>
+        <Table.Td colSpan={6} style={{ textAlign: 'center' }}>
+          No user
+        </Table.Td>
       </Table.Tr>
     )
   } else {
-    userRows = users.map(user => (
+    userRows = users.map((user) => (
       <Table.Tr key={user.id}>
         <Table.Td>
           <ActionIcon
@@ -35,7 +43,12 @@ function UserTable({ users, userUsernameSearch, handleInputChange, handleDeleteU
 
   return (
     <>
-      <form onSubmit={(e) => { e.preventDefault(); handleSearchUser() }}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          handleSearchUser()
+        }}
+      >
         <TextInput
           mb='md'
           name='userUsernameSearch'

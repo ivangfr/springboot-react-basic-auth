@@ -8,12 +8,12 @@ const defaultProps = {
   bookTextSearch: '',
   books: [],
   handleInputChange: vi.fn(),
-  handleSearchBook: vi.fn(),
+  handleSearchBook: vi.fn()
 }
 
 const sampleBooks = [
   { isbn: '111', title: 'Clean Code' },
-  { isbn: '222', title: 'The Pragmatic Programmer' },
+  { isbn: '222', title: 'The Pragmatic Programmer' }
 ]
 
 describe('BookList', () => {
@@ -54,7 +54,10 @@ describe('BookList', () => {
     const handleInputChange = vi.fn()
     render(<BookList {...defaultProps} handleInputChange={handleInputChange} />)
 
-    await userEvent.type(screen.getByPlaceholderText('Search by ISBN or Title'), 'java')
+    await userEvent.type(
+      screen.getByPlaceholderText('Search by ISBN or Title'),
+      'java'
+    )
 
     expect(handleInputChange).toHaveBeenCalled()
   })

@@ -8,12 +8,24 @@ const defaultProps = {
   userUsernameSearch: '',
   handleInputChange: vi.fn(),
   handleDeleteUser: vi.fn(),
-  handleSearchUser: vi.fn(),
+  handleSearchUser: vi.fn()
 }
 
 const sampleUsers = [
-  { id: 1, username: 'admin', name: 'Admin User', email: 'admin@example.com', role: 'ADMIN' },
-  { id: 2, username: 'alice', name: 'Alice', email: 'alice@example.com', role: 'USER' },
+  {
+    id: 1,
+    username: 'admin',
+    name: 'Admin User',
+    email: 'admin@example.com',
+    role: 'ADMIN'
+  },
+  {
+    id: 2,
+    username: 'alice',
+    name: 'Alice',
+    email: 'alice@example.com',
+    role: 'USER'
+  }
 ]
 
 describe('UserTable', () => {
@@ -56,7 +68,13 @@ describe('UserTable', () => {
 
   it('calls handleDeleteUser with the correct username', async () => {
     const handleDeleteUser = vi.fn()
-    render(<UserTable {...defaultProps} users={sampleUsers} handleDeleteUser={handleDeleteUser} />)
+    render(
+      <UserTable
+        {...defaultProps}
+        users={sampleUsers}
+        handleDeleteUser={handleDeleteUser}
+      />
+    )
 
     const rows = screen.getAllByRole('row')
     const aliceDeleteBtn = within(rows[2]).getByRole('button')
@@ -67,7 +85,13 @@ describe('UserTable', () => {
 
   it('does not call handleDeleteUser when admin delete is clicked (disabled)', async () => {
     const handleDeleteUser = vi.fn()
-    render(<UserTable {...defaultProps} users={sampleUsers} handleDeleteUser={handleDeleteUser} />)
+    render(
+      <UserTable
+        {...defaultProps}
+        users={sampleUsers}
+        handleDeleteUser={handleDeleteUser}
+      />
+    )
 
     const rows = screen.getAllByRole('row')
     const adminDeleteBtn = within(rows[1]).getByRole('button')
@@ -89,9 +113,14 @@ describe('UserTable', () => {
 
   it('calls handleInputChange when the search input changes', async () => {
     const handleInputChange = vi.fn()
-    render(<UserTable {...defaultProps} handleInputChange={handleInputChange} />)
+    render(
+      <UserTable {...defaultProps} handleInputChange={handleInputChange} />
+    )
 
-    await userEvent.type(screen.getByPlaceholderText('Search by Username'), 'al')
+    await userEvent.type(
+      screen.getByPlaceholderText('Search by Username'),
+      'al'
+    )
 
     expect(handleInputChange).toHaveBeenCalled()
   })

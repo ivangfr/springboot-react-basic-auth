@@ -1,56 +1,60 @@
 package com.ivanfranchin.bookapi.runner;
 
-import com.ivanfranchin.bookapi.book.Book;
-import com.ivanfranchin.bookapi.user.User;
-import com.ivanfranchin.bookapi.security.Role;
-import com.ivanfranchin.bookapi.book.BookService;
-import com.ivanfranchin.bookapi.user.UserService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import com.ivanfranchin.bookapi.book.Book;
+import com.ivanfranchin.bookapi.book.BookService;
+import com.ivanfranchin.bookapi.security.Role;
+import com.ivanfranchin.bookapi.user.User;
+import com.ivanfranchin.bookapi.user.UserService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
 public class DatabaseInitializer implements CommandLineRunner {
 
-    private final UserService userService;
-    private final BookService bookService;
-    private final PasswordEncoder passwordEncoder;
+  private final UserService userService;
+  private final BookService bookService;
+  private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public void run(String... args) {
-        if (userService.countUsers() > 0) {
-            return;
-        }
-        getUsers().forEach(user -> {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userService.saveUser(user);
-        });
-        getBooks().forEach(bookService::saveBook);
-        log.info("Database initialized");
+  @Override
+  public void run(String... args) {
+    if (userService.countUsers() > 0) {
+      return;
     }
+    getUsers()
+        .forEach(
+            user -> {
+              user.setPassword(passwordEncoder.encode(user.getPassword()));
+              userService.saveUser(user);
+            });
+    getBooks().forEach(bookService::saveBook);
+    log.info("Database initialized");
+  }
 
-    private static List<User> getUsers() {
-        return List.of(
-                new User("admin", "admin", "Admin", "admin@mycompany.com", Role.ADMIN),
-                new User("user", "user", "User", "user@mycompany.com", Role.USER)
-        );
-    }
+  private static List<User> getUsers() {
+    return List.of(
+        new User("admin", "admin", "Admin", "admin@mycompany.com", Role.ADMIN),
+        new User("user", "user", "User", "user@mycompany.com", Role.USER));
+  }
 
-    private static List<Book> getBooks() {
-        return BOOKS_STR.lines()
-                .map(bookInfoStr -> bookInfoStr.split(";"))
-                .map(bookInfoArr -> new Book(bookInfoArr[0], bookInfoArr[1]))
-                .toList();
-    }
+  private static List<Book> getBooks() {
+    return BOOKS_STR
+        .lines()
+        .map(bookInfoStr -> bookInfoStr.split(";"))
+        .map(bookInfoArr -> new Book(bookInfoArr[0], bookInfoArr[1]))
+        .toList();
+  }
 
-    private static final String BOOKS_STR =
-            """
+  private static final String BOOKS_STR =
+      """
                     9781603090773;Any Empire
                     9781603090698;August Moon
                     9781891830372;The Barefoot Serpent (softcover) by Scott Morse

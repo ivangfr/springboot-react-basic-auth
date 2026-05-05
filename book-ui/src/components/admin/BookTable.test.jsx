@@ -11,7 +11,7 @@ const defaultProps = {
   handleInputChange: vi.fn(),
   handleAddBook: vi.fn(),
   handleDeleteBook: vi.fn(),
-  handleSearchBook: vi.fn(),
+  handleSearchBook: vi.fn()
 }
 
 describe('BookTable', () => {
@@ -27,7 +27,7 @@ describe('BookTable', () => {
   it('renders a row per book with isbn and title', () => {
     const books = [
       { isbn: '111', title: 'Book One' },
-      { isbn: '222', title: 'Book Two' },
+      { isbn: '222', title: 'Book Two' }
     ]
     render(<BookTable {...defaultProps} books={books} />)
 
@@ -46,7 +46,13 @@ describe('BookTable', () => {
   it('calls handleDeleteBook with the correct isbn when delete button is clicked', async () => {
     const handleDeleteBook = vi.fn()
     const books = [{ isbn: '111', title: 'Book One' }]
-    render(<BookTable {...defaultProps} books={books} handleDeleteBook={handleDeleteBook} />)
+    render(
+      <BookTable
+        {...defaultProps}
+        books={books}
+        handleDeleteBook={handleDeleteBook}
+      />
+    )
 
     // The delete ActionIcon is inside the table body row, not in the search/form area.
     const rows = screen.getAllByRole('row')
@@ -63,7 +69,9 @@ describe('BookTable', () => {
 
     // The search ActionIcon is of type='submit' and is in the search form.
     // Submit the form directly by clicking the search submit button.
-    const searchButton = screen.getAllByRole('button').find(b => b.type === 'submit' && !b.closest('table'))
+    const searchButton = screen
+      .getAllByRole('button')
+      .find((b) => b.type === 'submit' && !b.closest('table'))
     await userEvent.click(searchButton)
 
     expect(handleSearchBook).toHaveBeenCalledTimes(1)
@@ -71,9 +79,14 @@ describe('BookTable', () => {
 
   it('calls handleInputChange when search input changes', async () => {
     const handleInputChange = vi.fn()
-    render(<BookTable {...defaultProps} handleInputChange={handleInputChange} />)
+    render(
+      <BookTable {...defaultProps} handleInputChange={handleInputChange} />
+    )
 
-    await userEvent.type(screen.getByPlaceholderText('Search by ISBN or Title'), 'java')
+    await userEvent.type(
+      screen.getByPlaceholderText('Search by ISBN or Title'),
+      'java'
+    )
 
     expect(handleInputChange).toHaveBeenCalled()
   })

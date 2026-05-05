@@ -1,6 +1,11 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { render, makeAdminUser, makeRegularUser, seedLocalStorage } from '../../test-utils'
+import {
+  render,
+  makeAdminUser,
+  makeRegularUser,
+  seedLocalStorage
+} from '../../test-utils'
 import UserPage from './UserPage'
 import { bookApi } from '../misc/BookApi'
 
@@ -25,7 +30,9 @@ describe('UserPage', () => {
   it('fetches and displays books on mount', async () => {
     const regularUser = makeRegularUser()
     seedLocalStorage(regularUser)
-    bookApi.getBooks.mockResolvedValue({ data: [{ isbn: '111', title: 'Clean Code' }] })
+    bookApi.getBooks.mockResolvedValue({
+      data: [{ isbn: '111', title: 'Clean Code' }]
+    })
 
     render(<UserPage />)
 
@@ -55,7 +62,10 @@ describe('UserPage', () => {
 
     await waitFor(() => expect(bookApi.getBooks).toHaveBeenCalledTimes(1))
 
-    await userEvent.type(screen.getByPlaceholderText('Search by ISBN or Title'), 'java')
+    await userEvent.type(
+      screen.getByPlaceholderText('Search by ISBN or Title'),
+      'java'
+    )
 
     const searchButton = screen.getByRole('button')
     await userEvent.click(searchButton)

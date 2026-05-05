@@ -8,7 +8,9 @@ describe('BookCover', () => {
 
     const img = document.querySelector('img[src*="openlibrary"]')
     expect(img).toBeInTheDocument()
-    expect(img.src).toBe('http://covers.openlibrary.org/b/isbn/0-13-468599-1-M.jpg')
+    expect(img.src).toBe(
+      'http://covers.openlibrary.org/b/isbn/0-13-468599-1-M.jpg'
+    )
   })
 
   it('shows a Skeleton while the image has not yet loaded', () => {
@@ -31,7 +33,10 @@ describe('BookCover', () => {
     const hiddenImg = document.querySelector('img[style*="display: none"]')
 
     // Simulate a successful load: naturalWidth > 1 means the cover image exists.
-    Object.defineProperty(hiddenImg, 'naturalWidth', { value: 100, configurable: true })
+    Object.defineProperty(hiddenImg, 'naturalWidth', {
+      value: 100,
+      configurable: true
+    })
     fireEvent.load(hiddenImg)
 
     // After a successful load, the Mantine Image (a visible <img>) is rendered.
@@ -46,14 +51,17 @@ describe('BookCover', () => {
     const hiddenImg = document.querySelector('img[style*="display: none"]')
 
     // Simulate a "blank" image response: naturalWidth === 1 (OpenLibrary placeholder).
-    Object.defineProperty(hiddenImg, 'naturalWidth', { value: 1, configurable: true })
+    Object.defineProperty(hiddenImg, 'naturalWidth', {
+      value: 1,
+      configurable: true
+    })
     fireEvent.load(hiddenImg)
 
     // The Mantine Image should NOT be rendered; only the probe img and skeleton remain.
     const allImgs = screen.queryAllByRole('img')
     // The hidden probe has display:none so it won't appear in roles — only truly visible imgs do.
     // No Mantine Image means the skeleton is still showing.
-    expect(allImgs.every(img => img.style.display === 'none')).toBe(true)
+    expect(allImgs.every((img) => img.style.display === 'none')).toBe(true)
   })
 
   it('keeps the Skeleton when the image fails to load (network/CORS error)', () => {
@@ -65,7 +73,7 @@ describe('BookCover', () => {
 
     // After an error the skeleton is still visible (isMissing=true), no Mantine Image.
     const allImgs = screen.queryAllByRole('img')
-    expect(allImgs.every(img => img.style.display === 'none')).toBe(true)
+    expect(allImgs.every((img) => img.style.display === 'none')).toBe(true)
   })
 
   it('uses the provided height when h prop is given', () => {
@@ -82,6 +90,8 @@ describe('BookCover', () => {
     // but we verify the component renders without errors.
     render(<BookCover isbn='0-13-468599-1' w={50} />)
 
-    expect(document.querySelector('img[style*="display: none"]')).toBeInTheDocument()
+    expect(
+      document.querySelector('img[style*="display: none"]')
+    ).toBeInTheDocument()
   })
 })

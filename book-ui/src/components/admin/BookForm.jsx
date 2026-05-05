@@ -5,7 +5,12 @@ function BookForm({ bookIsbn, bookTitle, handleInputChange, handleAddBook }) {
   const createBtnDisabled = bookIsbn.trim() === '' || bookTitle.trim() === ''
 
   return (
-    <form onSubmit={(e) => { e.preventDefault(); handleAddBook() }}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        handleAddBook()
+      }}
+    >
       <Group>
         <TextInput
           name='bookIsbn'

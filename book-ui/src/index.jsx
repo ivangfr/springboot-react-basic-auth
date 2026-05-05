@@ -5,7 +5,7 @@ import './index.css'
 import App from './App'
 
 const theme = createTheme({
-  primaryColor: 'blue',
+  primaryColor: 'blue'
 })
 
 const root = ReactDOM.createRoot(document.getElementById('root'))

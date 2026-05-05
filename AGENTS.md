@@ -3,8 +3,8 @@
 ## Project Overview
 
 Full-stack application with:
-- **Backend**: `book-api/` — Spring Boot 4.0.5, Java 25, PostgreSQL, HTTP Basic Auth, stateless REST API
-- **Frontend**: `book-ui/` — React 19, plain JavaScript (no TypeScript), Axios, Mantine v8
+- **Backend**: `book-api/` — Spring Boot 4.0.6, Java 25, PostgreSQL, HTTP Basic Auth, stateless REST API
+- **Frontend**: `book-ui/` — React 19, plain JavaScript (no TypeScript), Axios, Mantine v9, @mantine/hooks
 
 ---
 
@@ -35,7 +35,7 @@ Full-stack application with:
 ./book-api/test-endpoints.sh
 ```
 
-> There is no Checkstyle or linting plugin configured. No lint command exists.
+> Spotless is configured with `google-java-format` (GOOGLE style) for code formatting. Run `./mvnw spotless:check` to verify formatting, `./mvnw spotless:apply` to auto-fix. Spotless runs automatically during `./mvnw verify`. No Checkstyle plugin is configured.
 
 ### Frontend (`book-ui/`)
 
@@ -63,10 +63,16 @@ npm run lint
 
 # Lint and auto-fix safe issues
 npm run lint -- --fix
+
+# Format source files
+npm run format
+
+# Check formatting
+npm run format:check
 ```
 
 > ESLint is configured via `eslint.config.js` (flat config) using `@eslint/js` recommended as a base,
-> plus `eslint-plugin-react` and `eslint-plugin-react-hooks`. No Prettier config exists.
+> plus `eslint-plugin-react`, `eslint-plugin-react-hooks`, and `eslint-config-prettier`. Prettier is configured with `format` and `format:check` scripts.
 
 ### Infrastructure
 
@@ -87,12 +93,14 @@ docker compose up -d
 - **Entities**: Plain classes with Lombok annotations. `@Data` and `@NoArgsConstructor` are used on all entities; `@AllArgsConstructor` is added when all fields are needed in the constructor (e.g., `Book`). Entities that require a partial or custom constructor (e.g., `User`) use a hand-written constructor instead of `@AllArgsConstructor`. Use `@Slf4j` for logging where needed (e.g., `DatabaseInitializer`).
 - **No service interfaces**: Services are concrete classes (e.g., `BookService.java`, `UserService.java`). No `XxxService` interface + `XxxServiceImpl` pattern.
 - **No `var`**: Avoid `var`; prefer explicit types for clarity.
-- **Import ordering** (blank line between each group):
-  1. Project-internal (`com.ivanfranchin.*`)
-  2. Third-party libraries (`io.swagger.*`, `jakarta.*`, `lombok.*`)
-  3. Spring Framework (`org.springframework.*`)
-  4. Java standard library (`java.*`)
+- **Import ordering** (blank line between each group, enforced by Spotless):
+  1. Java standard library (`java.*`)
+  2. Third-party libraries (`jakarta.*`, `lombok.*`, `io.swagger.*`)
+  3. Spring Framework and other `org.*` libraries (`org.springframework.*`)
+  4. Project-internal (`com.ivanfranchin.*`)
   5. Static imports last (after a blank line)
+- **Formatting**: Enforced by Spotless using `google-java-format` (GOOGLE style). Removes unused imports, forbids wildcard imports. Run `./mvnw spotless:apply` to auto-format.
+
 - **Validation**: Use Bean Validation annotations (`@NotBlank`, `@Email`) on record components and activate with `@Valid` on controller parameters.
 - **Controllers**: Return plain domain objects or records where possible. Use `ResponseEntity` only when the HTTP status must be conditional at runtime.
 
@@ -123,7 +131,7 @@ docker compose up -d
 | Classes | `PascalCase` + role suffix | `BookController`, `BookServiceImpl`, `DatabaseInitializer` |
 | Interfaces | `PascalCase`, no prefix/suffix | `BookService`, `UserService` |
 | Records (DTOs) | `PascalCase` + `Request`/`Response`/`Dto` | `CreateBookRequest`, `BookDto`, `AuthResponse` |
-| Exceptions | `PascalCase` + `Exception` | `BookNotFoundException`, `DuplicatedUserInfoException` |
+| Exceptions | `PascalCase` + `Exception` | `BookNotFoundException`, `DuplicatedUserInfoException`, `UserDeletionNotAllowedException`, `UserNotFoundException` |
 | Methods | `camelCase`, verb-first | `getBooks`, `validateAndGetBook`, `hasUserWithUsername` |
 | Variables | `camelCase`, descriptive nouns | `bookRepository`, `authenticatedUser` |
 

@@ -11,16 +11,26 @@ beforeEach(() => {
   localStorage.clear()
 })
 
-async function fillForm({ username = 'alice', password = 'secret', name = 'Alice', email = 'alice@example.com' } = {}) {
-  if (username) await userEvent.type(screen.getByLabelText('Username'), username)
-  if (password) await userEvent.type(screen.getByLabelText('Password'), password)
-  if (name)     await userEvent.type(screen.getByLabelText('Name'), name)
-  if (email)    await userEvent.type(screen.getByLabelText('Email'), email)
+async function fillForm({
+  username = 'alice',
+  password = 'secret',
+  name = 'Alice',
+  email = 'alice@example.com'
+} = {}) {
+  if (username)
+    await userEvent.type(screen.getByLabelText('Username'), username)
+  if (password)
+    await userEvent.type(screen.getByLabelText('Password'), password)
+  if (name) await userEvent.type(screen.getByLabelText('Name'), name)
+  if (email) await userEvent.type(screen.getByLabelText('Email'), email)
 }
 
 describe('Signup', () => {
   it('redirects to / when already logged in', () => {
-    localStorage.setItem('user', JSON.stringify({ id: 1, name: 'Alice', role: 'USER', authdata: 'abc' }))
+    localStorage.setItem(
+      'user',
+      JSON.stringify({ id: 1, name: 'Alice', role: 'USER', authdata: 'abc' })
+    )
     render(<Signup />, { initialEntries: ['/signup'] })
     expect(screen.queryByLabelText('Username')).not.toBeInTheDocument()
   })

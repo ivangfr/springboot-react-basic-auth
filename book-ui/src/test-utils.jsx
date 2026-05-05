@@ -15,14 +15,15 @@ export function seedLocalStorage(user) {
   localStorage.setItem('user', JSON.stringify(user))
 }
 
-function renderWithProviders(ui, { initialRoute = '/', ...renderOptions } = {}) {
+function renderWithProviders(
+  ui,
+  { initialRoute = '/', ...renderOptions } = {}
+) {
   function Wrapper({ children }) {
     return (
       <MantineProvider>
         <MemoryRouter initialEntries={[initialRoute]}>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
+          <AuthProvider>{children}</AuthProvider>
         </MemoryRouter>
       </MantineProvider>
     )

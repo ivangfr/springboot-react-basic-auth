@@ -6,9 +6,9 @@ import { bookApi } from '../misc/BookApi'
 vi.mock('../misc/BookApi')
 
 describe('Home', () => {
-beforeEach(() => {
-  vi.clearAllMocks()
-})
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
 
   it('renders the Users and Books stat cards after data loads', async () => {
     bookApi.numberOfUsers.mockResolvedValue({ data: 42 })

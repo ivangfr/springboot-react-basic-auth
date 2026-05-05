@@ -13,8 +13,8 @@ Object.defineProperty(window, 'matchMedia', {
     removeListener: vi.fn(),
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
+    dispatchEvent: vi.fn()
+  }))
 })
 
 // Vitest's jsdom runner passes --localstorage-file with no valid path, which
@@ -24,15 +24,23 @@ const localStorageMock = (() => {
   let store = {}
   return {
     getItem: (key) => store[key] ?? null,
-    setItem: (key, value) => { store[key] = String(value) },
-    removeItem: (key) => { delete store[key] },
-    clear: () => { store = {} },
-    get length() { return Object.keys(store).length },
-    key: (i) => Object.keys(store)[i] ?? null,
+    setItem: (key, value) => {
+      store[key] = String(value)
+    },
+    removeItem: (key) => {
+      delete store[key]
+    },
+    clear: () => {
+      store = {}
+    },
+    get length() {
+      return Object.keys(store).length
+    },
+    key: (i) => Object.keys(store)[i] ?? null
   }
 })()
 
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
-  writable: true,
+  writable: true
 })

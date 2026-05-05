@@ -1,6 +1,16 @@
 import { useState } from 'react'
 import { NavLink, Navigate } from 'react-router-dom'
-import { TextInput, PasswordInput, Button, Paper, Stack, Alert, Anchor, Center, Box } from '@mantine/core'
+import {
+  TextInput,
+  PasswordInput,
+  Button,
+  Paper,
+  Stack,
+  Alert,
+  Anchor,
+  Center,
+  Box
+} from '@mantine/core'
 import { IconInfoCircle } from '@tabler/icons-react'
 import { useAuth } from '../context/AuthContext'
 import { bookApi } from '../misc/BookApi'
@@ -62,13 +72,17 @@ function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <Button type='submit' fullWidth>Login</Button>
+              <Button type='submit' fullWidth>
+                Login
+              </Button>
             </Stack>
           </Paper>
         </form>
         <Paper withBorder p='sm' radius='md' mt='sm' ta='center' shadow='sm'>
           Don&apos;t have an account?{' '}
-          <Anchor component={NavLink} to='/signup'>Sign Up</Anchor>
+          <Anchor component={NavLink} to='/signup'>
+            Sign Up
+          </Anchor>
         </Paper>
         {isError && (
           <Alert color='red' variant='light' mt='sm' icon={<IconInfoCircle />}>

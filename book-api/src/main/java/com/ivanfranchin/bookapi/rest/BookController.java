@@ -1,13 +1,11 @@
 package com.ivanfranchin.bookapi.rest;
 
-import com.ivanfranchin.bookapi.book.Book;
-import com.ivanfranchin.bookapi.rest.dto.BookDto;
-import com.ivanfranchin.bookapi.rest.dto.CreateBookRequest;
-import com.ivanfranchin.bookapi.book.BookService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import static com.ivanfranchin.bookapi.config.SwaggerConfig.BASIC_AUTH_SECURITY_SCHEME;
+
+import java.util.List;
+
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,39 +17,45 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.ivanfranchin.bookapi.book.Book;
+import com.ivanfranchin.bookapi.book.BookService;
+import com.ivanfranchin.bookapi.rest.dto.BookDto;
+import com.ivanfranchin.bookapi.rest.dto.CreateBookRequest;
 
-import static com.ivanfranchin.bookapi.config.SwaggerConfig.BASIC_AUTH_SECURITY_SCHEME;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
 
-    private final BookService bookService;
+  private final BookService bookService;
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @GetMapping
-    public List<BookDto> getBooks(@RequestParam(value = "text", required = false) String text) {
-        List<Book> books = (text == null || text.isBlank()) ? bookService.getBooks() : bookService.getBooksContainingText(text);
-        return books.stream()
-                .map(BookDto::from)
-                .toList();
-    }
+  @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+  @GetMapping
+  public List<BookDto> getBooks(@RequestParam(value = "text", required = false) String text) {
+    List<Book> books =
+        (text == null || text.isBlank())
+            ? bookService.getBooks()
+            : bookService.getBooksContainingText(text);
+    return books.stream().map(BookDto::from).toList();
+  }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public BookDto createBook(@Valid @RequestBody CreateBookRequest createBookRequest) {
-        Book book = createBookRequest.toDomain();
-        return BookDto.from(bookService.saveBook(book));
-    }
+  @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping
+  public BookDto createBook(@Valid @RequestBody CreateBookRequest createBookRequest) {
+    Book book = createBookRequest.toDomain();
+    return BookDto.from(bookService.saveBook(book));
+  }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{isbn}")
-    public void deleteBook(@PathVariable String isbn) {
-        Book book = bookService.validateAndGetBook(isbn);
-        bookService.deleteBook(book);
-    }
+  @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @DeleteMapping("/{isbn}")
+  public void deleteBook(@PathVariable String isbn) {
+    Book book = bookService.validateAndGetBook(isbn);
+    bookService.deleteBook(book);
+  }
 }

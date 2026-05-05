@@ -5,14 +5,33 @@ import BookTable from './BookTable'
 
 function AdminTab(props) {
   const { handleInputChange } = props
-  const { isUsersLoading, users, userUsernameSearch, handleDeleteUser, handleSearchUser } = props
-  const { isBooksLoading, books, bookIsbn, bookTitle, bookTextSearch, handleAddBook, handleDeleteBook, handleSearchBook } = props
+  const {
+    isUsersLoading,
+    users,
+    userUsernameSearch,
+    handleDeleteUser,
+    handleSearchUser
+  } = props
+  const {
+    isBooksLoading,
+    books,
+    bookIsbn,
+    bookTitle,
+    bookTextSearch,
+    handleAddBook,
+    handleDeleteBook,
+    handleSearchBook
+  } = props
 
   return (
     <Tabs defaultValue='users' mt='md'>
       <Tabs.List>
-        <Tabs.Tab value='users' leftSection={<IconUsers size={16} />}>Users</Tabs.Tab>
-        <Tabs.Tab value='books' leftSection={<IconBook size={16} />}>Books</Tabs.Tab>
+        <Tabs.Tab value='users' leftSection={<IconUsers size={16} />}>
+          Users
+        </Tabs.Tab>
+        <Tabs.Tab value='books' leftSection={<IconBook size={16} />}>
+          Books
+        </Tabs.Tab>
       </Tabs.List>
 
       <Tabs.Panel value='users' pt='md'>

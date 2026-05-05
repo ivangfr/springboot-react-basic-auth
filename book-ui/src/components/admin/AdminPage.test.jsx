@@ -1,6 +1,11 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { render, makeAdminUser, makeRegularUser, seedLocalStorage } from '../../test-utils'
+import {
+  render,
+  makeAdminUser,
+  makeRegularUser,
+  seedLocalStorage
+} from '../../test-utils'
 import AdminPage from './AdminPage'
 import { bookApi } from '../misc/BookApi'
 
@@ -17,14 +22,28 @@ describe('AdminPage', () => {
   it('redirects to / when user is not ADMIN', async () => {
     seedLocalStorage(makeRegularUser())
     render(<AdminPage />, { initialRoute: '/adminpage' })
-    expect(screen.queryByPlaceholderText('Search by Username')).not.toBeInTheDocument()
+    expect(
+      screen.queryByPlaceholderText('Search by Username')
+    ).not.toBeInTheDocument()
     await waitFor(() => expect(bookApi.getUsers).toHaveBeenCalled())
   })
 
   it('fetches users and books on mount', async () => {
     seedLocalStorage(makeAdminUser())
-    bookApi.getUsers.mockResolvedValue({ data: [{ id: 1, username: 'admin', name: 'Admin', email: 'a@b.com', role: 'ADMIN' }] })
-    bookApi.getBooks.mockResolvedValue({ data: [{ isbn: '123', title: 'Java' }] })
+    bookApi.getUsers.mockResolvedValue({
+      data: [
+        {
+          id: 1,
+          username: 'admin',
+          name: 'Admin',
+          email: 'a@b.com',
+          role: 'ADMIN'
+        }
+      ]
+    })
+    bookApi.getBooks.mockResolvedValue({
+      data: [{ isbn: '123', title: 'Java' }]
+    })
     const adminUser = makeAdminUser()
 
     render(<AdminPage />)
@@ -54,7 +73,9 @@ describe('AdminPage', () => {
     seedLocalStorage(makeAdminUser())
     const adminUser = makeAdminUser()
 
-    bookApi.getBooks.mockResolvedValue({ data: [{ isbn: '999', title: 'Delete Me' }] })
+    bookApi.getBooks.mockResolvedValue({
+      data: [{ isbn: '999', title: 'Delete Me' }]
+    })
     bookApi.deleteBook.mockResolvedValue({})
 
     render(<AdminPage />)
@@ -85,8 +106,20 @@ describe('AdminPage', () => {
 
     bookApi.getUsers.mockResolvedValue({
       data: [
-        { id: 1, username: 'admin', name: 'Admin', email: 'a@b.com', role: 'ADMIN' },
-        { id: 2, username: 'alice', name: 'Alice', email: 'alice@b.com', role: 'USER' },
+        {
+          id: 1,
+          username: 'admin',
+          name: 'Admin',
+          email: 'a@b.com',
+          role: 'ADMIN'
+        },
+        {
+          id: 2,
+          username: 'alice',
+          name: 'Alice',
+          email: 'alice@b.com',
+          role: 'USER'
+        }
       ]
     })
     bookApi.deleteUser.mockResolvedValue({})
@@ -120,15 +153,26 @@ describe('AdminPage', () => {
     const booksTab = screen.getByRole('tab', { name: /books/i })
     await userEvent.click(booksTab)
 
-    await userEvent.type(screen.getByPlaceholderText('ISBN *'), '978-0-13-468599-1')
-    await userEvent.type(screen.getByPlaceholderText('Title *'), 'Effective Java')
+    await userEvent.type(
+      screen.getByPlaceholderText('ISBN *'),
+      '978-0-13-468599-1'
+    )
+    await userEvent.type(
+      screen.getByPlaceholderText('Title *'),
+      'Effective Java'
+    )
 
-    bookApi.getBooks.mockResolvedValue({ data: [{ isbn: '978-0-13-468599-1', title: 'Effective Java' }] })
+    bookApi.getBooks.mockResolvedValue({
+      data: [{ isbn: '978-0-13-468599-1', title: 'Effective Java' }]
+    })
 
     await userEvent.click(screen.getByRole('button', { name: /create/i }))
 
     await waitFor(() => {
-      expect(bookApi.addBook).toHaveBeenCalledWith(adminUser, { isbn: '978-0-13-468599-1', title: 'Effective Java' })
+      expect(bookApi.addBook).toHaveBeenCalledWith(adminUser, {
+        isbn: '978-0-13-468599-1',
+        title: 'Effective Java'
+      })
     })
     await waitFor(() => {
       expect(bookApi.getBooks).toHaveBeenCalledTimes(2)
@@ -146,11 +190,19 @@ describe('AdminPage', () => {
     const booksTab = screen.getByRole('tab', { name: /books/i })
     await userEvent.click(booksTab)
 
-    bookApi.getBooks.mockResolvedValue({ data: [{ isbn: '999', title: 'Spy Novel' }] })
+    bookApi.getBooks.mockResolvedValue({
+      data: [{ isbn: '999', title: 'Spy Novel' }]
+    })
 
-    await userEvent.type(screen.getByPlaceholderText('Search by ISBN or Title'), 'spy')
+    await userEvent.type(
+      screen.getByPlaceholderText('Search by ISBN or Title'),
+      'spy'
+    )
 
-    const searchButton = screen.getByPlaceholderText('Search by ISBN or Title').closest('form').querySelector('[type="submit"]')
+    const searchButton = screen
+      .getByPlaceholderText('Search by ISBN or Title')
+      .closest('form')
+      .querySelector('[type="submit"]')
     await userEvent.click(searchButton)
 
     await waitFor(() => {
@@ -166,11 +218,27 @@ describe('AdminPage', () => {
 
     await waitFor(() => expect(bookApi.getUsers).toHaveBeenCalled())
 
-    bookApi.getUsers.mockResolvedValue({ data: [{ id: 3, username: 'alice', name: 'Alice', email: 'a@b.com', role: 'USER' }] })
+    bookApi.getUsers.mockResolvedValue({
+      data: [
+        {
+          id: 3,
+          username: 'alice',
+          name: 'Alice',
+          email: 'a@b.com',
+          role: 'USER'
+        }
+      ]
+    })
 
-    await userEvent.type(screen.getByPlaceholderText('Search by Username'), 'alice')
+    await userEvent.type(
+      screen.getByPlaceholderText('Search by Username'),
+      'alice'
+    )
 
-    const searchButton = screen.getByPlaceholderText('Search by Username').closest('form').querySelector('[type="submit"]')
+    const searchButton = screen
+      .getByPlaceholderText('Search by Username')
+      .closest('form')
+      .querySelector('[type="submit"]')
     await userEvent.click(searchButton)
 
     await waitFor(() => {

@@ -14,27 +14,43 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        return http
-                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers(HttpMethod.GET, "/api/books", "/api/books/**").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
-                        .requestMatchers(HttpMethod.GET, "/api/users/me").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
-                        .requestMatchers("/api/books", "/api/books/**").hasAuthority(Role.ADMIN.name())
-                        .requestMatchers("/api/users", "/api/users/**").hasAuthority(Role.ADMIN.name())
-                        .requestMatchers("/public/**", "/auth/**").permitAll()
-                        .requestMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated())
-                .cors(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults())
-                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .csrf(AbstractHttpConfigurer::disable)
-                .build();
-    }
+  @Bean
+  SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    return http.authorizeHttpRequests(
+            authorizeHttpRequests ->
+                authorizeHttpRequests
+                    .requestMatchers(HttpMethod.GET, "/api/books", "/api/books/**")
+                    .hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+                    .requestMatchers(HttpMethod.GET, "/api/users/me")
+                    .hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+                    .requestMatchers("/api/books", "/api/books/**")
+                    .hasAuthority(Role.ADMIN.name())
+                    .requestMatchers("/api/users", "/api/users/**")
+                    .hasAuthority(Role.ADMIN.name())
+                    .requestMatchers("/public/**", "/auth/**")
+                    .permitAll()
+                    .requestMatchers(
+                        "/",
+                        "/error",
+                        "/csrf",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/api-docs",
+                        "/v3/api-docs/**")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
+        .cors(Customizer.withDefaults())
+        .httpBasic(Customizer.withDefaults())
+        .sessionManagement(
+            sessionManagement ->
+                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .csrf(AbstractHttpConfigurer::disable)
+        .build();
+  }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+  }
 }

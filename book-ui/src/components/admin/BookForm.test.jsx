@@ -9,7 +9,7 @@ function makeProps(overrides = {}) {
     bookTitle: '',
     handleInputChange: vi.fn(),
     handleAddBook: vi.fn(),
-    ...overrides,
+    ...overrides
   }
 }
 
@@ -43,7 +43,14 @@ describe('BookForm', () => {
   })
 
   it('Create button is enabled when both isbn and title are filled', () => {
-    render(<BookForm {...makeProps({ bookIsbn: '978-3-16-148410-0', bookTitle: 'Clean Code' })} />)
+    render(
+      <BookForm
+        {...makeProps({
+          bookIsbn: '978-3-16-148410-0',
+          bookTitle: 'Clean Code'
+        })}
+      />
+    )
     expect(screen.getByRole('button', { name: /create/i })).not.toBeDisabled()
   })
 
@@ -67,7 +74,15 @@ describe('BookForm', () => {
 
   it('calls handleAddBook when form is submitted', async () => {
     const handleAddBook = vi.fn()
-    render(<BookForm {...makeProps({ bookIsbn: '978-3-16-148410-0', bookTitle: 'Clean Code', handleAddBook })} />)
+    render(
+      <BookForm
+        {...makeProps({
+          bookIsbn: '978-3-16-148410-0',
+          bookTitle: 'Clean Code',
+          handleAddBook
+        })}
+      />
+    )
 
     await userEvent.click(screen.getByRole('button', { name: /create/i }))
 
