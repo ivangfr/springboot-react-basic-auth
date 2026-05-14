@@ -1,19 +1,16 @@
 package com.ivanfranchin.bookapi.runner;
 
-import java.util.List;
-
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-
 import com.ivanfranchin.bookapi.book.Book;
 import com.ivanfranchin.bookapi.book.BookService;
 import com.ivanfranchin.bookapi.security.Role;
 import com.ivanfranchin.bookapi.user.User;
 import com.ivanfranchin.bookapi.user.UserService;
-
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @RequiredArgsConstructor

@@ -6,10 +6,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.ivanfranchin.bookapi.security.CustomUserDetails;
+import com.ivanfranchin.bookapi.security.CustomUserDetailsService;
+import com.ivanfranchin.bookapi.security.Role;
+import com.ivanfranchin.bookapi.security.SecurityConfig;
+import com.ivanfranchin.bookapi.user.User;
+import com.ivanfranchin.bookapi.user.UserNotFoundException;
+import com.ivanfranchin.bookapi.user.UserService;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -23,14 +29,6 @@ import org.springframework.security.test.context.support.WithSecurityContext;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-
-import com.ivanfranchin.bookapi.security.CustomUserDetails;
-import com.ivanfranchin.bookapi.security.CustomUserDetailsService;
-import com.ivanfranchin.bookapi.security.Role;
-import com.ivanfranchin.bookapi.security.SecurityConfig;
-import com.ivanfranchin.bookapi.user.User;
-import com.ivanfranchin.bookapi.user.UserNotFoundException;
-import com.ivanfranchin.bookapi.user.UserService;
 
 @WebMvcTest(UserController.class)
 @Import(SecurityConfig.class)

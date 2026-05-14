@@ -1,10 +1,8 @@
 package com.ivanfranchin.bookapi.book;
 
 import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service

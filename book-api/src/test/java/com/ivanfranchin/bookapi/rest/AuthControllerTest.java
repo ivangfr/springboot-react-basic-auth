@@ -6,8 +6,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.ivanfranchin.bookapi.rest.dto.LoginRequest;
+import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
+import com.ivanfranchin.bookapi.security.CustomUserDetailsService;
+import com.ivanfranchin.bookapi.security.Role;
+import com.ivanfranchin.bookapi.security.SecurityConfig;
+import com.ivanfranchin.bookapi.user.User;
+import com.ivanfranchin.bookapi.user.UserService;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -17,15 +23,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-
-import com.ivanfranchin.bookapi.rest.dto.LoginRequest;
-import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
-import com.ivanfranchin.bookapi.security.CustomUserDetailsService;
-import com.ivanfranchin.bookapi.security.Role;
-import com.ivanfranchin.bookapi.security.SecurityConfig;
-import com.ivanfranchin.bookapi.user.User;
-import com.ivanfranchin.bookapi.user.UserService;
-
 import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest(AuthController.class)

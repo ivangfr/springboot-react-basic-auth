@@ -2,8 +2,16 @@ package com.ivanfranchin.bookapi.rest;
 
 import static com.ivanfranchin.bookapi.config.SwaggerConfig.BASIC_AUTH_SECURITY_SCHEME;
 
+import com.ivanfranchin.bookapi.rest.dto.UserDto;
+import com.ivanfranchin.bookapi.security.CustomUserDetails;
+import com.ivanfranchin.bookapi.security.Role;
+import com.ivanfranchin.bookapi.user.User;
+import com.ivanfranchin.bookapi.user.UserDeletionNotAllowedException;
+import com.ivanfranchin.bookapi.user.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,17 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.ivanfranchin.bookapi.rest.dto.UserDto;
-import com.ivanfranchin.bookapi.security.CustomUserDetails;
-import com.ivanfranchin.bookapi.security.Role;
-import com.ivanfranchin.bookapi.user.User;
-import com.ivanfranchin.bookapi.user.UserDeletionNotAllowedException;
-import com.ivanfranchin.bookapi.user.UserService;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController

@@ -1,9 +1,15 @@
 package com.ivanfranchin.bookapi.rest;
 
-import java.util.Optional;
-
+import com.ivanfranchin.bookapi.rest.dto.AuthResponse;
+import com.ivanfranchin.bookapi.rest.dto.LoginRequest;
+import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
+import com.ivanfranchin.bookapi.security.Role;
+import com.ivanfranchin.bookapi.user.DuplicatedUserInfoException;
+import com.ivanfranchin.bookapi.user.User;
+import com.ivanfranchin.bookapi.user.UserService;
 import jakarta.validation.Valid;
-
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,16 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.ivanfranchin.bookapi.rest.dto.AuthResponse;
-import com.ivanfranchin.bookapi.rest.dto.LoginRequest;
-import com.ivanfranchin.bookapi.rest.dto.SignUpRequest;
-import com.ivanfranchin.bookapi.security.Role;
-import com.ivanfranchin.bookapi.user.DuplicatedUserInfoException;
-import com.ivanfranchin.bookapi.user.User;
-import com.ivanfranchin.bookapi.user.UserService;
-
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController

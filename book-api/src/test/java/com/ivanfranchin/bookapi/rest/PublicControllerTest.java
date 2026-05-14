@@ -5,17 +5,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.ivanfranchin.bookapi.book.BookService;
+import com.ivanfranchin.bookapi.security.CustomUserDetailsService;
+import com.ivanfranchin.bookapi.security.SecurityConfig;
+import com.ivanfranchin.bookapi.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-
-import com.ivanfranchin.bookapi.book.BookService;
-import com.ivanfranchin.bookapi.security.CustomUserDetailsService;
-import com.ivanfranchin.bookapi.security.SecurityConfig;
-import com.ivanfranchin.bookapi.user.UserService;
 
 @WebMvcTest(PublicController.class)
 @Import(SecurityConfig.class)
