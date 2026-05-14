@@ -11,21 +11,23 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.ivanfranchin.bookapi.security.Role;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@Import(UserService.class)
 class UserServiceTest {
 
-  @Mock UserRepository userRepository;
+  @MockitoBean UserRepository userRepository;
 
-  @Mock PasswordEncoder passwordEncoder;
+  @MockitoBean PasswordEncoder passwordEncoder;
 
-  @InjectMocks UserService userService;
+  @Autowired UserService userService;
 
   @Test
   void getUsers_returnsAllUsers() {
@@ -44,6 +46,7 @@ class UserServiceTest {
     when(userRepository.existsByUsername("alice")).thenReturn(true);
 
     assertThat(userService.hasUserWithUsername("alice")).isTrue();
+    verify(userRepository).existsByUsername("alice");
     verifyNoMoreInteractions(userRepository, passwordEncoder);
   }
 
@@ -52,6 +55,7 @@ class UserServiceTest {
     when(userRepository.existsByUsername("ghost")).thenReturn(false);
 
     assertThat(userService.hasUserWithUsername("ghost")).isFalse();
+    verify(userRepository).existsByUsername("ghost");
     verifyNoMoreInteractions(userRepository, passwordEncoder);
   }
 
@@ -60,6 +64,7 @@ class UserServiceTest {
     when(userRepository.existsByEmail("alice@example.com")).thenReturn(true);
 
     assertThat(userService.hasUserWithEmail("alice@example.com")).isTrue();
+    verify(userRepository).existsByEmail("alice@example.com");
     verifyNoMoreInteractions(userRepository, passwordEncoder);
   }
 
@@ -68,6 +73,7 @@ class UserServiceTest {
     when(userRepository.existsByEmail("nobody@example.com")).thenReturn(false);
 
     assertThat(userService.hasUserWithEmail("nobody@example.com")).isFalse();
+    verify(userRepository).existsByEmail("nobody@example.com");
     verifyNoMoreInteractions(userRepository, passwordEncoder);
   }
 
@@ -79,6 +85,7 @@ class UserServiceTest {
     User result = userService.validateAndGetUserByUsername("alice");
 
     assertThat(result).isEqualTo(user);
+    verify(userRepository).findByUsername("alice");
     verifyNoMoreInteractions(userRepository, passwordEncoder);
   }
 
@@ -89,6 +96,7 @@ class UserServiceTest {
     assertThatThrownBy(() -> userService.validateAndGetUserByUsername("ghost"))
         .isInstanceOf(UserNotFoundException.class)
         .hasMessageContaining("ghost");
+    verify(userRepository).findByUsername("ghost");
     verifyNoMoreInteractions(userRepository, passwordEncoder);
   }
 

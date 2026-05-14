@@ -11,16 +11,18 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@Import(BookService.class)
 class BookServiceTest {
 
-  @Mock BookRepository bookRepository;
+  @MockitoBean BookRepository bookRepository;
 
-  @InjectMocks BookService bookService;
+  @Autowired BookService bookService;
 
   @Test
   void getBooks_returnsAllBooksSorted() {
@@ -56,6 +58,7 @@ class BookServiceTest {
     Book result = bookService.validateAndGetBook("123");
 
     assertThat(result).isEqualTo(book);
+    verify(bookRepository).findById("123");
     verifyNoMoreInteractions(bookRepository);
   }
 
@@ -66,6 +69,7 @@ class BookServiceTest {
     assertThatThrownBy(() -> bookService.validateAndGetBook("000"))
         .isInstanceOf(BookNotFoundException.class)
         .hasMessageContaining("000");
+    verify(bookRepository).findById("000");
     verifyNoMoreInteractions(bookRepository);
   }
 
