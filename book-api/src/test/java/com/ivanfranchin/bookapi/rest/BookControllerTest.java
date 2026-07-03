@@ -23,7 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 @WebMvcTest(BookController.class)
 @Import(SecurityConfig.class)
@@ -31,7 +31,7 @@ class BookControllerTest {
 
   @Autowired MockMvc mockMvc;
 
-  @Autowired ObjectMapper objectMapper;
+  @Autowired JsonMapper jsonMapper;
 
   @MockitoBean BookService bookService;
 
@@ -97,7 +97,7 @@ class BookControllerTest {
         .perform(
             post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(jsonMapper.writeValueAsString(request)))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.isbn").value("123"))
         .andExpect(jsonPath("$.title").value("Spring in Action"));
@@ -112,7 +112,7 @@ class BookControllerTest {
         .perform(
             post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(jsonMapper.writeValueAsString(request)))
         .andExpect(status().isForbidden());
   }
 
@@ -125,7 +125,7 @@ class BookControllerTest {
         .perform(
             post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(jsonMapper.writeValueAsString(request)))
         .andExpect(status().isBadRequest());
   }
 
@@ -138,7 +138,7 @@ class BookControllerTest {
         .perform(
             post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(jsonMapper.writeValueAsString(request)))
         .andExpect(status().isBadRequest());
   }
 
@@ -150,7 +150,7 @@ class BookControllerTest {
         .perform(
             post("/api/books")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(jsonMapper.writeValueAsString(request)))
         .andExpect(status().isUnauthorized());
   }
 
